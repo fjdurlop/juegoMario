@@ -6,6 +6,9 @@ function Scene()
 {
 	// Loading texture to use in a TexturedQuad
 	var img = new Texture("imgs/varied.png");
+	var brick = new Texture("imgs/brick.png");
+
+	var canvas = document.getElementById("game-layer");
 
 	// Prepare all quads
 	this.quads = new Array();
@@ -15,6 +18,9 @@ function Scene()
 	
 	this.texQuad = new TexturedQuad(0, 0, 32, 32, 320, 288, 128, 128, img);
 	
+	this.brick01 = new TexturedQuad(0, 0, 64, 64, 0, canvas.height-20, 20, 20, brick);
+	
+
 	// Store current time
 	this.currentTime = 0
 }
@@ -35,6 +41,10 @@ Scene.prototype.draw = function ()
 	// Clear background
 	context.fillStyle = "rgb(224, 224, 240)";
 	context.fillRect(0, 0, canvas.width, canvas.height);
+
+	// Clear background
+	context.fillStyle = "rgb(100, 224, 240)";
+	context.fillRect(0, 0, canvas.width, (canvas.height)/2);
 
 	// Draw color quads
 	context.save();
@@ -58,6 +68,12 @@ Scene.prototype.draw = function ()
 	context.translate(-32 * Math.sin(this.currentTime / 1000), 0);
 	this.texQuad.draw();
 	context.restore();
+
+	context.save();
+	//context.translate(-32 * Math.sin(this.currentTime / 1000), 0);
+	this.brick01.draw();
+	context.restore();
+	
 	
 	// Draw text
 	var text = "Videogames!!!";
