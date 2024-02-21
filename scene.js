@@ -2,67 +2,40 @@
 
 // Scene. Updates and draws a single scene of the game.
 
-const MARIO_STAND_LEFT = 0;
-const MARIO_STAND_RIGHT = 1;
-const MARIO_WALK_LEFT = 2;
-const MARIO_WALK_RIGHT = 3;
-
-function Scene() {
+function Scene()
+{
 	// Loading texture to use in a TileMap
-	var world1 = new Texture("imgs/world1_map.png");
-	// Loading spritesheets
-	var mario = new Texture("imgs/mario_sprite.png");
-
+	var tilesheet = new Texture("imgs/tiles.png");
+	
 	// Create tilemap
-	this.map = new Tilemap(world1, [16, 16], [6, 6], [0, 32], world11);
-	// Prepare Mario sprite & its animations
-	this.marioSprite = new Sprite(224, 224, 32, 32, 3, mario);
-
-	this.marioSprite.addAnimation();
-	this.marioSprite.addKeyframe(MARIO_STAND_LEFT, [48, 32, 16, 16]);
-
-	this.marioSprite.addAnimation();
-	this.marioSprite.addKeyframe(MARIO_WALK_LEFT, [16, 0, 16, 16]);
-	this.marioSprite.addKeyframe(MARIO_WALK_LEFT, [32, 0, 16, 16]);
-	this.marioSprite.addKeyframe(MARIO_WALK_LEFT, [48, 0, 16, 16]);
-
-	this.marioSprite.addAnimation();
-	this.marioSprite.addKeyframe(MARIO_STAND_RIGHT, [0, 0, 16, 16]);
-
-
-
+	this.map = new Tilemap(tilesheet, [16, 16], [2, 2], [0, 32], level01);
+	
+	// Create entities
+	this.player = new Player(224, 240, this.map);
+	this.bubble = new Bubble(360, 112);
+	this.bubbleActive = true;
+	
 	// Store current time
 	this.currentTime = 0
 }
 
 
-Scene.prototype.update = function (deltaTime) {
+Scene.prototype.update = function(deltaTime)
+{
 	// Keep track of time
 	this.currentTime += deltaTime;
-
-	if (keyboard[37]) // KEY_LEFT
-	{
-		if (this.marioSprite.currentAnimation != MARIO_WALK_LEFT)
-			this.marioSprite.setAnimation(MARIO_WALK_LEFT);
-		if (this.marioSprite.x >= 2)
-			this.marioSprite.x -= 2;
-	}
-	else if (keyboard[39]) // KEY_RIGHT
-	{
-		if (this.marioSprite.currentAnimation != MARIO_WALK_RIGHT)
-			this.marioSprite.setAnimation(MARIO_WALK_RIGHT);
-		if (this.marioSprite.x < 480)
-			this.marioSprite.x += 2;
-	}
-	else {
-		if (this.marioSprite.currentAnimation == MARIO_WALK_LEFT)
-			this.marioSprite.setAnimation(MARIO_STAND_LEFT);
-		if (this.marioSprite.currentAnimation == MARIO_WALK_RIGHT)
-			this.marioSprite.setAnimation(MARIO_STAND_RIGHT);
-	}
+	
+	// Update entities
+	this.player.update(deltaTime);
+	this.bubble.update(deltaTime);
+	
+	// Check for collision between entities
+	if(this.player.collisionBox().intersect(this.bubble.collisionBox()))
+		this.bubbleActive = false;
 }
 
-Scene.prototype.draw = function () {
+Scene.prototype.draw = function ()
+{
 	// Get canvas object, then its context
 	var canvas = document.getElementById("game-layer");
 	var context = canvas.getContext("2d");
@@ -73,6 +46,11 @@ Scene.prototype.draw = function () {
 
 	// Draw tilemap
 	this.map.draw();
+
+	// Draw entities
+	if(this.bubbleActive)
+		this.bubble.draw();
+	this.player.draw();
 }
 
 
