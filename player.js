@@ -12,7 +12,7 @@ function Player(x, y, map) {
 	var mario = new Texture("imgs/mario.png");
 
 	// Prepare Bub sprite & its animations
-	this.sprite = new Sprite(x, y, 32, 32, 7, mario);
+	this.sprite = new Sprite(x, y, 16, 16, 4, mario);
 
 	this.sprite.addAnimation();
 	this.sprite.addKeyframe(MARIO_STAND_LEFT, [48, 32, 16, 16]);
@@ -64,7 +64,8 @@ Player.prototype.update = function (deltaTime) {
 		this.sprite.x += 2;
 		if (this.map.collisionMoveRight(this.sprite))
 			this.sprite.x -= 2;
-	}//TODO:JUMPING KEY
+	}//TODO:JUMPING colision and its texture
+
 	else {
 		if (this.sprite.currentAnimation == MARIO_WALK_LEFT)
 			this.sprite.setAnimation(MARIO_STAND_LEFT);
@@ -80,7 +81,7 @@ Player.prototype.update = function (deltaTime) {
 			this.sprite.y = this.startY;
 		}
 		else {
-			this.sprite.y = this.startY - 96 * Math.sin(3.14159 * this.jumpAngle / 180);
+			this.sprite.y = this.startY - 56 * Math.sin(3.14159 * this.jumpAngle / 180);
 			if (this.jumpAngle > 90)
 				this.bJumping = !this.map.collisionMoveDown(this.sprite);
 		}

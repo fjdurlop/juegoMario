@@ -7,17 +7,19 @@ function Scene() {
 	var tilesheet = new Texture("imgs/world1.png");
 
 	// Create tilemap
-	this.map = new Tilemap(tilesheet, [16, 16], [6, 6], [0, 32], world11);
+	this.map = new Tilemap(tilesheet, [16, 16], [6, 6], [0, 32], world1);
 
 	// Create entities
-	this.player = new Player(0, 150, this.map);
+	this.player = new Player(150, 150, this.map);
 	this.bubble = new Bubble(360, 112);
+	this.coin = new Coin(260, 112);
+
 	this.bubbleActive = true;
+	this.coinActive = true;
 
 	// Store current time
 	this.currentTime = 0
 }
-
 
 Scene.prototype.update = function (deltaTime) {
 	// Keep track of time
@@ -26,10 +28,13 @@ Scene.prototype.update = function (deltaTime) {
 	// Update entities
 	this.player.update(deltaTime);
 	this.bubble.update(deltaTime);
+	this.coin.update(deltaTime);
 
 	// Check for collision between entities
 	if (this.player.collisionBox().intersect(this.bubble.collisionBox()))
 		this.bubbleActive = false;
+	if (this.player.collisionBox().intersect(this.coin.collisionBox()))
+		this.coinActive = false;
 }
 
 async function drawStatusText(currentTime) {
@@ -42,7 +47,7 @@ async function drawStatusText(currentTime) {
 	var canvas = document.getElementById("game-layer");
 	var context = canvas.getContext("2d");
 
-	context.font = "15px Verdana"; //900
+	context.font = "900 15px Verdana";
 	context.fillStyle = 'white';
 
 	// Draw status text on the canvas
@@ -71,13 +76,10 @@ Scene.prototype.draw = function () {
 
 	drawStatusText(this.currentTime);
 
-
-
 	// Draw entities
 	if (this.bubbleActive)
 		this.bubble.draw();
+	if (this.coinActive)
+		this.coin.draw();
 	this.player.draw();
 }
-
-
-

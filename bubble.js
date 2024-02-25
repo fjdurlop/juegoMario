@@ -1,7 +1,6 @@
 
 
-function Bubble(x, y)
-{
+function Bubble(x, y) {
 	var bubble = new Texture("imgs/bubble.png");
 
 	// Prepare bubble sprite & its animation
@@ -15,20 +14,17 @@ function Bubble(x, y)
 }
 
 
-Bubble.prototype.update = function update(deltaTime)
-{
+Bubble.prototype.update = function update(deltaTime) {
 	this.sprite.update(deltaTime);
 }
 
-Bubble.prototype.draw = function draw()
-{
+Bubble.prototype.draw = function draw() {
 	this.sprite.draw();
 }
 
-Bubble.prototype.collisionBox = function()
-{
+Bubble.prototype.collisionBox = function () {
 	var box = new Box(this.sprite.x + 2, this.sprite.y + 2, this.sprite.x + this.sprite.width - 4, this.sprite.y + this.sprite.height - 4);
-	
+
 	return box;
 }
 
