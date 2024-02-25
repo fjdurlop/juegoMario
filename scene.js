@@ -32,27 +32,28 @@ Scene.prototype.update = function (deltaTime) {
 		this.bubbleActive = false;
 }
 
-async function drawStatusText(context) {
-	
-	// Load and set the font
-	const pixelFont = new FontFace('PublicPixel', 'url(font/PublicPixel.ttf)');
-	document.fonts.add(pixelFont);
-	await pixelFont.load();
+async function drawStatusText(currentTime) {
 
-	context.font = "900 15px PublicPixel";
+	// Load and set the font
+	const pixelFont = new FontFace('PublicPixel', 'url(font/PublicPixel.ttf) format(ttf)');
+	document.fonts.add(pixelFont);
+	//await pixelFont.load();
+
+	var canvas = document.getElementById("game-layer");
+	var context = canvas.getContext("2d");
+
+	context.font = "15px Verdana"; //900
 	context.fillStyle = 'white';
-	
-	// Draw text on the canvas
-	var text = 'MARIO';
-	//var textSize = context.mesureText(text);
-	context.fillText(text, 20,30);
+
+	// Draw status text on the canvas
+	context.fillText('MARIO', 20, 30);
 	context.fillText('WORLD', 280, 30);
 	context.fillText('TIME', 410, 30);
 
 	context.fillText('000000', 20, 45);
 	context.fillText('x 00', 150, 45);
 	context.fillText('1-1', 300, 45);
-	context.fillText((400-Math.floor(this.currentTime / 1000))+' ', 410, 45);
+	context.fillText((400 - Math.floor(currentTime / 1000)) + ' ', 410, 45);
 	//TODO: when times up, do something
 }
 
@@ -68,10 +69,10 @@ Scene.prototype.draw = function () {
 	// Draw tilemap
 	this.map.draw();
 
-	drawStatusText();
+	drawStatusText(this.currentTime);
 
 
-	
+
 	// Draw entities
 	if (this.bubbleActive)
 		this.bubble.draw();
