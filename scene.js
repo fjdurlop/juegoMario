@@ -13,9 +13,13 @@ function Scene() {
 	this.player = new Player(150, 150, this.map);
 	this.bubble = new Bubble(360, 112);
 	this.coin = new Coin(260, 112);
+	this.goomba_01 = new Goomba(29*16, 24*16,this.map);
 
 	this.bubbleActive = true;
 	this.coinActive = true;
+	this.goombaActive = true;
+	
+	this.lose = false;
 
 	// Store current time
 	this.currentTime = 0
@@ -29,12 +33,21 @@ Scene.prototype.update = function (deltaTime) {
 	this.player.update(deltaTime);
 	this.bubble.update(deltaTime);
 	this.coin.update(deltaTime);
+	this.goomba_01.update(deltaTime);
+
 
 	// Check for collision between entities
 	if (this.player.collisionBox().intersect(this.bubble.collisionBox()))
 		this.bubbleActive = false;
 	if (this.player.collisionBox().intersect(this.coin.collisionBox()))
 		this.coinActive = false;
+
+	if (this.player.collisionBox().intersect(this.goomba_01.collisionTop()))
+		this.goombaActive = false;
+	if (this.player.collisionBox().intersect(this.goomba_01.collisionBox()) && this.goombaActive)
+		//this.lose = true;
+		console.log("Reduced lives")
+		console.log(this.player.lives)
 }
 
 async function drawStatusText(currentTime) {
@@ -81,5 +94,8 @@ Scene.prototype.draw = function () {
 		this.bubble.draw();
 	if (this.coinActive)
 		this.coin.draw();
-	this.player.draw();
+	if (this.goombaActive)
+		this.goomba_01.draw();
+	if(this.lose ==false)
+		this.player.draw();
 }

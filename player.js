@@ -11,6 +11,8 @@ function Player(x, y, map) {
 	// Loading spritesheets
 	var mario = new Texture("imgs/mario.png");
 
+	this.lives = 3;
+
 	// Prepare Bub sprite & its animations
 	this.sprite = new Sprite(x, y, 16, 16, 4, mario);
 
