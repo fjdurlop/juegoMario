@@ -4,12 +4,12 @@ function Coin(x, y) {
     var coin = new Texture("imgs/coins.png");
 
     // Prepare coin sprite & its animation
-    this.sprite = new Sprite(x, y, 16, 16, 3, coin);
+    this.sprite = new Sprite(x, y, 32, 32, 3, coin);
 
     this.sprite.addAnimation();
-    this.sprite.addKeyframe(0, [0, 16, 16, 16]);
-    this.sprite.addKeyframe(0, [16, 16, 16, 16]);
-    this.sprite.addKeyframe(0, [32, 16, 16, 16]);
+    this.sprite.addKeyframe(0, [0, 32, 32, 32]);
+    this.sprite.addKeyframe(0, [32, 32, 32, 32]);
+    this.sprite.addKeyframe(0, [64, 32, 32, 32]);
 
 }
 

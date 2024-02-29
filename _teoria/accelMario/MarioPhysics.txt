@@ -1,0 +1,102 @@
+
+X movement
+##########
+
+Mario physics properties
+------------------------
+minWalkSpeed		-> Minimum speed when moving
+walkAccel			-> Acceleration when walking
+runAccel			-> Acceleration when running
+releaseDecel		-> Acceleration when stopping
+maxWalkSpeed		-> Maximum walking speed
+maxRunSpeed			-> Maximum running speed
+
+
+Example values (in pixels/second)
+---------------------------------
+
+minWalkSpeed = 60
+walkAccel = 60
+runAccel = 120
+releaseDecel = 360
+maxWalkSpeed = 120
+maxRunSpeed = 240
+
+
+Mario state
+-----------
+speed		-> Current Mario speed
+accel		-> Current Mario acceleration
+
+
+Init
+----
+
+speed = 0
+accel = 0
+
+
+Update
+------
+
+if(Left or Right):
+	# Pressing move buttons
+	if(Left && (speed > -minWalkSpeed))
+		speed = -minWalkSpeed;
+	else if(Right && (speed < minWalkSpeed))
+		speed = minWalkSpeed;
+	# Prepare acceleration according to action (walk or run)
+	if(Running):
+		if(Left):
+			accel = -runAccel
+		else:
+			accel = runAccel
+	else:
+		if(Left):
+			accel = -walkAccel
+		else:
+			accel = walkAccel
+else:
+	if(speed > 0):
+		accel = -releaseDecel
+	else if(speed < 0):
+		accel = releaseDecel
+	else:
+		accel = 0
+
+# Move according to current speed
+x = x + speed * deltaTime
+
+# Apply acceleration to current speed
+if(Left or Right)
+	speed = speed + accel * deltaTime
+
+	# Respect maximum speeds
+	if(Running):
+		if(abs(speed) > maxRunSpeed):
+			if(speed > 0):
+				speed = maxRunSpeed
+			else:
+				speed = -maxRunSpeed
+	else:
+		if(abs(speed) > maxWalkSpeed):
+			if(speed > 0):
+				speed = maxWalkSpeed
+			else:
+				speed = -maxWalkSpeed
+
+else:
+	# Be careful to stop when current acceleration gets close to zero
+	if(speed > 0):
+		speed = speed + accel * deltaTime
+		if(speed < minWalkSpeed):
+			speed = 0
+	else if(speed < 0):
+		speed = speed + accel * deltaTime
+		if(speed > -minWalkSpeed):
+			speed = 0
+
+
+
+
+

@@ -7,18 +7,17 @@ function Scene() {
 	var tilesheet = new Texture("imgs/world1.png");
 
 	// Create tilemap
-	this.map = new Tilemap(tilesheet, [16, 16], [6, 6], [0, 32], world1);
+	this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world1);
 
 	// Create entities
 	this.player = new Player(150, 150, this.map);
-	this.bubble = new Bubble(360, 112);
-	this.coin = new Coin(260, 112);
-	this.goomba_01 = new Goomba(29*16, 24*16,this.map);
+	this.statusCoin = new Coin(250, 25);
+	this.coins = [];
+	this.goomba_01 = new Goomba(29 * 32, 24 * 32, this.map);
 
-	this.bubbleActive = true;
-	this.coinActive = true;
+	//this.coinActive = true;
 	this.goombaActive = true;
-	
+
 	this.lose = false;
 
 	// Store current time
@@ -31,48 +30,76 @@ Scene.prototype.update = function (deltaTime) {
 
 	// Update entities
 	this.player.update(deltaTime);
-	this.bubble.update(deltaTime);
-	this.coin.update(deltaTime);
+	this.statusCoin.update(deltaTime);
 	this.goomba_01.update(deltaTime);
+	// update del blockAnimation
+	updateBlockAnimation(deltaTime);
 
 
 	// Check for collision between entities
-	if (this.player.collisionBox().intersect(this.bubble.collisionBox()))
-		this.bubbleActive = false;
-	if (this.player.collisionBox().intersect(this.coin.collisionBox()))
-		this.coinActive = false;
-
 	if (this.player.collisionBox().intersect(this.goomba_01.collisionTop()))
 		this.goombaActive = false;
 	if (this.player.collisionBox().intersect(this.goomba_01.collisionBox()) && this.goombaActive)
 		//this.lose = true;
 		console.log("Reduced lives")
-		console.log(this.player.lives)
+	console.log(this.player.lives)
+	checkBlockAnimation(this.player.collisionBox()); //TODO: not created yet
 }
 
-async function drawStatusText(currentTime) {
+function drawStatusText(currentTime) {
 
 	// Load and set the font
-	const pixelFont = new FontFace('PublicPixel', 'url(font/PublicPixel.ttf) format(ttf)');
-	document.fonts.add(pixelFont);
+	//const pixelFont = new FontFace('PublicPixel', 'url(font/PublicPixel.ttf) format(ttf)');
+	//document.fonts.add(pixelFont);
 	//await pixelFont.load();
 
 	var canvas = document.getElementById("game-layer");
 	var context = canvas.getContext("2d");
 
-	context.font = "900 15px Verdana";
+	context.font = "900 20px Verdana";
 	context.fillStyle = 'white';
 
 	// Draw status text on the canvas
-	context.fillText('MARIO', 20, 30);
-	context.fillText('WORLD', 280, 30);
-	context.fillText('TIME', 410, 30);
+	var score = 8888;
+	context.fillText('MARIO', 2 * 32, 30);
+	context.fillText(String(score).padStart(6, '0'), 2 * 32, 50);
 
-	context.fillText('000000', 20, 45);
-	context.fillText('x 00', 150, 45);
-	context.fillText('1-1', 300, 45);
-	context.fillText((400 - Math.floor(currentTime / 1000)) + ' ', 410, 45);
-	//TODO: when times up, do something
+	context.fillText('X 00', 9 * 32, 50);
+
+	context.fillText('WORLD', 15 * 32, 30);
+	context.fillText('1-1', 15 * 32, 50);
+
+	var restantTime = (400 - Math.floor(currentTime / 1000));
+	context.fillText('TIME', 21 * 32, 30);
+	context.fillText(restantTime + ' ', 21 * 32, 50);
+
+	if (restantTime == 0) {
+		//TODO: when times up, do something
+	}
+}
+
+//OPosX, OPosY: origen de coordenadas del mapa
+//tileX, tileY: el ancho y alto del tile en pixels
+//map: json del mapa
+function createBlockAnimation(OPosX, OPosY, tileX, tileY, map) {
+	//var questionSprite
+
+	for (var j = 0, pos = 0; j < map.height; j++)
+		for (var i = 0; i < map.width; i++, pos++) {
+			var tiledId = map.data[pos];
+			if (tiledId == 35) {	//question id == 1
+				this.coins.push(new Coin(OPosX + i * tileX, OPosY + j * tileY));
+			}
+		}
+}
+
+function updateBlockAnimation(deltaTime) {
+	if (this.coins.length < 1)
+		return;
+
+	for (coin in coins) {
+		coin.update(deltaTime);
+	}
 }
 
 Scene.prototype.draw = function () {
@@ -87,15 +114,16 @@ Scene.prototype.draw = function () {
 	// Draw tilemap
 	this.map.draw();
 
+	//Draw status text
 	drawStatusText(this.currentTime);
 
+	var atb = this.map.getBlockAnimationData();
+	createBlockAnimation(atb[0], atb[1], atb[2], atb[3], atb[4], atb[5]);
+
 	// Draw entities
-	if (this.bubbleActive)
-		this.bubble.draw();
-	if (this.coinActive)
-		this.coin.draw();
-	if (this.goombaActive)
+	this.statusCoin.draw();
+	if (this.goombaActive)//pq no hacemos que estos xxActive sean atributos de sus clase 
 		this.goomba_01.draw();
-	if(this.lose ==false)
+	if (this.lose == false)
 		this.player.draw();
 }
