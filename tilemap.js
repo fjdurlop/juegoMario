@@ -48,7 +48,9 @@ Tilemap.prototype.draw = function () {
 		}
 }
 
-Tilemap.prototype.getBlockAnimationData = () => [this.basePos[0], this.basePos[1], this.tileSize[0], this.tileSize[1], this.map.layers[2]];
+Tilemap.prototype.getBlockAnimationData= function() {
+return [this.basePos[0], this.basePos[1], this.tileSize[0], this.tileSize[1], this.map.layers[2]];
+}
 
 // Computes if the left part of a sprite collides with the tilemap.
 // Returns a boolean with the result.

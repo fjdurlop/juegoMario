@@ -50,6 +50,24 @@ function Player(x, y, map) {
 
 
 Player.prototype.update = function (deltaTime) {
+	if (this.bJumping) // KEY_UP
+	{
+		if (this.sprite.currentAnimation == MARIO_WALK_LEFT || this.sprite.currentAnimation == MARIO_STAND_LEFT) {
+			if (this.sprite.currentAnimation != MARIO_JUMP_LEFT)
+				this.sprite.setAnimation(MARIO_JUMP_LEFT);
+		}
+		else if (this.sprite.currentAnimation == MARIO_WALK_RIGHT || this.sprite.currentAnimation == MARIO_STAND_RIGHT) {
+			if (this.sprite.currentAnimation != MARIO_JUMP_RIGHT)
+				this.sprite.setAnimation(MARIO_JUMP_RIGHT);
+		}
+	}
+	else {
+		if (this.sprite.currentAnimation == MARIO_JUMP_LEFT)
+			this.sprite.setAnimation(MARIO_STAND_LEFT);
+		if (this.sprite.currentAnimation == MARIO_JUMP_RIGHT)
+			this.sprite.setAnimation(MARIO_STAND_RIGHT);
+	}
+
 	// Move Mario sprite left/right
 	if (keyboard[37]) // KEY_LEFT
 	{
@@ -66,8 +84,7 @@ Player.prototype.update = function (deltaTime) {
 		this.sprite.x += 2;
 		if (this.map.collisionMoveRight(this.sprite))
 			this.sprite.x -= 2;
-	}//TODO:JUMPING colision and jump animation
-
+	}
 	else {
 		if (this.sprite.currentAnimation == MARIO_WALK_LEFT)
 			this.sprite.setAnimation(MARIO_STAND_LEFT);

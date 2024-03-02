@@ -12,12 +12,10 @@ function Scene() {
 	// Create entities
 	this.player = new Player(150, 150, this.map);
 	this.statusCoin = new Coin(250, 25);
-	this.coins = [];
-	this.goomba_01 = new Goomba(29 * 32, 24 * 32, this.map);
+	this.blockAnimation = new BlockAnimation(this.map);
+	this.goomba_01 = new Goomba(29 * 32, 13 * 32, this.map);
 
-	//this.coinActive = true;
 	this.goombaActive = true;
-
 	this.lose = false;
 
 	// Store current time
@@ -33,8 +31,7 @@ Scene.prototype.update = function (deltaTime) {
 	this.statusCoin.update(deltaTime);
 	this.goomba_01.update(deltaTime);
 	// update del blockAnimation
-	updateBlockAnimation(deltaTime);
-
+	this.blockAnimation.update(deltaTime);
 
 	// Check for collision between entities
 	if (this.player.collisionBox().intersect(this.goomba_01.collisionTop()))
@@ -43,7 +40,7 @@ Scene.prototype.update = function (deltaTime) {
 		//this.lose = true;
 		console.log("Reduced lives")
 	console.log(this.player.lives)
-	checkBlockAnimation(this.player.collisionBox()); //TODO: not created yet
+	//checkBlockAnimation(this.player.collisionBox()); //TODO: not created yet
 }
 
 function drawStatusText(currentTime) {
@@ -78,30 +75,6 @@ function drawStatusText(currentTime) {
 	}
 }
 
-//OPosX, OPosY: origen de coordenadas del mapa
-//tileX, tileY: el ancho y alto del tile en pixels
-//map: json del mapa
-function createBlockAnimation(OPosX, OPosY, tileX, tileY, map) {
-	//var questionSprite
-
-	for (var j = 0, pos = 0; j < map.height; j++)
-		for (var i = 0; i < map.width; i++, pos++) {
-			var tiledId = map.data[pos];
-			if (tiledId == 35) {	//question id == 1
-				this.coins.push(new Coin(OPosX + i * tileX, OPosY + j * tileY));
-			}
-		}
-}
-
-function updateBlockAnimation(deltaTime) {
-	if (this.coins.length < 1)
-		return;
-
-	for (coin in coins) {
-		coin.update(deltaTime);
-	}
-}
-
 Scene.prototype.draw = function () {
 	// Get canvas object, then its context
 	var canvas = document.getElementById("game-layer");
@@ -116,14 +89,17 @@ Scene.prototype.draw = function () {
 
 	//Draw status text
 	drawStatusText(this.currentTime);
-
-	var atb = this.map.getBlockAnimationData();
-	createBlockAnimation(atb[0], atb[1], atb[2], atb[3], atb[4], atb[5]);
+	this.blockAnimation.draw();
 
 	// Draw entities
 	this.statusCoin.draw();
-	if (this.goombaActive)//pq no hacemos que estos xxActive sean atributos de sus clase 
+	if (this.goombaActive)//pq no hacemos que estos xxActive sean atributos de sprite
 		this.goomba_01.draw();
 	if (this.lose == false)
 		this.player.draw();
 }
+
+//layer 1 dibujar el bloque de query usado 
+//y en el layer 3 mostrar el query con animacion
+
+//cambiar el img de query block amarillo, es diferente

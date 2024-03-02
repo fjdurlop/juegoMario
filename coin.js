@@ -3,16 +3,20 @@
 function Coin(x, y) {
     var coin = new Texture("imgs/coins.png");
 
+    this.x=x;
+    this.y=y;
     // Prepare coin sprite & its animation
-    this.sprite = new Sprite(x, y, 32, 32, 3, coin);
+    this.sprite = new Sprite(x, y, 32, 32, 5, coin);
 
     this.sprite.addAnimation();
     this.sprite.addKeyframe(0, [0, 32, 32, 32]);
+    this.sprite.addKeyframe(0, [0, 32, 32, 32]);
+    this.sprite.addKeyframe(0, [0, 32, 32, 32]);
     this.sprite.addKeyframe(0, [32, 32, 32, 32]);
     this.sprite.addKeyframe(0, [64, 32, 32, 32]);
+    this.sprite.addKeyframe(0, [32, 32, 32, 32]);
 
 }
-
 
 Coin.prototype.update = function update(deltaTime) {
     this.sprite.update(deltaTime);
