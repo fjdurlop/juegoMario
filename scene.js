@@ -14,12 +14,15 @@ function Scene() {
 	this.statusCoin = new Coin(250, 25);
 	this.blockAnimation = new BlockAnimation(this.map);
 	this.goomba_01 = new Goomba(29 * 32, 13 * 32, this.map);
-
-	this.goombaActive = true;
+	//this.turtle = new Turtle(29 * 32, 12 * 32, this.map);
+	
+	this.goombaKilled = false; // Goomba had killed mario
 	this.lose = false;
 
 	// Store current time
 	this.currentTime = 0
+	this.goombaTime = 0;
+	this.dyingTime = 0;
 }
 
 Scene.prototype.update = function (deltaTime) {
@@ -33,14 +36,44 @@ Scene.prototype.update = function (deltaTime) {
 	// update del blockAnimation
 	this.blockAnimation.update(deltaTime);
 
+	if (this.player.dying){
+		this.dyingTime += deltaTime;
+		if (this.dyingTime >= 500){
+			//console.log("-----------------");
+			this.player.dying = false;
+			this.dyingTime = 0;
+		}
+	}
+
+	if(this.goomba_01.active && this.goomba_01.killed){
+		this.goomba_01.dyingTime += deltaTime;
+		if (this.goomba_01.dyingTime >= 500){
+			//console.log("-----------------");
+			this.goomba_01.active = false;
+			this.goomba_01.dyingTime = 0;
+		}
+	}
+
 	// Check for collision between entities
-	if (this.player.collisionBox().intersect(this.goomba_01.collisionTop()))
-		this.goombaActive = false;
-	if (this.player.collisionBox().intersect(this.goomba_01.collisionBox()) && this.goombaActive)
+	if (this.player.collisionBox().intersect(this.goomba_01.collisionTop()) && this.goombaKilled == false)
+	{	
+		if(this.player.sprite.y + this.player.sprite.height <= this.goomba_01.sprite.y + 5){
+			//console.log("from above")
+			this.goomba_01.killed = true;
+		}
+		
+		//console.log("Goomba dies!!")
+	}
+	if (this.player.collisionBox().intersect(this.goomba_01.collisionBox()) && this.goomba_01.killed==false && this.goombaKilled == false){
 		//this.lose = true;
-		console.log("Reduced lives")
-	console.log(this.player.lives)
-	//checkBlockAnimation(this.player.collisionBox()); //TODO: not created yet
+		this.player.lives -=1;
+		console.log("Reduced lives");
+		console.log(this.player.lives);
+		if (this.player.lives == 0 ){ 
+			this.lose = true;
+		}
+		this.goombaKilled = true; //there was an attack to mario
+	}
 }
 
 function drawStatusText(currentTime) {
@@ -80,8 +113,15 @@ Scene.prototype.draw = function () {
 	var canvas = document.getElementById("game-layer");
 	var context = canvas.getContext("2d");
 
-	// Clear background
-	context.fillStyle = "rgb(90, 150, 240)";
+	if(this.lose)
+	{
+		//console.log("Losing!!")
+		context.fillStyle = "rgb(0, 0, 0)";
+	}
+	else
+	{
+		context.fillStyle = "rgb(90, 150, 240)";
+	}
 	context.fillRect(0, 0, canvas.width, canvas.height);
 
 	// Draw tilemap
@@ -93,9 +133,9 @@ Scene.prototype.draw = function () {
 
 	// Draw entities
 	this.statusCoin.draw();
-	if (this.goombaActive)//pq no hacemos que estos xxActive sean atributos de sprite
+	if (this.goomba_01.active)
 		this.goomba_01.draw();
-	if (this.lose == false)
+	if(this.lose == false || this.player.dying == true)
 		this.player.draw();
 }
 
