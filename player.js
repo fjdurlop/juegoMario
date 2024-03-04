@@ -104,7 +104,7 @@ Player.prototype.update = function (deltaTime) {
 			}
 			else if(this.sprite.currentAnimation != MARIO_JUMP_LEFT && this.bJumping){
 				this.sprite.setAnimation(MARIO_JUMP_LEFT);
-			}				
+			}
 
 			this.sprite.x -= 2;
 			if (this.map.collisionMoveLeft(this.sprite))
@@ -112,10 +112,12 @@ Player.prototype.update = function (deltaTime) {
 		}
 		else if (keyboard[39]) // KEY_RIGHT
 		{
-			if (this.sprite.currentAnimation != MARIO_WALK_RIGHT)
+			if (this.sprite.currentAnimation != MARIO_WALK_RIGHT && this.bJumping == false)
 				this.sprite.setAnimation(MARIO_WALK_RIGHT);
-			else if(this.sprite.currentAnimation != MARIO_JUMP_RIGHT && this.bJumping)
+			else if(this.sprite.currentAnimation != MARIO_JUMP_RIGHT && this.bJumping){
 				this.sprite.setAnimation(MARIO_JUMP_RIGHT);
+			}
+				
 
 			this.sprite.x += 2;
 			if (this.map.collisionMoveRight(this.sprite))
@@ -128,22 +130,30 @@ Player.prototype.update = function (deltaTime) {
 				this.sprite.setAnimation(MARIO_STAND_RIGHT);
 		}
 
-
 		if (this.bJumping) {
 			this.jumpAngle += 4;
 			if (this.jumpAngle == 180) {
 				this.bJumping = false;
 				this.sprite.y = this.startY;
+				if (this.sprite.currentAnimation == MARIO_JUMP_LEFT)
+					this.sprite.setAnimation(MARIO_STAND_LEFT);
+				if (this.sprite.currentAnimation == MARIO_JUMP_RIGHT)
+					this.sprite.setAnimation(MARIO_STAND_RIGHT);
 			}
 			else {
-				this.sprite.y = this.startY - 100 * Math.sin(3.14159 * this.jumpAngle / 180);
-				if (this.jumpAngle > 90)
-					this.bJumping = !this.map.collisionMoveDown(this.sprite);
+				if (this.map.collisionMoveUp(this.sprite)){
+					this.bJumping=false;
+					//guardar la coordenada de collision
+				} else {
+					this.sprite.y = this.startY - 100 * Math.sin(3.14159 * this.jumpAngle / 180);
+					if (this.jumpAngle > 90)
+						this.bJumping = !this.map.collisionMoveDown(this.sprite);
+				}
 			}
 		}
 		else {
 			// Move Mario so that it is affected by gravity
-			this.sprite.y += 2;
+			this.sprite.y += 3;
 			if (this.map.collisionMoveDown(this.sprite)) {
 				//this.sprite.y -= 2;
 

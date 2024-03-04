@@ -69,7 +69,7 @@ Scene.prototype.update = function (deltaTime) {
 		this.player.lives -=1;
 		console.log("Reduced lives");
 		console.log(this.player.lives);
-		if (this.player.lives == 0 ){ 
+		if (this.player.lives == 0 ){
 			this.lose = true;
 		}
 		this.goombaKilled = true; //there was an attack to mario
@@ -139,7 +139,4 @@ Scene.prototype.draw = function () {
 		this.player.draw();
 }
 
-//layer 1 dibujar el bloque de query usado 
-//y en el layer 3 mostrar el query con animacion
-
-//cambiar el img de query block amarillo, es diferente
+//TODO: cambiar el img de query block amarillo, es diferente

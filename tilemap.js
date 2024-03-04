@@ -102,5 +102,23 @@ Tilemap.prototype.collisionMoveDown = function (sprite) {
 	return false;
 }
 
+// var y: coordenada del TopBorder del collisionBox del sprite. Valor: [0,tileSizeY]
+// var x1: coordenada del RightBorder del collisionBox del sprite. Valor: [0,tileSizeX]
+// var x0: coordenada del LeftBorder del collisionBox del sprite. Valor: [0,tileSizeX]
+Tilemap.prototype.collisionMoveUp = function (sprite) {
+	var y = Math.floor((sprite.y - this.basePos[1]) / this.tileSize[1]);
+	var x0 = Math.floor((sprite.x - this.basePos[0]) / this.tileSize[0]);
+	var x1 = Math.floor((sprite.x + sprite.width - 1 - this.basePos[0]) / this.tileSize[0]);
+
+	for (var x = x0; x <= x1; x++) {
+		if (this.map.layers[0].data[y * this.map.width + x] != 0) {
+			sprite.y = (y+1) * this.tileSize[1] + this.basePos[1];
+			return true;
+		}
+	}
+
+	return false;
+}
+
 
 
