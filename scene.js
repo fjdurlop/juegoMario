@@ -15,7 +15,7 @@ function Scene() {
 	this.blockAnimation = new BlockAnimation(this.map);
 	this.goomba_01 = new Goomba(29 * 32, 13 * 32, this.map);
 	//this.turtle = new Turtle(29 * 32, 12 * 32, this.map);
-	
+
 	this.goombaKilled = false; // Goomba had killed mario
 	this.lose = false;
 
@@ -23,6 +23,9 @@ function Scene() {
 	this.currentTime = 0
 	this.goombaTime = 0;
 	this.dyingTime = 0;
+
+	this.scroll = 0;
+	this.d = 0;
 }
 
 Scene.prototype.update = function (deltaTime) {
@@ -31,23 +34,39 @@ Scene.prototype.update = function (deltaTime) {
 
 	// Update entities
 	this.player.update(deltaTime);
+
+	if (this.player.x() <= this.d + 400 && this.player.x() > this.d) {
+		this.scroll = this.d;
+	}
+	else {
+		this.scroll = this.player.x() - 400;
+		if (this.scroll > this.d) {
+			this.d = this.scroll;
+		}
+
+	}
+
+	if (this.player.x() <= this.d + 2) {
+		this.player.sprite.x += 2;
+	}
+
 	this.statusCoin.update(deltaTime);
 	this.goomba_01.update(deltaTime);
 	// update del blockAnimation
 	this.blockAnimation.update(deltaTime);
 
-	if (this.player.dying){
+	if (this.player.dying) {
 		this.dyingTime += deltaTime;
-		if (this.dyingTime >= 500){
+		if (this.dyingTime >= 500) {
 			//console.log("-----------------");
 			this.player.dying = false;
 			this.dyingTime = 0;
 		}
 	}
 
-	if(this.goomba_01.active && this.goomba_01.killed){
+	if (this.goomba_01.active && this.goomba_01.killed) {
 		this.goomba_01.dyingTime += deltaTime;
-		if (this.goomba_01.dyingTime >= 500){
+		if (this.goomba_01.dyingTime >= 500) {
 			//console.log("-----------------");
 			this.goomba_01.active = false;
 			this.goomba_01.dyingTime = 0;
@@ -55,21 +74,20 @@ Scene.prototype.update = function (deltaTime) {
 	}
 
 	// Check for collision between entities
-	if (this.player.collisionBox().intersect(this.goomba_01.collisionTop()) && this.goombaKilled == false)
-	{	
-		if(this.player.sprite.y + this.player.sprite.height <= this.goomba_01.sprite.y + 5){
+	if (this.player.collisionBox().intersect(this.goomba_01.collisionTop()) && this.goombaKilled == false) {
+		if (this.player.sprite.y + this.player.sprite.height <= this.goomba_01.sprite.y + 5) {
 			//console.log("from above")
 			this.goomba_01.killed = true;
 		}
-		
+
 		//console.log("Goomba dies!!")
 	}
-	if (this.player.collisionBox().intersect(this.goomba_01.collisionBox()) && this.goomba_01.killed==false && this.goombaKilled == false){
+	if (this.player.collisionBox().intersect(this.goomba_01.collisionBox()) && this.goomba_01.killed == false && this.goombaKilled == false) {
 		//this.lose = true;
-		this.player.lives -=1;
+		this.player.lives -= 1;
 		console.log("Reduced lives");
 		console.log(this.player.lives);
-		if (this.player.lives == 0 ){
+		if (this.player.lives == 0) {
 			this.lose = true;
 		}
 		this.goombaKilled = true; //there was an attack to mario
@@ -104,6 +122,7 @@ function drawStatusText(currentTime) {
 	context.fillText(restantTime + ' ', 21 * 32, 50);
 
 	if (restantTime == 0) {
+		restantTime = 0;
 		//TODO: when times up, do something
 	}
 }
@@ -113,30 +132,35 @@ Scene.prototype.draw = function () {
 	var canvas = document.getElementById("game-layer");
 	var context = canvas.getContext("2d");
 
-	if(this.lose)
-	{
+	if (this.lose) {
 		//console.log("Losing!!")
 		context.fillStyle = "rgb(0, 0, 0)";
 	}
-	else
-	{
+	else {
 		context.fillStyle = "rgb(90, 150, 240)";
 	}
 	context.fillRect(0, 0, canvas.width, canvas.height);
 
-	// Draw tilemap
+	// Draw scrollMap
+	//var scrollMap = new ScrollMap(this.player, this.map);
+	//scrollMap.draw();
+	context.save();
+	context.translate(-this.scroll, 0);
 	this.map.draw();
 
-	//Draw status text
-	drawStatusText(this.currentTime);
 	this.blockAnimation.draw();
 
 	// Draw entities
-	this.statusCoin.draw();
 	if (this.goomba_01.active)
 		this.goomba_01.draw();
-	if(this.lose == false || this.player.dying == true)
+	if (this.lose == false || this.player.dying == true)
 		this.player.draw();
+	context.restore();
+
+	//Draw status text
+	drawStatusText(this.currentTime);
+	this.statusCoin.draw();
+
 }
 
 //TODO: cambiar el img de query block amarillo, es diferente

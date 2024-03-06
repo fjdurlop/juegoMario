@@ -10,7 +10,8 @@ function Tilemap(tilesheet, tileSize, blockGrid, basePos, map) {
 	this.tilesheet = tilesheet;
 }
 
-Tilemap.prototype.draw = function () {
+//startDist: draw from the starDist [pixels]
+Tilemap.prototype.draw = function (startDist) {
 	// Only draw if tilesheet texture already loaded
 	if (!this.tilesheet.isLoaded())
 		return;
@@ -48,8 +49,8 @@ Tilemap.prototype.draw = function () {
 		}
 }
 
-Tilemap.prototype.getBlockAnimationData= function() {
-return [this.basePos[0], this.basePos[1], this.tileSize[0], this.tileSize[1], this.map.layers[2]];
+Tilemap.prototype.getBlockAnimationData = function () {
+	return [this.basePos[0], this.basePos[1], this.tileSize[0], this.tileSize[1], this.map.layers[2]];
 }
 
 // Computes if the left part of a sprite collides with the tilemap.
@@ -112,7 +113,7 @@ Tilemap.prototype.collisionMoveUp = function (sprite) {
 
 	for (var x = x0; x <= x1; x++) {
 		if (this.map.layers[0].data[y * this.map.width + x] != 0) {
-			sprite.y = (y+1) * this.tileSize[1] + this.basePos[1];
+			sprite.y = (y + 1) * this.tileSize[1] + this.basePos[1];
 			return true;
 		}
 	}

@@ -7,13 +7,13 @@ Mario Bros videogame for Computer Games project in JS.
 - escenas: principal, muerte, creditos
 - puntuations
 - border of the map should not being invaded
-- Scroll horizontal
+- sonido
 
 - castillo con el flag
 - avanzar al nivel 2.0 desde una tuberia
 - mapa 2.0
-
+- the animations of the block sprite(a coin showed when collison)
 
 xinlei:
-+ completar mapa 1.0
-+ colision top, and the animations of the block sprite(a coin showed when collison)
++ Scroll horizontal
++ completar mapa 1.0, no tener tantos bloques animativos
