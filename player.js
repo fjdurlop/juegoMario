@@ -103,10 +103,7 @@ Player.prototype.update = function (deltaTime) {
 			else if (this.die_up == false) {
 				this.sprite.y += 2;
 			}
-
 		}
-
-
 	}
 
 	if (this.allow_keys) {

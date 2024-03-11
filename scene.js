@@ -20,7 +20,7 @@ function Scene() {
 	this.lose = false;
 
 	// Store current time
-	this.currentTime = 0
+	this.currentTime = 0;
 	this.goombaTime = 0;
 	this.dyingTime = 0;
 
