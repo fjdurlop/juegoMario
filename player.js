@@ -57,22 +57,6 @@ function Player(x, y, map) {
 	this.start_dying = false;
 }
 
-Player.prototype.x = function () {
-	return this.sprite.x;
-}
-
-Player.prototype.y = function () {
-	return this.sprite.y;
-}
-
-Player.prototype.width = function () {
-	return this.sprite.width;
-}
-
-Player.prototype.height = function () {
-	return this.sprite.height;
-}
-
 Player.prototype.update = function (deltaTime) {
 
 	if (this.lives == 0) { // problem: always reinitiate to dying
@@ -151,6 +135,8 @@ Player.prototype.update = function (deltaTime) {
 				if (this.map.collisionMoveUp(this.sprite)) {
 					this.bJumping = false;
 					//guardar la coordenada de collision
+					var coordinate = this.map.headTilePosition(this.sprite);
+
 				} else {
 					this.sprite.y = this.startY - 100 * Math.sin(3.14159 * this.jumpAngle / 180);
 					if (this.jumpAngle > 90) {

@@ -35,7 +35,7 @@ Scene.prototype.update = function (deltaTime) {
 	// Update entities
 	this.player.update(deltaTime);
 
-	if (this.player.x() <= this.d + 400 && this.player.x() > this.d) {
+	if (this.player.sprite.x <= this.d + 400 && this.player.x() > this.d) {
 		this.scroll = this.d;
 	}
 	else {
@@ -43,10 +43,9 @@ Scene.prototype.update = function (deltaTime) {
 		if (this.scroll > this.d) {
 			this.d = this.scroll;
 		}
-
 	}
 
-	if (this.player.x() <= this.d + 2) {
+	if (this.player.sprite.x <= this.d + 2) {
 		this.player.sprite.x += 2;
 	}
 
