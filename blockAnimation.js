@@ -54,7 +54,12 @@ BlockAnimation.prototype.draw = function () {
 }
 
 BlockAnimation.prototype.checkCollision = function (playerColisionBox) {
-	this.coins.forEach(coin => playerColisionBox.intersect(coin.collisionBox()));// if collided, hide the coin
+	this.coins.forEach(coin => {
+		if (playerColisionBox.intersect(coin.collisionBox())) {
+			coin.active = false;
+		}
+	});
+
 	//if brick collided UP(not down), set .hit to true
 
 	//propongo poner un atributo .hide o bien .active en Coin, player, en general Sprites

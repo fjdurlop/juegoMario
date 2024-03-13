@@ -8,7 +8,7 @@ function QueryBlock(x, y) {
 
     this.active = true;
     this.hit = false;
-    this.startY = this.sprite.y;
+    this.startY = y;
     this.bobbingAngle = 0;
 
     this.sprite = new Sprite(x, y, 32, 32, 5, coin);
@@ -45,5 +45,11 @@ QueryBlock.prototype.draw = function () {
 
 QueryBlock.prototype.collisionBox = function () {
     var box = new Box(this.sprite.x + 2, this.sprite.y + 2, this.sprite.x + this.sprite.width - 4, this.sprite.y + this.sprite.height - 4);
+    return box;
+}
+
+QueryBlock.prototype.collisionDown = function () {
+    var box = new Box(this.sprite.x + 2 + 4, this.sprite.y + this.sprite.height, this.sprite.x + this.sprite.width - 4 - 2, this.sprite.y + 2);
+
     return box;
 }

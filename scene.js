@@ -35,11 +35,11 @@ Scene.prototype.update = function (deltaTime) {
 	// Update entities
 	this.player.update(deltaTime);
 
-	if (this.player.sprite.x <= this.d + 400 && this.player.x() > this.d) {
+	if (this.player.sprite.x <= this.d + 400 && this.player.sprite.x > this.d) {
 		this.scroll = this.d;
 	}
 	else {
-		this.scroll = this.player.x() - 400;
+		this.scroll = this.player.sprite.x - 400;
 		if (this.scroll > this.d) {
 			this.d = this.scroll;
 		}
@@ -91,6 +91,7 @@ Scene.prototype.update = function (deltaTime) {
 		}
 		this.goombaKilled = true; //there was an attack to mario
 	}
+	this.blockAnimation.checkCollision(this.player.collisionBox());
 }
 
 function drawStatusText(currentTime) {
