@@ -29,7 +29,7 @@ function createCoinAnimation(OPosX, OPosY, tileX, tileY, layer) {
 	for (var j = 0, pos = 0; j < layer.height; j++)
 		for (var i = 0; i < layer.width; i++, pos++) {
 			var tiledId = layer.data[pos];
-			if (tiledId == 36) {
+			if (tiledId == 36 || tiledId == 11) {
 				coins.push(new Coin(OPosX + i * tileX, OPosY + j * tileY));
 			}
 		}

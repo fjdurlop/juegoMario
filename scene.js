@@ -4,9 +4,11 @@
 
 function Scene() {
 	// Loading texture to use in a TileMap
+	//var tilesheet = new Texture("imgs/level2_00.png");//world02
 	var tilesheet = new Texture("imgs/world1.png");
 
 	// Create tilemap
+	//this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world02);//world02
 	this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world1);
 
 	// Create entities
