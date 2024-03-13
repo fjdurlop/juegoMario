@@ -1,7 +1,7 @@
 
 
 function Brick(x, y) {
-    var coin = new Texture("imgs/coins.png");//que pasa con el fondo ? si el bloque hace el bobbing 
+    var brick = new Texture("imgs/world1.png");
 
     this.x = x;
     this.y = y;
@@ -11,8 +11,12 @@ function Brick(x, y) {
     this.startY = y;
     this.bobbingAngle = 0;
 
-    this.sprite = new Sprite(x, y, 32, 32, 5, coin);
+    this.sprite = new Sprite(x, y, 32, 32, 5, brick);
 
+    this.sprite.addAnimation();
+    this.sprite.addKeyframe(0, [64, 0, 32, 32]);
+
+    this.sprite.setAnimation(0);
 }
 
 
