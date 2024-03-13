@@ -19,9 +19,9 @@ function Brick(x, y) {
 Brick.prototype.update = function (deltaTime) {
 
     if (this.hit == true) {
-        this.bobbingAngle += 4;
-        this.sprite.y = this.startY - 40 * Math.sin(3.14159 * this.bobbingAngle / 180)
-        if (this.bobbingAngle == 180) {
+        this.sprite.y = this.startY - 12 * Math.sin(3.14159 * this.bobbingAngle / 180);
+        this.bobbingAngle += 6;
+        if (this.bobbingAngle > 180 - 7 && this.bobbingAngle < 180 + 7) {
             this.hit = false;
             this.sprite.y = this.startY;
         }
@@ -39,5 +39,11 @@ Brick.prototype.draw = function () {
 
 Brick.prototype.collisionBox = function () {
     var box = new Box(this.sprite.x + 2, this.sprite.y + 2, this.sprite.x + this.sprite.width - 4, this.sprite.y + this.sprite.height - 4);
+    return box;
+}
+
+Brick.prototype.collisionDown = function () {
+    var box = new Box(this.sprite.x + 9, this.sprite.y + this.sprite.height, this.sprite.x + this.sprite.width - 18, this.sprite.y + this.sprite.height + 6);
+
     return box;
 }

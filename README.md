@@ -54,14 +54,15 @@ XINLEI:
 
 *Layer[2]: query block, ladrillo, coins... static sprites*
 
-- collision with coins
++ collision with coins
+- revisar brick bobbing
 - Monedas o power-ups en los bloques interrogante
   +sprite del moneda y power ups
-  -bobbing del bloque
-  -destruccion bloque
+  +bobbing del bloque
+  -destruccion brick
   -salto de moneda del queryBlock
   -star bounding, and Star Mario flash
-  -Coliison entre ello
+  -Colison entre ello
 - refactor folders, .js and imgs
 - completar mapa 1.0, no tener tantos bloques animativos, castillo con el flag
 

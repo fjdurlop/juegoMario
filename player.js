@@ -123,6 +123,11 @@ Player.prototype.update = function (deltaTime) {
 				this.sprite.setAnimation(MARIO_STAND_LEFT);
 			if (this.sprite.currentAnimation == MARIO_WALK_RIGHT)
 				this.sprite.setAnimation(MARIO_STAND_RIGHT);
+			if (this.bJumping && this.sprite.currentAnimation == MARIO_STAND_LEFT)
+				this.sprite.setAnimation(MARIO_JUMP_LEFT)
+			if (this.bJumping && this.sprite.currentAnimation == MARIO_STAND_RIGHT)
+				this.sprite.setAnimation(MARIO_JUMP_RIGHT)
+
 		}
 
 		if (this.bJumping) {

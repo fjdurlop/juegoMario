@@ -25,9 +25,9 @@ function QueryBlock(x, y) {
 QueryBlock.prototype.update = function (deltaTime) {
 
     if (this.hit == true) {
-        this.bobbingAngle += 4;
-        this.sprite.y = this.startY - 40 * Math.sin(3.14159 * this.bobbingAngle / 180)
-        if (this.bobbingAngle == 180) {
+        this.sprite.y = this.startY - 10 * Math.sin(3.14159 * this.bobbingAngle / 180);
+        this.bobbingAngle += 10;
+        if (this.bobbingAngle > 180 - 13 && this.bobbingAngle < 180 + 13) {
             this.hit = false;
             this.sprite.y = this.startY;
         }
@@ -49,7 +49,7 @@ QueryBlock.prototype.collisionBox = function () {
 }
 
 QueryBlock.prototype.collisionDown = function () {
-    var box = new Box(this.sprite.x + 2 + 4, this.sprite.y + this.sprite.height, this.sprite.x + this.sprite.width - 4 - 2, this.sprite.y + 2);
+    var box = new Box(this.sprite.x + 9, this.sprite.y + this.sprite.height, this.sprite.x + this.sprite.width - 18, this.sprite.y + this.sprite.height + 6);
 
     return box;
 }

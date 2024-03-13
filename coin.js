@@ -16,7 +16,6 @@ function Coin(x, y) {
     this.sprite.addKeyframe(0, [32, 32, 32, 32]);
     this.sprite.addKeyframe(0, [64, 32, 32, 32]);
     this.sprite.addKeyframe(0, [32, 32, 32, 32]);
-
 }
 
 Coin.prototype.update = function update(deltaTime) {
