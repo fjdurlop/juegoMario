@@ -6,6 +6,7 @@ function QueryBlock(x, y) {
     this.x = x;
     this.y = y;
 
+    this.active = true;
     this.hit = false;
     this.startY = this.sprite.y;
     this.bobbingAngle = 0;
@@ -20,7 +21,6 @@ function QueryBlock(x, y) {
     this.sprite.addKeyframe(0, [64, 0, 32, 32]);
     this.sprite.addKeyframe(0, [32, 0, 32, 32]);
 }
-
 
 QueryBlock.prototype.update = function (deltaTime) {
 

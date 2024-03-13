@@ -122,11 +122,4 @@ Tilemap.prototype.collisionMoveUp = function (sprite) {
 }
 
 
-Tilemap.prototype.headTilePosition = function (sprite) {
-	var y = Math.floor((sprite.y - this.basePos[1]) / this.tileSize[1]);
-	var x = Math.floor((sprite.x - this.basePos[0]) / this.tileSize[0]);
-	return [x, y];
-}
-
-
 

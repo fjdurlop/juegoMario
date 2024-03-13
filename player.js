@@ -134,9 +134,6 @@ Player.prototype.update = function (deltaTime) {
 			else {
 				if (this.map.collisionMoveUp(this.sprite)) {
 					this.bJumping = false;
-					//guardar la coordenada de collision
-					var coordinate = this.map.headTilePosition(this.sprite);
-
 				} else {
 					this.sprite.y = this.startY - 100 * Math.sin(3.14159 * this.jumpAngle / 180);
 					if (this.jumpAngle > 90) {

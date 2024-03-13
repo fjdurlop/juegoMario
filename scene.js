@@ -140,9 +140,6 @@ Scene.prototype.draw = function () {
 	}
 	context.fillRect(0, 0, canvas.width, canvas.height);
 
-	// Draw scrollMap
-	//var scrollMap = new ScrollMap(this.player, this.map);
-	//scrollMap.draw();
 	context.save();
 	context.translate(-this.scroll, 0);
 	this.map.draw();

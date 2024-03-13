@@ -26,15 +26,16 @@ Hacks:
 - Teclas 1 y 2 para saltar a pantallas concretas.
 
 (4 PUNTOS DEL PROYECTO)
-- 4 pantallas basicas: menú principal, jugar, instrucciones, creditos. 
+- 4 pantallas basicas: menú principal, jugar, instrucciones, creditos.
 - El menú ha de presentar als fantasmes, així com mostrar les puntuacions com es fa al Pacman original.
 - Sonido: música de fondo i efectos especiales.
-- GUI: mostrant el nivell, vides, puntuació, i high-score(pantalla de transicion)
+- GUI: mostrant el nivell, vides, puntuació, i high-score(pantalla de transicion).
 - Memòria(GDD)
 
 xinlei:
-*Layer[2]: query block, ladrillo, static sprites
+Layer[2]: query block, ladrillo, coins... static sprites
 
+- collision with coins
 - Monedas o power-ups en los bloques interrogante
   +sprite del moneda y power ups
   -bobbing del bloque

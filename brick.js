@@ -6,6 +6,11 @@ function Brick(x, y) {
     this.x = x;
     this.y = y;
 
+    this.active = true;
+    this.hit = false;
+    this.startY = this.sprite.y;
+    this.bobbingAngle = 0;
+
     this.sprite = new Sprite(x, y, 32, 32, 5, coin);
 
 }
