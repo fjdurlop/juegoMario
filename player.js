@@ -163,7 +163,6 @@ Player.prototype.update = function (deltaTime) {
 					this.startY = this.sprite.y;
 				}
 			}
-
 		}
 	}
 	// Update sprites
@@ -180,6 +179,8 @@ Player.prototype.collisionBox = function () {
 	return box;
 }
 
+Player.prototype.collisionTop = function () {
+	var box = new Box(this.sprite.x + 10, this.sprite.y - 2, this.sprite.x + this.sprite.width - 20, this.sprite.y + 2);
 
-
-
+	return box;
+}

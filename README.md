@@ -4,9 +4,8 @@ Mario Bros videogame for Computer Games project in JS.
 
 - Fisica, acceleracion, friccion
 - animation when desaccelerate
-- cambiar icono moneda de status
-- sprite? de las puntuaciones
--? banderita en ganar ?
+- cambiar icono del status coin
+-? banderita en ganar (encima del castillo)?
 
 nivel 2.0:
 - avanzar al nivel 2.0 desde una tuberia
@@ -35,16 +34,13 @@ nivel 2.0:
 
 ## POLISH SUPER MARIO BROS NES
 - Pausa antes de empezar.
-- Animación de los bloques con un interrogante.
++ Animación de los bloques con un interrogante.
 - Animación de los bloques cuando son impactados y/o destruidos.
 - Animaciones de Mario: llorar, saltar, morir.
 - Animaciones de los enemigos, tanto para matar como para morir.
-- Sprites que aparecen sobre Mario indicando la puntuación
-conseguida.
-- Efecto para la transformación de Mario entre sus cuatro estados
-(Mario, Super Mario y Star Mario).
-- El movimiento de Mario se acelera. Entonces dirás que Mario no va
-siempre a la misma velocidad. Guanya velocitat de forma progresiva
+- Sprites que aparecen sobre Mario indicando la puntuación conseguida.
+- Efecto para la transformación de Mario entre sus cuatro estados (Mario, Super Mario y Star Mario).
+- El movimiento de Mario se acelera. Entonces dirás que Mario no va siempre a la misma velocidad. Guanya velocitat de forma progresiva
 cuando empiece a moverse y la pierda cuando el jugador quiera parar.
 - Animación en llegar a la bandera para finalizar el nivel.
 - Bonificación a la puntuación por tiempo restante al final del nivel.
@@ -52,17 +48,19 @@ cuando empiece a moverse y la pierda cuando el jugador quiera parar.
 -----------------------------------
 XINLEI:
 
-*Layer[2]: query block, ladrillo, coins... static sprites*
-
+*Layer[2]: query block(2), ladrillo(3), coins(36)... static sprites*
+-Sonido
 + collision with coins
-- revisar brick bobbing
++ revisar brick bobbing
+- comprobar si minicoin se superpone encima de otros bloques(lo debe hacer)
+
 - Monedas o power-ups en los bloques interrogante
-  +sprite del moneda y power ups
-  +bobbing del bloque
-  -destruccion brick
-  -salto de moneda del queryBlock
-  -star bounding, and Star Mario flash
-  -Colison entre ello
+  + sprite del moneda y power ups
+  + bobbing del bloque
+  - destruccion brick
+  + salto de moneda del queryBlock
+  - star bounding, and Star Mario flash
+  - Colision entre ello
 - refactor folders, .js and imgs
 - completar mapa 1.0, no tener tantos bloques animativos, castillo con el flag
 

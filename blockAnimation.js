@@ -70,7 +70,8 @@ BlockAnimation.prototype.draw = function () {
 	this.bricks.forEach(brick => brick.active == true && brick.draw());
 }
 
-BlockAnimation.prototype.checkCollision = function (playerColisionBox) {
+BlockAnimation.prototype.checkCollision = function (player) {
+	var playerColisionBox = player.collisionTop();
 	this.coins.forEach(coin => {
 		if (playerColisionBox.intersect(coin.collisionBox())) {
 			coin.active = false;

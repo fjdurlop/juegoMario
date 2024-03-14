@@ -23,9 +23,9 @@ function Brick(x, y) {
 Brick.prototype.update = function (deltaTime) {
 
     if (this.hit == true) {
-        this.sprite.y = this.startY - 12 * Math.sin(3.14159 * this.bobbingAngle / 180);
-        this.bobbingAngle += 6;
-        if (this.bobbingAngle > 180 - 7 && this.bobbingAngle < 180 + 7) {
+        this.sprite.y = this.startY - 10 * Math.sin(3.14159 * this.bobbingAngle / 180);
+        this.bobbingAngle += 10;
+        if (this.bobbingAngle > 180 - 13 && this.bobbingAngle < 180 + 13) {
             this.hit = false;
             this.sprite.y = this.startY;
         }

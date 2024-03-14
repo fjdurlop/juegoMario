@@ -12,6 +12,7 @@ function QueryBlock(x, y) {
     this.bobbingAngle = 0;
 
     this.sprite = new Sprite(x, y, 32, 32, 5, coin);
+    this.miniCoin = new MiniCoin(this.x + 10, this.y - 32);
 
     this.sprite.addAnimation();
     this.sprite.addKeyframe(0, [0, 0, 32, 32]);
@@ -25,9 +26,11 @@ function QueryBlock(x, y) {
 QueryBlock.prototype.update = function (deltaTime) {
 
     if (this.hit == true) {
+        if (this.miniCoin.active == false)
+            this.miniCoin.play = true;
         this.sprite.y = this.startY - 10 * Math.sin(3.14159 * this.bobbingAngle / 180);
         this.bobbingAngle += 10;
-        if (this.bobbingAngle > 180 - 13 && this.bobbingAngle < 180 + 13) {
+        if (this.bobbingAngle > 180) {
             this.hit = false;
             this.sprite.y = this.startY;
         }
@@ -36,10 +39,12 @@ QueryBlock.prototype.update = function (deltaTime) {
         this.startY = this.sprite.y;
         this.bobbingAngle = 0;
     }
+    this.miniCoin.update(deltaTime);
     this.sprite.update(deltaTime);
 }
 
 QueryBlock.prototype.draw = function () {
+    this.miniCoin.draw();
     this.sprite.draw();
 }
 
@@ -49,7 +54,7 @@ QueryBlock.prototype.collisionBox = function () {
 }
 
 QueryBlock.prototype.collisionDown = function () {
-    var box = new Box(this.sprite.x + 9, this.sprite.y + this.sprite.height, this.sprite.x + this.sprite.width - 18, this.sprite.y + this.sprite.height + 6);
+    var box = new Box(this.sprite.x + 4, this.sprite.y + this.sprite.height, this.sprite.x + this.sprite.width - 8, this.sprite.y + this.sprite.height + 2);
 
     return box;
 }

@@ -10,8 +10,7 @@ function Tilemap(tilesheet, tileSize, blockGrid, basePos, map) {
 	this.tilesheet = tilesheet;
 }
 
-//startDist: draw from the starDist [pixels]
-Tilemap.prototype.draw = function (startDist) {
+Tilemap.prototype.draw = function () {
 	// Only draw if tilesheet texture already loaded
 	if (!this.tilesheet.isLoaded())
 		return;
@@ -35,7 +34,7 @@ Tilemap.prototype.draw = function (startDist) {
 	for (var j = 0, pos = 0; j < this.map.height; j++)
 		for (var i = 0; i < this.map.width; i++, pos++) {
 			tileId = this.map.layers[0].data[pos];
-			if (tileId != 0)
+			if (tileId != 0 && (tileId != 2 && tileId != 3))
 				context.drawImage(this.tilesheet.img, tilePositions[tileId - 1][0], tilePositions[tileId - 1][1], blockSize[0], blockSize[1],
 					this.basePos[0] + this.tileSize[0] * i, this.basePos[1] + this.tileSize[1] * j, blockSize[0], blockSize[1]);
 		}

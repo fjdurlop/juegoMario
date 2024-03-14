@@ -12,10 +12,12 @@ function Scene() {
 	this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world1);
 
 	// Create entities
-	this.player = new Player(150, 150, this.map);
+	this.player = new Player(50, 400, this.map);
 	this.statusCoin = new Coin(250, 25);
 	this.blockAnimation = new BlockAnimation(this.map);
 	this.goomba_01 = new Goomba(29 * 32, 13 * 32, this.map);
+	this.testSprite = new Coin(100, 100);
+	this.testSprite.active = false;
 	//this.turtle = new Turtle(29 * 32, 12 * 32, this.map);
 
 	this.goombaKilled = false; // Goomba had killed mario
@@ -36,6 +38,7 @@ Scene.prototype.update = function (deltaTime) {
 
 	// Update entities
 	this.player.update(deltaTime);
+	this.testSprite.update(deltaTime);
 
 	if (this.player.sprite.x <= this.d + 400 && this.player.sprite.x > this.d) {
 		this.scroll = this.d;
@@ -93,7 +96,7 @@ Scene.prototype.update = function (deltaTime) {
 		}
 		this.goombaKilled = true; //there was an attack to mario
 	}
-	this.blockAnimation.checkCollision(this.player.collisionBox());
+	this.blockAnimation.checkCollision(this.player);
 }
 
 function drawStatusText(currentTime) {
@@ -148,12 +151,16 @@ Scene.prototype.draw = function () {
 	this.map.draw();
 
 	this.blockAnimation.draw();
+	this.testSprite.active && this.testSprite.draw();
 
 	// Draw entities
 	if (this.goomba_01.active)
 		this.goomba_01.draw();
 	if (this.lose == false || this.player.dying == true)
 		this.player.draw();
+
+
+
 	context.restore();
 
 	//Draw status text
