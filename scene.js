@@ -4,21 +4,30 @@
 
 function Scene() {
 	// Loading texture to use in a TileMap
-	//var tilesheet = new Texture("imgs/level2_00.png");//world02
-	var tilesheet = new Texture("imgs/world1.png");
+	this.world = 2;
 
 	// Create tilemap
-	//this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world02);//world02
-	this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world1);
+	if(this.world==1){
+		var tilesheet = new Texture("imgs/world1.png");
+		this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world1);
+	}	
+	else if(this.world==2){
+		var tilesheet = new Texture("imgs/level2_00.png");//world02
+		this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world02);//world02
+	}
+		
+
+	
 
 	// Create entities
 	this.player = new Player(150, 150, this.map);
 	this.statusCoin = new Coin(250, 25);
 	this.blockAnimation = new BlockAnimation(this.map);
 	this.goomba_01 = new Goomba(29 * 32, 13 * 32, this.map);
-	//this.turtle = new Turtle(29 * 32, 12 * 32, this.map);
+	this.goomba_01.active = false;
+	this.turtle = new Turtle(33 * 32, 12 * 32, this.map);
 
-	this.goombaKilled = false; // Goomba had killed mario
+	//this.goombaKilled = false; // Goomba had killed mario
 	this.lose = false;
 
 	// Store current time
@@ -53,6 +62,8 @@ Scene.prototype.update = function (deltaTime) {
 
 	this.statusCoin.update(deltaTime);
 	this.goomba_01.update(deltaTime);
+	this.turtle.update(deltaTime);
+
 	// update del blockAnimation
 	this.blockAnimation.update(deltaTime);
 
@@ -74,26 +85,119 @@ Scene.prototype.update = function (deltaTime) {
 		}
 	}
 
+	// if (this.turtle.active && this.turtle.killed) {
+	// 	this.turtle.dyingTime += deltaTime;
+	// 	if (this.turtle.dyingTime >= 500) {
+	// 		//console.log("-----------------");
+	// 		this.turtle.active = false;
+	// 		this.turtle.dyingTime = 0;
+	// 	}
+	// }
+
 	// Check for collision between entities
-	if (this.player.collisionBox().intersect(this.goomba_01.collisionTop()) && this.goombaKilled == false) {
+	if (this.player.collisionBox().intersect(this.goomba_01.collisionTop()) && this.goomba_01.killed_mario == false) {
 		if (this.player.sprite.y + this.player.sprite.height <= this.goomba_01.sprite.y + 5) {
 			//console.log("from above")
+			console.log("y: ",this.player.sprite.y," h: ",this.player.sprite.height," goomba ",this.goomba_01.sprite.y)
+			this.player.just_pressed = true;
 			this.goomba_01.killed = true;
+		}
+	}
+	if (this.player.collisionBox().intersect(this.goomba_01.collisionBox()) && this.goomba_01.killed == false && this.goomba_01.killed_mario == false) {
+		//this.lose = true;
+		this.player.lives -= 1;
+		console.log("Reduced lives");
+		//console.log(this.player.lives);
+		if (this.player.lives == 0) {
+			this.lose = true;
+		}
+		this.goomba_01.killed_mario = true; //there was an attack to mario
+	}
+
+	//collisions with turtle
+	if (this.player.collisionBox().intersect(this.turtle.collisionTop()) 
+		&& this.turtle.killed == false && this.turtle.killed_mario ==false && this.player.just_pressed ==false) 
+	{
+		console.log("Enter")
+		console.log("y: ",this.player.sprite.y," h: ",this.player.sprite.height," goomba ",this.turtle.sprite.y - 16)
+		if (this.player.sprite.y - this.player.sprite.height <= this.turtle.sprite.y -16 - 2) {
+			console.log("turtle: from above")
+			console.log("2y: ",this.player.sprite.y," h: ",this.player.sprite.height," goomba ",this.turtle.sprite.y - 16)
+			console.log(this.turtle.sprite.y - 16)
+
+			
+			if (this.turtle.pressed_static == true){
+				this.player.sprite.y -=2;
+				console.log("just_pressed to true");
+				this.player.just_pressed = true;
+				
+				this.turtle.pressed_static = false;
+				this.turtle.direction = getDirection(this.player.sprite.x,this.player.sprite.width, this.turtle.sprite.x,this.turtle.sprite.width);
+				this.turtle.pressed_moving = true;
+				console.log("turtle: to moving");
+			}
+			else if(this.turtle.pressed_moving == true){
+				console.log("turtle:pressing pressed_moving turtle");
+			}
+			else{
+				this.player.sprite.y -=2;
+				console.log("just_pressed to true");
+				this.player.just_pressed = true;
+				
+				this.turtle.pressed_static = true;
+				console.log("turtle:to pressed_static");
+			}
 		}
 
 		//console.log("Goomba dies!!")
 	}
-	if (this.player.collisionBox().intersect(this.goomba_01.collisionBox()) && this.goomba_01.killed == false && this.goombaKilled == false) {
-		//this.lose = true;
-		this.player.lives -= 1;
-		console.log("Reduced lives");
-		console.log(this.player.lives);
-		if (this.player.lives == 0) {
+	//turtle kills mario
+	if (this.player.collisionBox().intersect(this.turtle.collisionBox()) && this.turtle.killed == false 
+		&& this.turtle.killed_mario == false  && this.player.just_pressed == false) 
+	{
+		console.log("pressed_static",this.turtle.pressed_static)
+		console.log("just_pressed",this.player.just_pressed)
+
+		if (this.turtle.pressed_static == false && this.player.just_pressed == false){
 			this.lose = true;
+			this.player.lives -= 1;
+			console.log("turtle:Reduced lives");
+			//console.log(this.player.lives);
+			if (this.player.lives == 0) {
+				this.lose = true;
+			}
+			this.turtle.killed_mario = true; //there was an attack to mario
 		}
-		this.goombaKilled = true; //there was an attack to mario
+		else if (this.player.just_pressed == false){
+			this.player.just_pressed = true;
+			this.player.sprite.y -=2;
+			this.turtle.pressed_static = false;
+			this.turtle.direction = getDirection(this.player.sprite.x,this.player.sprite.width, this.turtle.sprite.x,this.turtle.sprite.width);
+			this.turtle.pressed_moving = true;
+			console.log("turtle2: to moving");
+		}
+		
 	}
 	this.blockAnimation.checkCollision(this.player.collisionBox());
+}
+
+function getDirection(marioX, marioWidth, turtleX, turtleWidth) {
+    // Calculate the right side of Mario
+    marioRightSide = marioX + marioWidth;
+    
+    // Calculate the center of the turtle
+    turtleCenter = turtleX + turtleWidth / 2;
+
+    // If Mario's right side is to the left of the turtle's center, the turtle should slide to the right.
+    if (marioRightSide < turtleCenter) {
+		console.log("Direction: ",1);
+        return 1;
+    }
+    // Otherwise, if Mario's right side is to the right of the turtle's center, the turtle should slide to the left.
+    else {
+		console.log("Direction: ",0);
+        return 0;
+    }
 }
 
 function drawStatusText(currentTime) {
@@ -154,6 +258,7 @@ Scene.prototype.draw = function () {
 		this.goomba_01.draw();
 	if (this.lose == false || this.player.dying == true)
 		this.player.draw();
+	this.turtle.draw();
 	context.restore();
 
 	//Draw status text

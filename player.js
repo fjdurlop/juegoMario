@@ -52,10 +52,22 @@ function Player(x, y, map) {
 	this.jumpAngle = 0;
 
 	this.dying = false;
+	this.just_pressed = false;
 	this.allow_keys = true;
 
 	this.start_dying = false;
+	this.start_pressing = false;
+	this.accelerating = false;
+	this.speed = 0;
+	this.pressing_timer = 0;
 }
+
+var minWalkSpeed = 60;
+var walkAccel = 60;
+var runAccel = 120;
+var releaseDecel = 360;
+var maxWalkSpeed = 120;
+var maxRunSpeed = 240;
 
 Player.prototype.update = function (deltaTime) {
 
@@ -64,7 +76,8 @@ Player.prototype.update = function (deltaTime) {
 
 	}
 
-	if (this.dying) {
+	//animation when mario dies
+	if (this.dying) { 
 		//console.log("dying!!");
 		this.allow_keys = false;
 		this.sprite.setAnimation(MARIO_DIE);
@@ -73,13 +86,13 @@ Player.prototype.update = function (deltaTime) {
 			this.start_dying = true;
 			this.initial_dying = this.sprite.y;
 			//console.log("dying");
-			console.log(this.sprite.y);
+			//console.log(this.sprite.y);
 			this.die_up = true;
 		}
 		else {
 			if (this.die_up == true) {
 				this.sprite.y -= 2;
-				if (this.initial_dying - 3 * 16 > this.sprite.y) {
+				if (this.initial_dying - 3 * 32 > this.sprite.y) {
 					this.die_up = false;
 				}
 
@@ -90,7 +103,104 @@ Player.prototype.update = function (deltaTime) {
 		}
 	}
 
+	if (this.just_pressed) {
+		this.pressing_timer += deltaTime;
+		if (this.pressing_timer >= 500) {
+			//console.log("-----------------");
+			console.log("finish pressing");
+			this.just_pressed = false;
+			this.pressing_timer = 0;
+			
+		}
+	}
+
+	//animation when mario dies
+	if (this.just_pressed) { 
+		console.log("pressing!!");
+		// this.allow_keys = false;
+		// this.sprite.setAnimation(MARIO_DIE);
+		if (this.start_pressing == false) {
+			this.start_pressing = true;
+			this.initial_pressing = this.sprite.y;
+			//console.log("dying");
+			//console.log(this.sprite.y);
+			this.press_up = true;
+		}
+		else {
+			//console.log("22");
+			if (this.press_up == true) {
+				//this.sprite.y -= 2;
+				if (this.initial_pressing - 2  > this.sprite.y) {
+					this.press_up = false;
+				}
+
+			}
+			else {
+				//console.log("33")
+				this.sprite.y += 2;
+				console.log("finish pressing");
+				//this.just_pressed = false;
+			}
+		}
+	}
+
+	//animation when mario kills someone
+	// if (this.just_pressed) { 
+	// 	//console.log("dying!!");
+	// 	//this.allow_keys = false;
+	// 	//this.sprite.setAnimation(MARIO_DIE);
+	// 	if(this.bJumping ==false){
+	// 		this.bJumping = true;
+	// 		this.jumpAngle = 0;
+	// 		this.startY = this.sprite.y;
+	// 	}else{
+	// 		if (this.startY - 2 * 32 > this.sprite.y) {
+	// 			console.log("mario: ", this.this.startY - 2 * 32 )
+	// 			console.log("mario_y: ", this.this.sprite.y )
+	// 			this.bJumping = false;
+	// 		}
+	// 	}
+		
+	// }
+
 	if (this.allow_keys) {
+		var accel = 0;
+	
+		if(keyboard[37] || keyboard[39])
+		{
+			// Pressing move buttons
+			if(keyboard[37] && (this.speed > -minWalkSpeed))
+				this.speed = -minWalkSpeed;
+			else if(keyboard[39] && (this.speed < minWalkSpeed))
+				this.speed = minWalkSpeed;
+			// Prepare acceleration according to action (walk or run)
+			if(keyboard[16])
+			{
+				this.accelerating = true;
+				if(keyboard[37])
+					accel = -runAccel;
+				else
+					accel = runAccel;
+			}
+			else
+			{
+				this.accelerating = false;
+				if(keyboard[37])
+					accel = -walkAccel;
+				else
+					accel = walkAccel;
+			}
+		}
+		else
+		{
+			if(this.speed > 0)
+				accel = -releaseDecel;
+			else if(this.speed < 0)
+				accel = releaseDecel;
+			else
+				accel = 0;
+		}
+
 		// Move Mario sprite left/right
 		if (keyboard[37]) // KEY_LEFT
 		{
@@ -101,9 +211,13 @@ Player.prototype.update = function (deltaTime) {
 				this.sprite.setAnimation(MARIO_JUMP_LEFT);
 			}
 
-			this.sprite.x -= 2;
-			if (this.map.collisionMoveLeft(this.sprite))
-				this.sprite.x += 2;
+			//this.sprite.x -= 2;
+			// Move according to current speed
+			last_x=this.sprite.x;
+			this.sprite.x = this.sprite.x + this.speed * deltaTime / 1000.0;
+			if (this.map.collisionMoveLeft(this.sprite)){
+				this.sprite.x = last_x;
+			}
 		}
 		else if (keyboard[39]) // KEY_RIGHT
 		{
@@ -114,17 +228,69 @@ Player.prototype.update = function (deltaTime) {
 			}
 
 
-			this.sprite.x += 2;
-			if (this.map.collisionMoveRight(this.sprite))
-				this.sprite.x -= 2;
+			//this.sprite.x += 2;
+			last_x=this.sprite.x;
+			this.sprite.x = this.sprite.x + this.speed * deltaTime / 1000.0;
+			if (this.map.collisionMoveRight(this.sprite)){
+				this.sprite.x = last_x;
+			}
 		}
-		else {
+		else { //stand
 			if (this.sprite.currentAnimation == MARIO_WALK_LEFT)
 				this.sprite.setAnimation(MARIO_STAND_LEFT);
 			if (this.sprite.currentAnimation == MARIO_WALK_RIGHT)
 				this.sprite.setAnimation(MARIO_STAND_RIGHT);
 		}
 
+
+		// Apply acceleration to current speed
+		if(keyboard[37] || keyboard[39])
+		{
+			this.speed = this.speed + accel * deltaTime / 1000.0;
+
+			// Respect maximum speeds
+			if(keyboard[16])
+			{
+				if(Math.abs(this.speed) > maxRunSpeed)
+				{
+					if(this.speed > 0)
+						this.speed = maxRunSpeed;
+					else
+						this.speed = -maxRunSpeed;
+				}
+			}
+			else
+			{
+				if(Math.abs(this.speed) > maxWalkSpeed)
+				{
+					if(this.speed > 0)
+						this.speed = maxWalkSpeed;
+					else
+						this.speed = -maxWalkSpeed;
+				}
+			}
+		}
+		else
+		{
+			// Be careful to stop when current acceleration gets close to zero
+			if(this.speed > 0)
+			{
+				this.speed = this.speed + accel * deltaTime / 1000.0;
+				if(this.speed < minWalkSpeed)
+					this.speed = 0;
+			}
+			else if(this.speed < 0)
+			{
+				this.speed = this.speed + accel * deltaTime / 1000.0;
+				if(this.speed > -minWalkSpeed)
+					this.speed = 0;
+			}
+		}
+
+		//console.log("Speed = " + this.speed);
+		
+
+		//Mario jumping
 		if (this.bJumping) {
 			this.jumpAngle += 4;
 			if (this.jumpAngle == 180) {
@@ -152,7 +318,7 @@ Player.prototype.update = function (deltaTime) {
 				if (this.sprite.currentAnimation == MARIO_JUMP_RIGHT)
 					this.sprite.setAnimation(MARIO_STAND_RIGHT);
 				// Check arrow up key. If pressed, jump.
-				if (keyboard[38]) {
+				if (keyboard[38] || this.just_pressed) {
 					this.bJumping = true;
 					this.jumpAngle = 0;
 					this.startY = this.sprite.y;
