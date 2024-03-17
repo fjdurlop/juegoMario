@@ -16,8 +16,9 @@ function Scene() {
 	this.statusCoin = new Coin(250, 25);
 	this.blockAnimation = new BlockAnimation(this.map);
 	this.goomba_01 = new Goomba(29 * 32, 13 * 32, this.map);
-	this.testSprite = new Coin(100, 100);
-	this.testSprite.active = false;
+	this.testSprite = new Mushroom(100, 100);
+	this.testSprite.active = true;
+	this.testSprite.play = false;
 	//this.turtle = new Turtle(29 * 32, 12 * 32, this.map);
 
 	this.goombaKilled = false; // Goomba had killed mario
@@ -126,9 +127,9 @@ function drawStatusText(currentTime) {
 	context.fillText('TIME', 21 * 32, 30);
 	context.fillText(restantTime + ' ', 21 * 32, 50);
 
-	if (restantTime == 0) {
+	if (restantTime < 0) {
 		restantTime = 0;
-		//TODO: when times up, do something
+		//TODO: when times up, game over screen(life -= 1)
 	}
 }
 
@@ -160,13 +161,9 @@ Scene.prototype.draw = function () {
 		this.player.draw();
 
 
-
 	context.restore();
 
 	//Draw status text
 	drawStatusText(this.currentTime);
 	this.statusCoin.draw();
-
 }
-
-//TODO: cambiar el img de query block amarillo, es diferente

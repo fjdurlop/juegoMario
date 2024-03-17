@@ -1,20 +1,24 @@
 
 
 function Brick(x, y) {
-    var brick = new Texture("imgs/world1.png");
+    var brick = new Texture("imgs/blocks.png");
 
     this.x = x;
     this.y = y;
 
     this.active = true;
     this.hit = false;
+    this.break = false;
     this.startY = y;
     this.bobbingAngle = 0;
 
     this.sprite = new Sprite(x, y, 32, 32, 5, brick);
 
     this.sprite.addAnimation();
-    this.sprite.addKeyframe(0, [64, 0, 32, 32]);
+    this.sprite.addKeyframe(0, [0, 64, 32, 32]);
+
+    // this.sprite.addAnimation();
+    // this.sprite.addKeyframe(1, [])
 
     this.sprite.setAnimation(0);
 }
@@ -34,11 +38,15 @@ Brick.prototype.update = function (deltaTime) {
         this.startY = this.sprite.y;
         this.bobbingAngle = 0;
     }
+
+    if (this.break) {
+        this.sprite.setAnimation(1);
+    }
     this.sprite.update(deltaTime);
 }
 
 Brick.prototype.draw = function () {
-    this.sprite.draw();
+    this.active == true && this.sprite.draw();
 }
 
 Brick.prototype.collisionBox = function () {
@@ -47,7 +55,7 @@ Brick.prototype.collisionBox = function () {
 }
 
 Brick.prototype.collisionDown = function () {
-    var box = new Box(this.sprite.x + 9, this.sprite.y + this.sprite.height, this.sprite.x + this.sprite.width - 18, this.sprite.y + this.sprite.height + 6);
+    var box = new Box(this.sprite.x + 4, this.sprite.y + this.sprite.height, this.sprite.x + this.sprite.width - 8, this.sprite.y + this.sprite.height + 6);
 
     return box;
 }

@@ -5,7 +5,8 @@ Mario Bros videogame for Computer Games project in JS.
 - Fisica, acceleracion, friccion
 - animation when desaccelerate
 - cambiar icono del status coin
--? banderita en ganar (encima del castillo)?
+- ? banderita en ganar (encima del castillo)?
+- when coin above a brick -> hit -> minicoin animation
 
 nivel 2.0:
 - avanzar al nivel 2.0 desde una tuberia
@@ -49,7 +50,7 @@ cuando empiece a moverse y la pierda cuando el jugador quiera parar.
 XINLEI:
 
 *Layer[2]: query block(2), ladrillo(3), coins(36)... static sprites*
--Sonido
+- Sonido
 + collision with coins
 + revisar brick bobbing
 - comprobar si minicoin se superpone encima de otros bloques(lo debe hacer)
@@ -59,12 +60,12 @@ XINLEI:
   + bobbing del bloque
   - destruccion brick
   + salto de moneda del queryBlock
-  - star bounding, and Star Mario flash
+  + star bounding
+  + mushroom Super Mario
   - Colision entre ello
 - refactor folders, .js and imgs
 - completar mapa 1.0, no tener tantos bloques animativos, castillo con el flag
 
 - ??:
-  - en cada frame se ejecuta el codigo entero, significa que va creando instancias nuevas en cada frame?
-  - this.startY no declared
+  - crear clase para pieces del brick?
   

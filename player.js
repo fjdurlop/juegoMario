@@ -7,12 +7,16 @@ const MARIO_JUMP_RIGHT = 4;
 const MARIO_JUMP_LEFT = 5;
 const MARIO_DIE = 6;
 
+const MINI_MARIO = 10;
+const SUPER_MARIO = 11;
+const STAR_MARIO = 12;
 
 function Player(x, y, map) {
 	// Loading spritesheets
 	var mario = new Texture("imgs/mario.png");
 
 	this.lives = 1;
+	this.state = MINI_MARIO;
 
 	// Prepare Mario sprite & its animations
 	this.sprite = new Sprite(x, y, 32, 32, 10, mario);

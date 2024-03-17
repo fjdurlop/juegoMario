@@ -65,25 +65,35 @@ function createBrickAnimation(OPosX, OPosY, tileX, tileY, layer) {
 }
 
 BlockAnimation.prototype.draw = function () {
-	this.coins.forEach(coin => coin.active == true && coin.draw());
-	this.queryblock.forEach(queryblock => queryblock.active == true && queryblock.draw());
-	this.bricks.forEach(brick => brick.active == true && brick.draw());
+	this.coins.forEach(coin => coin.draw());
+	this.queryblock.forEach(queryblock => queryblock.draw());
+	this.bricks.forEach(brick => brick.draw());
 }
 
 BlockAnimation.prototype.checkCollision = function (player) {
-	var playerColisionBox = player.collisionTop();
+	var playerColisionBox = player.collisionBox();
+	var playerColisionTop = player.collisionTop();
+
 	this.coins.forEach(coin => {
 		if (playerColisionBox.intersect(coin.collisionBox())) {
 			coin.active = false;
 		}
 	});
 	this.queryblock.forEach(queryblock => {
-		if (playerColisionBox.intersect(queryblock.collisionDown())) {
+		if (playerColisionTop.intersect(queryblock.collisionDown())) {
 			queryblock.hit = true;
+		}
+		//object exists ?
+		if (/* if mushroom are enabled &&*/ playerColisionBox.intersect(queryblock.mushroom.collisionBox())) {
+			//grow to Super Mario, change state of mario
+		}
+		if (queryblock.star && playerColisionBox.intersect(queryblock.star.collisionBox())) {
+			//change state of mario
 		}
 	});
 	this.bricks.forEach(brick => {
-		if (playerColisionBox.intersect(brick.collisionDown())) {
+		if (playerColisionTop.intersect(brick.collisionDown())) {
+			//if player.state == supermario
 			brick.hit = true;
 		}
 	});
