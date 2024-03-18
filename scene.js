@@ -23,6 +23,11 @@ function Scene() {
 	this.player = new Player(150, 150, this.map);
 	this.statusCoin = new Coin(250, 25);
 	this.blockAnimation = new BlockAnimation(this.map);
+
+	this.testSprite = new Mushroom(100, 100);
+	this.testSprite.active = true;
+	this.testSprite.play = false;
+
 	this.goomba_01 = new Goomba(29 * 32, 13 * 32, this.map);
 	this.goomba_01.active = false;
 	this.turtle = new Turtle(33 * 32, 12 * 32, this.map);
@@ -45,6 +50,7 @@ Scene.prototype.update = function (deltaTime) {
 
 	// Update entities
 	this.player.update(deltaTime);
+	this.testSprite.update(deltaTime);
 
 	if (this.player.sprite.x <= this.d + 400 && this.player.sprite.x > this.d) {
 		this.scroll = this.d;
@@ -178,7 +184,7 @@ Scene.prototype.update = function (deltaTime) {
 		}
 		
 	}
-	this.blockAnimation.checkCollision(this.player.collisionBox());
+	this.blockAnimation.checkCollision(this.player);
 }
 
 function getDirection(marioX, marioWidth, turtleX, turtleWidth) {
@@ -227,7 +233,7 @@ function drawStatusText(currentTime) {
 	context.fillText('TIME', 21 * 32, 30);
 	context.fillText(restantTime + ' ', 21 * 32, 50);
 
-	if (restantTime == 0) {
+	if (restantTime < 0) {
 		restantTime = 0;
 		//TODO: when times up, do something
 	}
@@ -252,6 +258,7 @@ Scene.prototype.draw = function () {
 	this.map.draw();
 
 	this.blockAnimation.draw();
+	this.testSprite.active && this.testSprite.draw();
 
 	// Draw entities
 	if (this.goomba_01.active)
