@@ -18,6 +18,7 @@ function Goomba(x, y, map) {
     this.map = map;
 
     this.killed = false;
+    this.killed_mario = false;
     this.active = true;
 
     //this.currentTime = 0;
