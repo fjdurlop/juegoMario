@@ -1,7 +1,7 @@
 const MUSHROOM = 0;
 
 
-function QueryBlock(x, y) {
+function QueryBlock(x, y, map) {
     var blocks = new Texture("imgs/blocks.png");
 
     this.active = true;
@@ -11,7 +11,7 @@ function QueryBlock(x, y) {
 
     this.sprite = new Sprite(x, y, 32, 32, 5, blocks);
     this.coin = new MiniCoin(x + 10, y - 32);
-    this.mushroom = new Mushroom(x, y - 32);
+    this.mushroom = new Mushroom(x, y - 32, map);
     this.star = new Star(x, y - 32);
 
     this.sprite.addAnimation();

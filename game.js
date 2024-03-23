@@ -12,28 +12,24 @@ var interacted;
 
 // Control keyboard events
 
-function keyDown(keycode)
-{
-	if(keycode.which >= 0 && keycode.which < 256)
+function keyDown(keycode) {
+	if (keycode.which >= 0 && keycode.which < 256)
 		keyboard[keycode.which] = true;
 }
 
-function keyUp(keycode)
-{
-	if(keycode.which >= 0 && keycode.which < 256)
+function keyUp(keycode) {
+	if (keycode.which >= 0 && keycode.which < 256)
 		keyboard[keycode.which] = false;
 }
 
-function click()
-{
+function click() {
 	interacted = true;
 }
 
 // Initialization
 
-function init()
-{
-	for(var i=0; i<256; i++)
+function init() {
+	for (var i = 0; i < 256; i++)
 		keyboard.push(false);
 	document.body.addEventListener('keydown', keyDown);
 	document.body.addEventListener('keyup', keyUp);
@@ -44,19 +40,17 @@ function init()
 
 // Game loop: Update, draw, and request a new frame
 
-function frameUpdate(timestamp)
-{
+function frameUpdate(timestamp) {
 	var bUpdated = false;
 	var deltaTime = timestamp - previousTimestamp;
-	
-	while(deltaTime > TIME_PER_FRAME)
-	{
+
+	while (deltaTime > TIME_PER_FRAME) {
 		bUpdated = true;
 		scene.update(TIME_PER_FRAME);
 		previousTimestamp += TIME_PER_FRAME;
 		deltaTime = timestamp - previousTimestamp;
 	}
-	if(bUpdated)
+	if (bUpdated)
 		scene.draw();
 	window.requestAnimationFrame(frameUpdate)
 }

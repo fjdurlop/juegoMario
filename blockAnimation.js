@@ -14,7 +14,7 @@ BlockAnimation.prototype.update = function (deltaTime) {
 		this.coins = createCoinAnimation(atb[0], atb[1], atb[2], atb[3], atb[4]);
 	}
 	if (this.queryblock.length < 1) {
-		this.queryblock = createQueryBlockAnimation(atb[0], atb[1], atb[2], atb[3], atb[4]);
+		this.queryblock = this.createQueryBlockAnimation(atb[0], atb[1], atb[2], atb[3], atb[4]);
 	}
 	if (this.bricks.length < 1) {
 		this.bricks = createBrickAnimation(atb[0], atb[1], atb[2], atb[3], atb[4]);
@@ -33,21 +33,19 @@ function createCoinAnimation(OPosX, OPosY, tileX, tileY, layer) {
 	for (var j = 0, pos = 0; j < layer.height; j++)
 		for (var i = 0; i < layer.width; i++, pos++) {
 			var tiledId = layer.data[pos];
-			if (tiledId == 36 || tiledId == 11) {
+			if (tiledId == 36 || tiledId == 11)
 				coins.push(new Coin(OPosX + i * tileX, OPosY + j * tileY));
-			}
 		}
 	return coins;
 }
 
-function createQueryBlockAnimation(OPosX, OPosY, tileX, tileY, layer) {
+BlockAnimation.prototype.createQueryBlockAnimation = function (OPosX, OPosY, tileX, tileY, layer) {
 	var queryblock = [];
 	for (var j = 0, pos = 0; j < layer.height; j++)
 		for (var i = 0; i < layer.width; i++, pos++) {
 			var tiledId = layer.data[pos];
-			if (tiledId == 2) {
-				queryblock.push(new QueryBlock(OPosX + i * tileX, OPosY + j * tileY));
-			}
+			if (tiledId == 2)
+				queryblock.push(new QueryBlock(OPosX + i * tileX, OPosY + j * tileY, this.map));
 		}
 	return queryblock;
 }
@@ -57,9 +55,8 @@ function createBrickAnimation(OPosX, OPosY, tileX, tileY, layer) {
 	for (var j = 0, pos = 0; j < layer.height; j++)
 		for (var i = 0; i < layer.width; i++, pos++) {
 			var tiledId = layer.data[pos];
-			if (tiledId == 3) {
+			if (tiledId == 3)
 				bricks.push(new Brick(OPosX + i * tileX, OPosY + j * tileY));
-			}
 		}
 	return bricks;
 }
@@ -83,19 +80,28 @@ BlockAnimation.prototype.checkCollision = function (player) {
 		if (playerColisionTop.intersect(queryblock.collisionDown())) {
 			queryblock.hit = true;
 		}
-		//object exists ?
+		//TODO: this.mushroom object exists ?
 		if (/* if mushroom are enabled &&*/ playerColisionBox.intersect(queryblock.mushroom.collisionBox())) {
-			//grow to Super Mario, change state of mario
+			queryblock.mushroom.active = false;
+			queryblock.mushroom.play = false;
+			//grow to Super Mario
+			player.state = 11;
+			player.transform = true;
 		}
 		if (queryblock.star && playerColisionBox.intersect(queryblock.star.collisionBox())) {
-			//change state of mario
+			queryblock.star.active = false;
+			queryblock.star.play = false;
+			//grow to Star Mario
+			player.state = 12;
+			player.transform = true;
 		}
-	});
-	this.bricks.forEach(brick => {
-		if (playerColisionTop.intersect(brick.collisionDown())) {
-			//if player.state == supermario
-			brick.hit = true;
-		}
+		player.stateUpdate();
 	});
 
+	this.bricks.forEach(brick => {
+		if (playerColisionTop.intersect(brick.collisionDown())) {
+			brick.hit = true;
+			//if player.state == supermario
+		}
+	});
 }

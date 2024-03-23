@@ -1,11 +1,11 @@
 
 
-function Mushroom(x, y) {
+function Mushroom(x, y, map) {
     var powerups = new Texture("imgs/powerups.png");
 
-    var tilesheet = new Texture("imgs/world1.png");
-    this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world1);
-
+    // var tilesheet = new Texture("imgs/world1.png");
+    // this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world1);
+    this.map = map;
     this.active = false;
     this.play = false;
     this.right = true;
@@ -22,21 +22,22 @@ Mushroom.prototype.update = function (deltaTime) {
     if (this.play) {
         this.active = true;
         //TODO:usar func translate for moveUP
-        // Gravity
-        this.sprite.y += 4;
-        this.map.collisionMoveDown(this.sprite);
-        if (this.right) {
-            this.sprite.x += 2;
-            if (this.map.collisionMoveRight(this.sprite)) {
-                this.sprite.x -= 2;
-                this.right = !this.right;
-            }
-        }
-        else {
-            this.sprite.x -= 2;
-            if (this.map.collisionMoveLeft(this.sprite)) {
+        if (true) { //moving up 
+            this.sprite.y += 4;
+            this.map.collisionMoveDown(this.sprite);
+            if (this.right) {
                 this.sprite.x += 2;
-                this.right = !this.right;
+                if (this.map.collisionMoveRight(this.sprite)) {
+                    this.sprite.x -= 2;
+                    this.right = !this.right;
+                }
+            }
+            else {
+                this.sprite.x -= 2;
+                if (this.map.collisionMoveLeft(this.sprite)) {
+                    this.sprite.x += 2;
+                    this.right = !this.right;
+                }
             }
         }
     }

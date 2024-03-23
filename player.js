@@ -17,9 +17,30 @@ function Player(x, y, map) {
 
 	this.lives = 1;
 	this.state = MINI_MARIO;
+	this.transform = false;
 
 	// Prepare Mario sprite & its animations
 	this.sprite = new Sprite(x, y, 32, 32, 10, mario);
+
+	//miniMario to superMario
+	this.sprite.addAnimation();
+	this.sprite.addKeyframe(SUPER_MARIO, [0, 6 * 32, 32, 32]);
+	this.sprite.addKeyframe(SUPER_MARIO, [0, 7 * 32, 32, 48]);
+	this.sprite.addKeyframe(SUPER_MARIO, [0, 6 * 32, 32, 32]);
+	this.sprite.addKeyframe(SUPER_MARIO, [0, 7 * 32, 32, 48]);
+	this.sprite.addKeyframe(SUPER_MARIO, [0, 6 * 32, 32, 32]);
+	this.sprite.addKeyframe(SUPER_MARIO, [0, 7 * 32, 32, 48]);
+	this.sprite.addKeyframe(SUPER_MARIO, [0, 4 * 32, 32, 32 * 2]);
+	this.sprite.addKeyframe(SUPER_MARIO, [0, 7 * 32, 32, 48]);
+	this.sprite.addKeyframe(SUPER_MARIO, [0, 4 * 32, 32, 32 * 2]);
+	this.sprite.addKeyframe(SUPER_MARIO, [0, 7 * 32, 32, 48]);
+	this.sprite.addKeyframe(SUPER_MARIO, [0, 6 * 32, 32, 32]);
+	this.sprite.addKeyframe(SUPER_MARIO, [0, 7 * 32, 32, 48]);
+	this.sprite.addKeyframe(SUPER_MARIO, [0, 4 * 32, 32, 32 * 2]);
+	this.sprite.addKeyframe(SUPER_MARIO, [0, 4 * 32, 32, 32 * 2]);
+
+
+
 
 	this.sprite.addAnimation();
 	this.sprite.addKeyframe(MARIO_STAND_LEFT, [96, 64, 32, 32]);
@@ -57,8 +78,25 @@ function Player(x, y, map) {
 
 	this.dying = false;
 	this.allow_keys = true;
+	this.timeFreeze = false;
 
 	this.start_dying = false;
+}
+
+Player.prototype.stateUpdate = function () {
+	if (this.transform) {
+		this.timeFreeze = true;
+		if (this.state == SUPER_MARIO) {
+			this.sprite.setAnimation(SUPER_MARIO);
+		}
+		else if (this.state == STAR_MARIO) {
+
+		}
+		else if (this.state == MINI_MARIO) {
+
+		}
+	}
+	this.timeFreeze = false;
 }
 
 Player.prototype.update = function (deltaTime) {
@@ -179,12 +217,10 @@ Player.prototype.draw = function () {
 
 Player.prototype.collisionBox = function () {
 	var box = new Box(this.sprite.x + 2, this.sprite.y, this.sprite.x + this.sprite.width - 4, this.sprite.y + this.sprite.height);
-
 	return box;
 }
 
 Player.prototype.collisionTop = function () {
 	var box = new Box(this.sprite.x + 10, this.sprite.y - 2, this.sprite.x + this.sprite.width - 20, this.sprite.y + 2);
-
 	return box;
 }
