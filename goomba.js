@@ -65,7 +65,7 @@ Goomba.prototype.update = function update(deltaTime) {
     }
     else {
         //no active
-        console.log("Goomba not actived")
+        //console.log("Goomba not actived")
 
     }
 

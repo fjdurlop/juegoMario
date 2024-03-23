@@ -1,69 +1,56 @@
 
-const MARIO_STAND_LEFT = 0;
-const MARIO_STAND_RIGHT = 1;
-const MARIO_WALK_LEFT = 2;
-const MARIO_WALK_RIGHT = 3;
-const MARIO_JUMP_RIGHT = 4;
-const MARIO_JUMP_LEFT = 5;
-const MARIO_DIE = 6;
+const SMARIO_STAND_LEFT = 0;
+const SMARIO_STAND_RIGHT = 1;
+const SMARIO_WALK_LEFT = 2;
+const SMARIO_WALK_RIGHT = 3;
+const SMARIO_JUMP_RIGHT = 4;
+const SMARIO_JUMP_LEFT = 5;
+const SMARIO_DOWN_RIGHT = 6;
+const SMARIO_DOWN_LEFT = 7;
 
-const MINI_MARIO = 10;
-const SUPER_MARIO = 11;
-const STAR_MARIO = 12;
-
-function Player(x, y, map) {
+function SuperPlayer(x, y, map) {
 	// Loading spritesheets
-	var mario = new Texture("imgs/mario.png");
+	var mario = new Texture("imgs/supermario.png");
 
 	this.lives = 1;
-	this.state = MINI_MARIO;
+	this.state = SUPER_MARIO;
 	this.transform = false;
 
 	// Prepare Mario sprite & its animations
-	this.sprite = new Sprite(x, y, 32, 32, 5, mario);
+	this.sprite = new Sprite(x, y, 32, 64, 10, mario);
 
-	//miniMario to superMario
-	this.sprite.addAnimation();
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 6 * 32, 32, 32]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 7 * 32, 32, 48]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 6 * 32, 32, 32]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 7 * 32, 32, 48]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 6 * 32, 32, 32]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 7 * 32, 32, 48]);
-	this.sprite.addKeyframe(SUPER_MARIO, [0, 4 * 32, 32, 32 * 2]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 7 * 32, 32, 48]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 4 * 32, 32, 32 * 2]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 7 * 32, 32, 48]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 6 * 32, 32, 32]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 7 * 32, 32, 48]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 4 * 32, 32, 32 * 2]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 4 * 32, 32, 32 * 2]);
+	//TODO: super mario to minimario 
+	//	this.sprite.addAnimation();
 
 	this.sprite.addAnimation();
-	this.sprite.addKeyframe(MARIO_STAND_LEFT, [96, 64, 32, 32]);
+	this.sprite.addKeyframe(MARIO_STAND_LEFT, [0, 64, 32, 64]);
 
 	this.sprite.addAnimation();
-	this.sprite.addKeyframe(MARIO_STAND_RIGHT, [0, 0, 32, 32]);
+	this.sprite.addKeyframe(MARIO_STAND_RIGHT, [0, 0, 32, 64]);
 
 	this.sprite.addAnimation();
-	this.sprite.addKeyframe(MARIO_WALK_LEFT, [64, 64, 32, 32]);
-	this.sprite.addKeyframe(MARIO_WALK_LEFT, [32, 64, 32, 32]);
-	this.sprite.addKeyframe(MARIO_WALK_LEFT, [0, 64, 32, 32]);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT, [32, 64, 32, 64]);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT, [32 * 2, 64, 32, 64]);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT, [32 * 3, 64, 32, 64]);
 
 	this.sprite.addAnimation();
-	this.sprite.addKeyframe(MARIO_WALK_RIGHT, [32, 0, 32, 32]);
-	this.sprite.addKeyframe(MARIO_WALK_RIGHT, [64, 0, 32, 32]);
-	this.sprite.addKeyframe(MARIO_WALK_RIGHT, [96, 0, 32, 32]);
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT, [32, 0, 32, 64]);
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT, [32 * 2, 0, 32, 64]);
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT, [32 * 3, 0, 32, 64]);
 
 	this.sprite.addAnimation();
-	this.sprite.addKeyframe(MARIO_JUMP_RIGHT, [0, 32, 32, 32]);
+	this.sprite.addKeyframe(MARIO_JUMP_LEFT, [32 * 5, 64, 32, 64]);
 
 	this.sprite.addAnimation();
-	this.sprite.addKeyframe(MARIO_JUMP_LEFT, [96, 96, 32, 32]);
+	this.sprite.addKeyframe(MARIO_JUMP_RIGHT, [32 * 5, 0, 32, 64]);
+	//TODO: down key
+	this.sprite.addAnimation();
+	this.sprite.addKeyframe(SMARIO_DOWN_LEFT, [32 * 6, 64, 32, 64]);
 
 	this.sprite.addAnimation();
-	this.sprite.addKeyframe(MARIO_DIE, [32, 32, 32, 32]);
+	this.sprite.addKeyframe(SMARIO_DOWN_RIGHT, [32 * 6, 0, 32, 64]);
 
+	//TODO: animacion freno
 	this.sprite.setAnimation(MARIO_STAND_RIGHT);
 
 	// Set tilemap for collisions
@@ -92,11 +79,11 @@ var releaseDecel = 360;
 var maxWalkSpeed = 120;
 var maxRunSpeed = 240;
 
-Player.prototype.stateUpdate = function () {
+SuperPlayer.prototype.stateUpdate = function () {
 	if (this.transform) {
 		this.timeFreeze = true;
 		if (this.state == SUPER_MARIO) {
-			this.sprite.setAnimation(SUPER_MARIO);
+			//this.sprite.setAnimation(SUPER_MARIO);
 		}
 		else if (this.state == STAR_MARIO) {
 
@@ -109,7 +96,7 @@ Player.prototype.stateUpdate = function () {
 	//this.timeFreeze = false;
 }
 
-Player.prototype.update = function (deltaTime) {
+SuperPlayer.prototype.update = function (deltaTime) {
 
 	if (this.lives == 0) { // problem: always reinitiate to dying
 		this.dying = true;
@@ -239,12 +226,10 @@ Player.prototype.update = function (deltaTime) {
 		// Move Mario sprite left/right
 		if (keyboard[37]) // KEY_LEFT
 		{
-			if (this.sprite.currentAnimation != MARIO_WALK_LEFT && this.bJumping == false) {
+			if (this.sprite.currentAnimation != MARIO_WALK_LEFT && this.bJumping == false)
 				this.sprite.setAnimation(MARIO_WALK_LEFT);
-			}
-			else if (this.sprite.currentAnimation != MARIO_JUMP_LEFT && this.bJumping) {
+			else if (this.sprite.currentAnimation != MARIO_JUMP_LEFT && this.bJumping)
 				this.sprite.setAnimation(MARIO_JUMP_LEFT);
-			}
 
 			//this.sprite.x -= 2;
 			// Move according to current speed
@@ -258,9 +243,8 @@ Player.prototype.update = function (deltaTime) {
 		{
 			if (this.sprite.currentAnimation != MARIO_WALK_RIGHT && this.bJumping == false)
 				this.sprite.setAnimation(MARIO_WALK_RIGHT);
-			else if (this.sprite.currentAnimation != MARIO_JUMP_RIGHT && this.bJumping) {
+			else if (this.sprite.currentAnimation != MARIO_JUMP_RIGHT && this.bJumping)
 				this.sprite.setAnimation(MARIO_JUMP_RIGHT);
-			}
 
 			//this.sprite.x += 2;
 			last_x = this.sprite.x;
@@ -358,16 +342,16 @@ Player.prototype.update = function (deltaTime) {
 	this.sprite.update(deltaTime);
 }
 
-Player.prototype.draw = function () {
+SuperPlayer.prototype.draw = function () {
 	this.sprite.draw();
 }
 
-Player.prototype.collisionBox = function () {
+SuperPlayer.prototype.collisionBox = function () {
 	var box = new Box(this.sprite.x + 2, this.sprite.y, this.sprite.x + this.sprite.width - 4, this.sprite.y + this.sprite.height);
 	return box;
 }
 
-Player.prototype.collisionTop = function () {
+SuperPlayer.prototype.collisionTop = function () {
 	var box = new Box(this.sprite.x + 10, this.sprite.y - 2, this.sprite.x + this.sprite.width - 20, this.sprite.y + 2);
 	return box;
 }

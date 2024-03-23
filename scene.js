@@ -16,20 +16,18 @@ function Scene() {
 		this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world02);//world02
 	}
 
-
-
-
 	// Create entities
-	this.player = new Player(150, 150, this.map);
-	this.statusCoin = new Coin(250, 25);
+	//this.player = new SuperPlayer(150, 400, this.map);
+	this.player = new Player(150, 400, this.map);
+	this.statusCoin = new StatusCoin(265, 35);
 	this.blockAnimation = new BlockAnimation(this.map);
 
 	this.testSprite = new Mushroom(100, 100);
-	this.testSprite.active = true;
+	this.testSprite.active = false;
 	this.testSprite.play = false;
 
 	this.goomba_01 = new Goomba(29 * 32, 13 * 32, this.map);
-	this.goomba_01.active = false;
+	this.goomba_01.active = true;
 	this.turtle = new Turtle(33 * 32, 12 * 32, this.map);
 
 	//this.goombaKilled = false; // Goomba had killed mario
@@ -277,5 +275,3 @@ Scene.prototype.draw = function () {
 	this.statusCoin.draw();
 
 }
-
-//TODO: cambiar el img de query block amarillo, es diferente

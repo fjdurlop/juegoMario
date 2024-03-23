@@ -2,40 +2,37 @@
 
 Mario Bros videogame for Computer Games project in JS.
 
-- Fisica, acceleracion, friccion
 - animation when desaccelerate
-- cambiar icono del status coin
-- ? banderita en ganar (encima del castillo)?
-- when coin above a brick -> hit -> minicoin animation
+- ~~cambiar icono del status coin *XINLEI*~~
 
 nivel 2.0:
 - avanzar al nivel 2.0 desde una tuberia
 
 ### 6 PUNTOS DEL PROYECTO
-- Crear 2 enemigos(goomba y koopa troopas). Koopa troopas deja una cascara cuando muere, y sus animaciones
-- Saltar con tecla espacio y correr manteniendo tecla shift
-- Poder destruir bloques en modo Super Mario
-- Monedas o power-ups en los bloques interrogante  
-- Power-up: super seta(Super Mario) y estrella invencible(Star Mario, tiempo limitado)
-- Recuento de puntuacion por las monedas, enemigos, etc
-- Superar el nivel en tiempo limitado. Alcanzar el flag al final del mapa. La altura alcanzada del flag determina el bonus en la puntuacion.
-- Caer al vacio o al agua, muere Mario
++ ~~Crear 2 enemigos(goomba y koopa troopas). Koopa troopas deja una cascara cuando muere, y sus animaciones~~
++ ~~Saltar con tecla espacio y correr manteniendo tecla shift~~
+- Poder destruir bloques en modo Super Mario *XINLEI*
++ ~~Monedas o power-ups en los bloques interrogante~~
+- Power-up: super seta(Super Mario) y estrella invencible(Star Mario, tiempo limitado) *XINLEI*
+- Recuento de puntuacion por las monedas, enemigos, etc  *PACO*
+- Superar el nivel en tiempo limitado. Alcanzar el flag al final del mapa. La altura alcanzada del flag determina el bonus en la puntuacion. *PACO*
+- Caer al vacio o al agua, muere Mario *PACO*
 
 **Hacks:**
-- M para transformar en Super Mario y G para Star Mario
-- Teclas 1 y 2 para saltar a pantallas concretas.
+- M para transformar en Super Mario y G para Star Mario  *XINLEI*
+- Teclas 1 y 2 para saltar a pantallas concretas. *PACO*
 
 ### 4 PUNTOS DEL PROYECTO
-- 4 pantallas basicas: menú principal, jugar, instrucciones, creditos.
-- El menú ha de presentar als fantasmes, així com mostrar les puntuacions com es fa al Pacman original.
-- Sonido: música de fondo i efectos especiales.
-- GUI: mostrant el nivell, vides, puntuació, i high-score(pantalla de transicion).
+- 4 pantallas basicas: menú principal, jugar, instrucciones, creditos. *PACO* 
+El menú ha de presentar als fantasmes, així com mostrar les puntuacions com es fa al Pacman original.
+- Sonido: música de fondo i efectos especiales.  *XINLEI*
++ ~~GUI: mostrant el nivell, vides, puntuació, i high-score(pantalla de transicion).~~
 - Memòria(GDD)
 
 
 ## POLISH SUPER MARIO BROS NES
 - Pausa antes de empezar.
-+ Animación de los bloques con un interrogante.
++ ~~Animación de los bloques con un interrogante.~~
 - Animación de los bloques cuando son impactados y/o destruidos.
 - Animaciones de Mario: llorar, saltar, morir.
 - Animaciones de los enemigos, tanto para matar como para morir.
@@ -51,9 +48,6 @@ XINLEI:
 
 *Layer[2]: query block(2), ladrillo(3), coins(36)... static sprites*
 - Sonido
-+ collision with coins
-+ revisar brick bobbing
-- comprobar si minicoin se superpone encima de otros bloques(lo debe hacer)
 
 - Monedas o power-ups en los bloques interrogante
   + sprite del moneda y power-ups
@@ -63,12 +57,10 @@ XINLEI:
   + salto de moneda del queryBlock
   + star bounding
   + mushroom Super Mario
-  - Colision entre ello
-- refactor folders, .js and imgs
+  + Colision entre ello
 - completar mapa 1.0, no tener tantos bloques animativos, castillo con el flag
 
+* supermario left jump problem
+* 
 - ??:
-  - crear clase para pieces del brick?
-  - cold time
-  - 
   

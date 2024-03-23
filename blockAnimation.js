@@ -72,9 +72,8 @@ BlockAnimation.prototype.checkCollision = function (player) {
 	var playerColisionTop = player.collisionTop();
 
 	this.coins.forEach(coin => {
-		if (playerColisionBox.intersect(coin.collisionBox())) {
+		if (playerColisionBox.intersect(coin.collisionBox()))
 			coin.active = false;
-		}
 	});
 	this.queryblock.forEach(queryblock => {
 		if (playerColisionTop.intersect(queryblock.collisionDown())) {
