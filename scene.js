@@ -22,9 +22,9 @@ function Scene() {
 	this.statusCoin = new StatusCoin(265, 35);
 	this.blockAnimation = new BlockAnimation(this.map);
 
-	this.testSprite = new Mushroom(100, 100);
-	this.testSprite.active = false;
-	this.testSprite.play = false;
+	this.testSprite = new BPiece(100, 100);
+	// this.testSprite.active = true;
+	// this.testSprite.play = true;
 
 	this.goomba_01 = new Goomba(29 * 32, 13 * 32, this.map);
 	this.goomba_01.active = true;

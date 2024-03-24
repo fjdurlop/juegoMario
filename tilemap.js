@@ -5,9 +5,15 @@ function Tilemap(tilesheet, tileSize, blockGrid, basePos, map) {
 	this.tileSize = tileSize;
 	this.basePos = basePos;
 	this.blockGrid = blockGrid;
-	this.map = map
+	this.map = map;
 
 	this.tilesheet = tilesheet;
+}
+
+//Deletes the block data, Sets the position to 0
+Tilemap.prototype.deleteBlock = function (x, y) {
+	this.map.layers[0].data[(y * this.map.width + x) / 32 - this.map.width] = 0;
+	this.map.layers[2].data[(y * this.map.width + x) / 32 - this.map.width] = 0;
 }
 
 Tilemap.prototype.draw = function () {

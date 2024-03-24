@@ -61,6 +61,6 @@ XINLEI:
 - completar mapa 1.0, no tener tantos bloques animativos, castillo con el flag
 
 * supermario left jump problem
-* 
+* the brick does not removed completly
 - ??:
   

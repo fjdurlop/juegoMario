@@ -1,11 +1,12 @@
 
 
-function Brick(x, y) {
+function Brick(x, y, map) {
     var brick = new Texture("imgs/blocks.png");
 
     this.x = x;
     this.y = y;
 
+    this.map = map;
     this.active = true;
     this.hit = false;
     this.break = false;
@@ -17,30 +18,28 @@ function Brick(x, y) {
     this.sprite.addAnimation();
     this.sprite.addKeyframe(0, [0, 64, 32, 32]);
 
-    // this.sprite.addAnimation();
-    // this.sprite.addKeyframe(1, [])
-
     this.sprite.setAnimation(0);
 }
 
 
 Brick.prototype.update = function (deltaTime) {
-
-    if (this.hit == true) {
-        this.sprite.y = this.startY - 10 * Math.sin(3.14159 * this.bobbingAngle / 180);
-        this.bobbingAngle += 10;
-        if (this.bobbingAngle > 180 - 13 && this.bobbingAngle < 180 + 13) {
-            this.hit = false;
-            this.sprite.y = this.startY;
+    if (!this.break) {
+        if (this.hit == true) {
+            this.sprite.y = this.startY - 10 * Math.sin(3.14159 * this.bobbingAngle / 180);
+            this.bobbingAngle += 10;
+            if (this.bobbingAngle > 180 - 13 && this.bobbingAngle < 180 + 13) {
+                this.hit = false;
+                this.sprite.y = this.startY;
+            }
+        }
+        else {
+            this.startY = this.sprite.y;
+            this.bobbingAngle = 0;
         }
     }
     else {
-        this.startY = this.sprite.y;
-        this.bobbingAngle = 0;
-    }
-
-    if (this.break) {
-        this.sprite.setAnimation(1);
+        this.active = false;
+        this.map.deleteBlock(this.x, this.y);
     }
     this.sprite.update(deltaTime);
 }

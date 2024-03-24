@@ -17,12 +17,16 @@ BlockAnimation.prototype.update = function (deltaTime) {
 		this.queryblock = this.createQueryBlockAnimation(atb[0], atb[1], atb[2], atb[3], atb[4]);
 	}
 	if (this.bricks.length < 1) {
-		this.bricks = createBrickAnimation(atb[0], atb[1], atb[2], atb[3], atb[4]);
+		this.bricks = this.createBrickAnimation(atb[0], atb[1], atb[2], atb[3], atb[4]);
 	}
 
 	this.coins.forEach(coin => coin.update(deltaTime));
 	this.queryblock.forEach(queryblock => queryblock.update(deltaTime));
 	this.bricks.forEach(brick => brick.update(deltaTime));
+	this.piece1 && this.piece1.update(deltaTime);
+	this.piece2 && this.piece2.update(deltaTime);
+	this.piece3 && this.piece3.update(deltaTime);
+	this.piece4 && this.piece4.update(deltaTime);
 }
 
 //OPosX, OPosY: origen de coordenadas del mapa
@@ -50,13 +54,13 @@ BlockAnimation.prototype.createQueryBlockAnimation = function (OPosX, OPosY, til
 	return queryblock;
 }
 
-function createBrickAnimation(OPosX, OPosY, tileX, tileY, layer) {
+BlockAnimation.prototype.createBrickAnimation = function (OPosX, OPosY, tileX, tileY, layer) {
 	var bricks = [];
 	for (var j = 0, pos = 0; j < layer.height; j++)
 		for (var i = 0; i < layer.width; i++, pos++) {
 			var tiledId = layer.data[pos];
 			if (tiledId == 3)
-				bricks.push(new Brick(OPosX + i * tileX, OPosY + j * tileY));
+				bricks.push(new Brick(OPosX + i * tileX, OPosY + j * tileY, this.map));
 		}
 	return bricks;
 }
@@ -65,6 +69,10 @@ BlockAnimation.prototype.draw = function () {
 	this.coins.forEach(coin => coin.draw());
 	this.queryblock.forEach(queryblock => queryblock.draw());
 	this.bricks.forEach(brick => brick.draw());
+	this.piece1 && this.piece1.draw();
+	this.piece2 && this.piece2.draw();
+	this.piece3 && this.piece3.draw();
+	this.piece4 && this.piece4.draw();
 }
 
 BlockAnimation.prototype.checkCollision = function (player) {
@@ -76,9 +84,8 @@ BlockAnimation.prototype.checkCollision = function (player) {
 			coin.active = false;
 	});
 	this.queryblock.forEach(queryblock => {
-		if (playerColisionTop.intersect(queryblock.collisionDown())) {
+		if (playerColisionTop.intersect(queryblock.collisionDown()))
 			queryblock.hit = true;
-		}
 		//TODO: this.mushroom object exists ?
 		if (/* if mushroom are enabled &&*/ playerColisionBox.intersect(queryblock.mushroom.collisionBox())) {
 			queryblock.mushroom.active = false;
@@ -100,7 +107,17 @@ BlockAnimation.prototype.checkCollision = function (player) {
 	this.bricks.forEach(brick => {
 		if (playerColisionTop.intersect(brick.collisionDown())) {
 			brick.hit = true;
-			//if player.state == supermario
+			//if(player.state == supermario)
+			brick.break = true;
+			!this.piece1 && (this.piece1 = new BPiece(brick.x, brick.y));
+			!this.piece2 && (this.piece2 = new BPiece(brick.x + 16, brick.y));
+			!this.piece3 && (this.piece3 = new BPiece(brick.x, brick.y + 16));
+			!this.piece4 && (this.piece4 = new BPiece(brick.x + 16, brick.y + 16));
+
+			this.piece3.right = false;
+			this.piece1.right = false;
+			this.bricks.filter(b => b.x != brick.x || b.y != brick.y);
+			//console.log(this.bricks);
 		}
 	});
 }
