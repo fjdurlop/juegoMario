@@ -4,7 +4,7 @@
 
 function Scene() {
 	// Loading texture to use in a TileMap
-	this.world = 1;
+	this.world = 2;
 
 	// Create tilemap
 	if (this.world == 1) {
@@ -18,7 +18,7 @@ function Scene() {
 
 	// Create entities
 	//this.player = new SuperPlayer(150, 400, this.map);
-	this.player = new Player(150, 400, this.map);
+	this.player = new Player(150, 150, this.map);
 	this.statusCoin = new StatusCoin(265, 35);
 	this.blockAnimation = new BlockAnimation(this.map);
 
@@ -29,7 +29,7 @@ function Scene() {
 	this.goomba_01 = new Goomba(29 * 32, 13 * 32, this.map);
 	this.goomba_01.active = true;
 	this.turtle = new Turtle(33 * 32, 12 * 32, this.map);
-
+	this.turtle.active = true;
 	//this.goombaKilled = false; // Goomba had killed mario
 	this.lose = false;
 	this.timeFreeze = false;

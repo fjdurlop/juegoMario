@@ -84,6 +84,7 @@ var world11 =
 };
 
 world1 = {
+    "level":1,
     "compressionlevel": -1,
     "height": 15,
     "infinite": false,
@@ -185,6 +186,7 @@ world1 = {
 
 
 world02 = {
+    "level":2,
     "compressionlevel": -1,
     "height": 15,
     "infinite": false,

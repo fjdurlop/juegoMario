@@ -8,6 +8,8 @@ function Tilemap(tilesheet, tileSize, blockGrid, basePos, map) {
 	this.map = map
 
 	this.tilesheet = tilesheet;
+
+	console.log("map level:",map.level)
 }
 
 Tilemap.prototype.draw = function () {
@@ -31,21 +33,45 @@ Tilemap.prototype.draw = function () {
 	// Draw the map
 	var tileId;
 	context.imageSmoothingEnabled = false;
-	for (var j = 0, pos = 0; j < this.map.height; j++)
-		for (var i = 0; i < this.map.width; i++, pos++) {
-			tileId = this.map.layers[0].data[pos];
-			if (tileId != 0 && (tileId != 2 && tileId != 3))
-				context.drawImage(this.tilesheet.img, tilePositions[tileId - 1][0], tilePositions[tileId - 1][1], blockSize[0], blockSize[1],
-					this.basePos[0] + this.tileSize[0] * i, this.basePos[1] + this.tileSize[1] * j, blockSize[0], blockSize[1]);
-		}
 
-	for (var j = 0, pos = 0; j < this.map.height; j++)
-		for (var i = 0; i < this.map.width; i++, pos++) {
-			tileId = this.map.layers[1].data[pos];
-			if (tileId != 0)
-				context.drawImage(this.tilesheet.img, tilePositions[tileId - 1][0], tilePositions[tileId - 1][1], blockSize[0], blockSize[1],
-					this.basePos[0] + this.tileSize[0] * i, this.basePos[1] + this.tileSize[1] * j, blockSize[0], blockSize[1]);
-		}
+	if(this.map.level ==1){
+		
+		for (var j = 0, pos = 0; j < this.map.height; j++)
+			for (var i = 0; i < this.map.width; i++, pos++) {
+				tileId = this.map.layers[0].data[pos];
+				if (tileId != 0 && (tileId != 2 && tileId != 3))
+					context.drawImage(this.tilesheet.img, tilePositions[tileId - 1][0], tilePositions[tileId - 1][1], blockSize[0], blockSize[1],
+						this.basePos[0] + this.tileSize[0] * i, this.basePos[1] + this.tileSize[1] * j, blockSize[0], blockSize[1]);
+			}
+
+		for (var j = 0, pos = 0; j < this.map.height; j++)
+			for (var i = 0; i < this.map.width; i++, pos++) {
+				tileId = this.map.layers[1].data[pos];
+				if (tileId != 0)
+					context.drawImage(this.tilesheet.img, tilePositions[tileId - 1][0], tilePositions[tileId - 1][1], blockSize[0], blockSize[1],
+						this.basePos[0] + this.tileSize[0] * i, this.basePos[1] + this.tileSize[1] * j, blockSize[0], blockSize[1]);
+			}
+	}
+	else if(this.map.level == 2){
+		for (var j = 0, pos = 0; j < this.map.height; j++)
+			for (var i = 0; i < this.map.width; i++, pos++) {
+				tileId = this.map.layers[0].data[pos];
+				if (tileId != 0 ){ //&& (tileId != 1 && tileId != 2)
+
+					context.drawImage(this.tilesheet.img, tilePositions[tileId - 1][0], tilePositions[tileId - 1][1], blockSize[0], blockSize[1],
+						this.basePos[0] + this.tileSize[0] * i, this.basePos[1] + this.tileSize[1] * j, blockSize[0], blockSize[1]);
+				}
+			}
+
+		for (var j = 0, pos = 0; j < this.map.height; j++)
+			for (var i = 0; i < this.map.width; i++, pos++) {
+				tileId = this.map.layers[1].data[pos];
+				if (tileId != 0)
+					context.drawImage(this.tilesheet.img, tilePositions[tileId - 1][0], tilePositions[tileId - 1][1], blockSize[0], blockSize[1],
+						this.basePos[0] + this.tileSize[0] * i, this.basePos[1] + this.tileSize[1] * j, blockSize[0], blockSize[1]);
+			}
+	}
+	
 }
 
 Tilemap.prototype.getBlockAnimationData = function () {
