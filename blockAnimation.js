@@ -105,17 +105,16 @@ BlockAnimation.prototype.checkCollision = function (player) {
 			queryblock.mushroom.active = false;
 			queryblock.mushroom.play = false;
 			//grow to Super Mario
-			player.state = 11;
-			player.transform = true;
+			player.state = SUPER_MARIO;
+			player.transforming = true;
 			//player.stateUpdate();
 		}
 		if (queryblock.star && playerColisionBox.intersect(queryblock.star.collisionBox())) {
 			queryblock.star.active = false;
 			queryblock.star.play = false;
 			//grow to Star Mario
-			player.state = 12;
-			player.transform = true;
-			//player.stateUpdate();
+			player.state = STAR_MARIO;
+			player.transforming = true;
 		}
 
 	});
@@ -123,9 +122,8 @@ BlockAnimation.prototype.checkCollision = function (player) {
 	this.bricks.forEach(brick => {
 		if (playerColisionTop.intersect(brick.collisionDown())) {
 			brick.hit = true;
-			//if(player.state == supermario)
-			brick.break = true;
-			if (brick.break) {
+			if (player.state == SUPER_MARIO) {
+				brick.break = true;
 				if (brick.active == true) {
 					this.breakBlockAudio.stop();
 					this.breakBlockAudio.play();
@@ -140,7 +138,6 @@ BlockAnimation.prototype.checkCollision = function (player) {
 				this.piece1.right = false;
 				this.bricks.filter(b => b.x != brick.x || b.y != brick.y);
 			}
-
 			//console.log(this.bricks);
 		}
 	});

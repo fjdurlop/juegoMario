@@ -59,7 +59,7 @@ XINLEI:
   + mushroom Super Mario
   + Colision entre ello
 
-  starmario => minimario or super mario
+  starmario => from minimario or super mario
   supermario => only from minimario
 
   minimario => mushroom or star
@@ -72,5 +72,6 @@ XINLEI:
 * 
 - ??:
   where mario dies? to set mariodie music. same with stomp
-  how to stop "loop=true" music
+  how to stop "loop=true" music?
+  -animation of star mario ???
   

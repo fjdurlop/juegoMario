@@ -8,7 +8,8 @@ function Scene() {
 	this.flagPoleMusic = AudioFX('sounds/smb_flagpole.wav');
 	//when mario transforms from supermario to minimario
 	this.pipeMusic = AudioFX('sounds/smb_pipe.wav');
-
+	//when kicks the turtles shell
+	this.kickMusic = AudioFX('sounds/kick.wav');
 
 	// Loading texture to use in a TileMap
 	this.world = 1;
@@ -28,14 +29,15 @@ function Scene() {
 
 	// Create entities
 
-	//this.player = new SuperPlayer(150, 400, this.map);
-	this.player = new Player(150, 400, this.map);
+	this.player = new SuperPlayer(150, 400, this.map);
+	//this.player = new Player(150, 400, this.map);
+	this.player.active = true;
 	this.statusCoin = new StatusCoin(265, 35);
 	this.blockAnimation = new BlockAnimation(this.map);
 
 	this.testSprite = new BPiece(100, 100);
-	// this.testSprite.active = true;
-	// this.testSprite.play = true;
+	this.testSprite.active = false;
+	//this.testSprite.play = false;
 
 	this.goomba_01 = new Goomba(29 * 32, 13 * 32, this.map);
 	this.goomba_01.active = true;
@@ -84,7 +86,6 @@ Scene.prototype.update = function (deltaTime) {
 
 		this.statusCoin.update(deltaTime);
 		this.goomba_01.update(deltaTime);
-		// update del blockAnimation
 		this.blockAnimation.update(deltaTime);
 
 		if (this.player.dying) {

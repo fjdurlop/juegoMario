@@ -28,7 +28,6 @@ function Brick(x, y, map) {
 Brick.prototype.update = function (deltaTime) {
     if (!this.break) {
         if (this.hit == true) {
-            this.bumbMusic.stop();
             this.bumbMusic.play();
             this.sprite.y = this.startY - 10 * Math.sin(3.14159 * this.bobbingAngle / 180);
             this.bobbingAngle += 10;

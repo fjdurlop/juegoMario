@@ -19,7 +19,7 @@ function Coin(x, y) {
 }
 
 Coin.prototype.update = function update(deltaTime) {
-    this.sprite.update(deltaTime);
+    this.active && this.sprite.update(deltaTime);
 }
 
 Coin.prototype.draw = function draw() {
