@@ -42,11 +42,14 @@ function Scene() {
 
 	this.scroll = 0;
 	this.d = 0;
+
+	this.points = 0;
+	this.coins = 0;
 }
 
 Scene.prototype.update = function (deltaTime) {
 	this.currentTime += deltaTime;
-
+	console.log("freeze:",this.timeFreeze)
 	if (!this.timeFreeze) {
 		// Keep track of time
 		this.gameTime += deltaTime;
@@ -105,7 +108,10 @@ Scene.prototype.update = function (deltaTime) {
 				//console.log("from above")
 				console.log("y: ", this.player.sprite.y, " h: ", this.player.sprite.height, " goomba ", this.goomba_01.sprite.y)
 				this.player.just_pressed = true;
+				if(!this.goomba_01.killed) //add points before goomba_01.killed is true
+					this.points+=100;
 				this.goomba_01.killed = true;
+				
 			}
 		}
 		if (this.player.collisionBox().intersect(this.goomba_01.collisionBox()) && this.goomba_01.killed == false && this.goomba_01.killed_mario == false) {
@@ -181,7 +187,9 @@ Scene.prototype.update = function (deltaTime) {
 			}
 
 		}
-		this.blockAnimation.checkCollision(this.player);
+		var objects = this.blockAnimation.checkCollision(this.player);
+		this.coins = objects[0]
+		console.log("objects:",objects)
 	}
 	else {
 		this.player.update(deltaTime);
@@ -208,7 +216,7 @@ function getDirection(marioX, marioWidth, turtleX, turtleWidth) {
 	}
 }
 
-function drawStatusText(currentTime) {
+Scene.prototype.drawStatusText = function (currentTime) {
 
 	// Load and set the font
 	//const pixelFont = new FontFace('PublicPixel', 'url(font/PublicPixel.ttf) format(ttf)');
@@ -221,12 +229,12 @@ function drawStatusText(currentTime) {
 	context.font = "900 20px Verdana";
 	context.fillStyle = 'white';
 
+	//console.log("points: "+ this.points)
 	// Draw status text on the canvas
-	var score = 8888;
 	context.fillText('MARIO', 2 * 32, 30);
-	context.fillText(String(score).padStart(6, '0'), 2 * 32, 50);
+	context.fillText(String(this.points).padStart(6, '0'), 2 * 32, 50);
 
-	context.fillText('X 00', 9 * 32, 50);
+	context.fillText('X '+String(this.coins), 9 * 32, 50);
 
 	context.fillText('WORLD', 15 * 32, 30);
 	context.fillText('1-1', 15 * 32, 50);
@@ -271,7 +279,7 @@ Scene.prototype.draw = function () {
 	context.restore();
 
 	//Draw status text
-	drawStatusText(this.gameTime);
+	this.drawStatusText(this.gameTime);
 	this.statusCoin.draw();
 
 }

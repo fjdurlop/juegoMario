@@ -5,6 +5,9 @@ function BlockAnimation(map) {
 	this.coins = [];
 	this.queryblock = [];
 	this.bricks = [];
+
+	this.num_collected_coins = 0;
+	this.num_broken_blocks = 0;
 }
 
 BlockAnimation.prototype.update = function (deltaTime) {
@@ -68,12 +71,17 @@ BlockAnimation.prototype.draw = function () {
 }
 
 BlockAnimation.prototype.checkCollision = function (player) {
+	//collision with [coins, queryblock, bricks]
+
 	var playerColisionBox = player.collisionBox();
 	var playerColisionTop = player.collisionTop();
 
 	this.coins.forEach(coin => {
-		if (playerColisionBox.intersect(coin.collisionBox()))
+		if (playerColisionBox.intersect(coin.collisionBox()) && coin.active){
 			coin.active = false;
+			this.num_collected_coins += 1;
+			console.log("+1 coin: ", this.num_collected_coins);
+		}	
 	});
 	this.queryblock.forEach(queryblock => {
 		if (playerColisionTop.intersect(queryblock.collisionDown())) {
@@ -100,7 +108,11 @@ BlockAnimation.prototype.checkCollision = function (player) {
 	this.bricks.forEach(brick => {
 		if (playerColisionTop.intersect(brick.collisionDown())) {
 			brick.hit = true;
+			// this.num_broken_blocks +=1;
+			// console.log("+1 block: ", this.num_broken_blocks);
 			//if player.state == supermario
 		}
 	});
+
+	return [this.num_collected_coins, this.num_broken_blocks]
 }
