@@ -8,6 +8,7 @@ function Brick(x, y, map) {
     this.first = 0;
 
     this.map = map;
+    this.first = 0;
     this.active = true;
     this.hit = false;
     this.break = false;
@@ -26,30 +27,32 @@ function Brick(x, y, map) {
 
 
 Brick.prototype.update = function (deltaTime) {
-    if (!this.break) {
-        if (this.hit == true) {
-            this.bumbMusic.play();
-            this.sprite.y = this.startY - 10 * Math.sin(3.14159 * this.bobbingAngle / 180);
-            this.bobbingAngle += 10;
-            if (this.bobbingAngle > 180 - 13 && this.bobbingAngle < 180 + 13) {
-                this.hit = false;
-                this.sprite.y = this.startY;
+    if (this.active) {
+        if (!this.break) {
+            if (this.hit == true) {
+                this.bumbMusic.play();
+                this.sprite.y = this.startY - 10 * Math.sin(3.14159 * this.bobbingAngle / 180);
+                this.bobbingAngle += 10;
+                if (this.bobbingAngle > 180 - 13 && this.bobbingAngle < 180 + 13) {
+                    this.hit = false;
+                    this.sprite.y = this.startY;
+                }
+            }
+            else {
+                this.startY = this.sprite.y;
+                this.bobbingAngle = 0;
             }
         }
         else {
-            this.startY = this.sprite.y;
-            this.bobbingAngle = 0;
+            if (this.first != 0) {
+                this.map.deleteBlock(this.x, this.y);
+                this.active = false;
+            }
+            else
+                this.first++;
         }
+        this.sprite.update(deltaTime);
     }
-    else {
-        this.active = false;
-        if (this.first != 0)
-            this.map.deleteBlock(this.x, this.y);
-        else
-            this.first++;
-
-    }
-    this.sprite.update(deltaTime);
 }
 
 Brick.prototype.draw = function () {

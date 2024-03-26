@@ -11,7 +11,7 @@ nivel 2.0:
 ### 6 PUNTOS DEL PROYECTO
 + ~~Crear 2 enemigos(goomba y koopa troopas). Koopa troopas deja una cascara cuando muere, y sus animaciones~~
 + ~~Saltar con tecla espacio y correr manteniendo tecla shift~~
-- Poder destruir bloques en modo Super Mario *XINLEI*
++ ~~Poder destruir bloques en modo Super Mario *XINLEI*~~
 + ~~Monedas o power-ups en los bloques interrogante~~
 - Power-up: super seta(Super Mario) y estrella invencible(Star Mario, tiempo limitado) *XINLEI*
 - Recuento de puntuacion por las monedas, enemigos, etc  *PACO*
@@ -68,7 +68,6 @@ XINLEI:
 - completar mapa 1.0, no tener tantos bloques animativos, castillo con el flag
 
 * supermario left jump problem
-* the brick does not removed completly
 * 
 - ??:
   where mario dies? to set mariodie music. same with stomp

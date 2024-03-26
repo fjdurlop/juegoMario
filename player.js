@@ -343,7 +343,7 @@ Player.prototype.update = function (deltaTime) {
 					if (this.map.collisionMoveUp(this.sprite)) {
 						this.bJumping = false;
 					} else {
-						this.sprite.y = this.startY - (32 * 3 + 4) * Math.sin(3.14159 * this.jumpAngle / 180);
+						this.sprite.y = this.startY - (32 * 4 + 2) * Math.sin(3.14159 * this.jumpAngle / 180);
 						if (this.jumpAngle > 90) {
 							this.bJumping = !this.map.collisionMoveDown(this.sprite);
 						}

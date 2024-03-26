@@ -122,23 +122,23 @@ BlockAnimation.prototype.checkCollision = function (player) {
 	this.bricks.forEach(brick => {
 		if (playerColisionTop.intersect(brick.collisionDown())) {
 			brick.hit = true;
+			brick.break = true;
 			if (player.state == SUPER_MARIO) {
-				brick.break = true;
 				if (brick.active == true) {
 					this.breakBlockAudio.stop();
 					this.breakBlockAudio.play();
+
+					this.piece1 = new BPiece(brick.x, brick.y);
+					this.piece2 = new BPiece(brick.x + 16, brick.y);
+					this.piece3 = new BPiece(brick.x, brick.y + 16);
+					this.piece4 = new BPiece(brick.x + 16, brick.y + 16);
+					this.piece3.right = false;
+					this.piece1.right = false;
 				}
-
-				!this.piece1 && (this.piece1 = new BPiece(brick.x, brick.y));
-				!this.piece2 && (this.piece2 = new BPiece(brick.x + 16, brick.y));
-				!this.piece3 && (this.piece3 = new BPiece(brick.x, brick.y + 16));
-				!this.piece4 && (this.piece4 = new BPiece(brick.x + 16, brick.y + 16));
-
-				this.piece3.right = false;
-				this.piece1.right = false;
-				this.bricks.filter(b => b.x != brick.x || b.y != brick.y);
+				//this.bricks = this.bricks.filter((b) => b.x != brick.x || b.y != brick.y);
+				//console.log(this.bricks);
 			}
-			//console.log(this.bricks);
 		}
 	});
+
 }
