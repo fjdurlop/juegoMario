@@ -30,7 +30,7 @@ function Scene() {
 	// Create entities
 
 	this.player = new SuperPlayer(150, 400, this.map);
-	// this.player = new Player(150, 400, this.map);
+	//this.player = new Player(150, 400, this.map);
 	this.player.active = true;
 	this.statusCoin = new StatusCoin(265, 35);
 	this.blockAnimation = new BlockAnimation(this.map);

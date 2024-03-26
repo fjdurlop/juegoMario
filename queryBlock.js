@@ -14,7 +14,7 @@ function QueryBlock(x, y, map) {
     this.sprite = new Sprite(x, y, 32, 32, 5, blocks);
     this.coin = new MiniCoin(x + 10, y - 32);
     this.mushroom = new Mushroom(x, y - 32, map);
-    this.star = new Star(x, y - 32);
+    this.star = new Star(x, y - 32, map);
 
     this.sprite.addAnimation();
     this.sprite.addKeyframe(0, [0, 0, 32, 32]);

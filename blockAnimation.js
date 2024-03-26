@@ -101,15 +101,15 @@ BlockAnimation.prototype.checkCollision = function (player) {
 			queryblock.hit = true;
 		}
 		//TODO: this.mushroom object exists ?
-		if (/* if mushroom are enabled &&*/ playerColisionBox.intersect(queryblock.mushroom.collisionBox())) {
+		if (queryblock.mushroom.active && playerColisionBox.intersect(queryblock.mushroom.collisionBox())) {
 			queryblock.mushroom.active = false;
 			queryblock.mushroom.play = false;
 			//grow to Super Mario
 			player.state = SUPER_MARIO;
 			player.transforming = true;
-			//player.stateUpdate();
+			player.stateUpdate();
 		}
-		if (queryblock.star && playerColisionBox.intersect(queryblock.star.collisionBox())) {
+		if (queryblock.star.active && playerColisionBox.intersect(queryblock.star.collisionBox())) {
 			queryblock.star.active = false;
 			queryblock.star.play = false;
 			//grow to Star Mario
@@ -122,8 +122,9 @@ BlockAnimation.prototype.checkCollision = function (player) {
 	this.bricks.forEach(brick => {
 		if (playerColisionTop.intersect(brick.collisionDown())) {
 			brick.hit = true;
-			brick.break = true;
+
 			if (player.state == SUPER_MARIO) {
+				brick.break = true;
 				if (brick.active == true) {
 					this.breakBlockAudio.stop();
 					this.breakBlockAudio.play();

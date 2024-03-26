@@ -1,10 +1,9 @@
 
 
-function Star(x, y) {
+function Star(x, y, map) {
     var powerups = new Texture("imgs/powerups.png");
 
-    var tilesheet = new Texture("imgs/world1.png");
-    this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world1);
+    this.map = map;
 
     this.active = false;
     this.play = false;
