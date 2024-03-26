@@ -35,7 +35,7 @@ BPiece.prototype.update = function (deltaTime) {
             } else
                 this.sprite.y = this.startY - 32 * 2 * Math.sin(3.14159 * this.jumpAngle / 180);
         } else // falling by gravity
-            this.sprite.y += 4;
+            this.sprite.y += 6;
 
         if (this.right)
             this.sprite.x += 1;

@@ -3,20 +3,31 @@
 // Scene. Updates and draws a single scene of the game.
 
 function Scene() {
+	this.gameoverMusic = AudioFX('sounds/smb_gameover.wav');
+	this.stageClearMusic = AudioFX('sounds/smb_stage_clear.wav');
+	this.flagPoleMusic = AudioFX('sounds/smb_flagpole.wav');
+	//when mario transforms from supermario to minimario
+	this.pipeMusic = AudioFX('sounds/smb_pipe.wav');
+
+
 	// Loading texture to use in a TileMap
 	this.world = 1;
-
 	// Create tilemap
 	if (this.world == 1) {
 		var tilesheet = new Texture("imgs/world1.png");
 		this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world1);
+		this.music = AudioFX('sounds/main_theme.mp3', { loop: true });
+		this.hurryMusic = AudioFX('sounds/main_theme_hurry.mp3', { loop: true });
 	}
 	else if (this.world == 2) {
 		var tilesheet = new Texture("imgs/level2_00.png");//world02
 		this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world02);//world02
+		this.music = AudioFX('sounds/second_theme.mp3', { loop: true });
+		this.hurryMusic = AudioFX('sounds/second_theme_hurry.mp3', { loop: true });
 	}
 
 	// Create entities
+
 	//this.player = new SuperPlayer(150, 400, this.map);
 	this.player = new Player(150, 400, this.map);
 	this.statusCoin = new StatusCoin(265, 35);
@@ -50,6 +61,10 @@ Scene.prototype.update = function (deltaTime) {
 	if (!this.timeFreeze) {
 		// Keep track of time
 		this.gameTime += deltaTime;
+
+		if (interacted)
+			this.music.play();
+
 		// Update entities
 		this.player.update(deltaTime);
 		this.testSprite.update(deltaTime);
@@ -235,6 +250,10 @@ function drawStatusText(currentTime) {
 	if (restantTime < 0) {
 		restantTime = 0;
 		//TODO: when times up, do something
+	}
+	else if (restantTime == 100) {
+		//this.music.stop();
+		this.hurryMusic.play();
 	}
 	context.fillText('TIME', 21 * 32, 30);
 	context.fillText(restantTime + ' ', 21 * 32, 50);

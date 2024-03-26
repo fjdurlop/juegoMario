@@ -5,6 +5,7 @@ function Brick(x, y, map) {
 
     this.x = x;
     this.y = y;
+    this.first = 0;
 
     this.map = map;
     this.active = true;
@@ -12,6 +13,8 @@ function Brick(x, y, map) {
     this.break = false;
     this.startY = y;
     this.bobbingAngle = 0;
+
+    this.bumbMusic = AudioFX('sounds/smb_bump.wav');
 
     this.sprite = new Sprite(x, y, 32, 32, 5, brick);
 
@@ -25,6 +28,8 @@ function Brick(x, y, map) {
 Brick.prototype.update = function (deltaTime) {
     if (!this.break) {
         if (this.hit == true) {
+            this.bumbMusic.stop();
+            this.bumbMusic.play();
             this.sprite.y = this.startY - 10 * Math.sin(3.14159 * this.bobbingAngle / 180);
             this.bobbingAngle += 10;
             if (this.bobbingAngle > 180 - 13 && this.bobbingAngle < 180 + 13) {
@@ -39,7 +44,11 @@ Brick.prototype.update = function (deltaTime) {
     }
     else {
         this.active = false;
-        this.map.deleteBlock(this.x, this.y);
+        if (this.first != 0)
+            this.map.deleteBlock(this.x, this.y);
+        else
+            this.first++;
+
     }
     this.sprite.update(deltaTime);
 }

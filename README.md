@@ -53,14 +53,24 @@ XINLEI:
   + sprite del moneda y power-ups
   + bobbing del bloque
   - powerups moving up from queryblock
-  - destruccion brick
+  + destruccion brick
   + salto de moneda del queryBlock
   + star bounding
   + mushroom Super Mario
   + Colision entre ello
+
+  starmario => minimario or super mario
+  supermario => only from minimario
+
+  minimario => mushroom or star
+  supermario => star
+
 - completar mapa 1.0, no tener tantos bloques animativos, castillo con el flag
 
 * supermario left jump problem
 * the brick does not removed completly
+* 
 - ??:
+  where mario dies? to set mariodie music. same with stomp
+  how to stop "loop=true" music
   

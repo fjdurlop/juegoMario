@@ -14,6 +14,9 @@ const STAR_MARIO = 12;
 function Player(x, y, map) {
 	// Loading spritesheets
 	var mario = new Texture("imgs/mario.png");
+	this.jumpAudio = AudioFX('sounds/smb_jump-super.wav');
+	this.diedMusic = AudioFX('sounds/smb_mariodie.wav');
+	this.stompMusic = AudioFX('sounds/smb_stomp.wav');
 
 	this.lives = 1;
 	this.state = MINI_MARIO;
@@ -122,6 +125,7 @@ Player.prototype.update = function (deltaTime) {
 		this.sprite.setAnimation(MARIO_DIE);
 
 		if (this.start_dying == false) {
+
 			this.start_dying = true;
 			this.initial_dying = this.sprite.y;
 			//console.log("dying");
@@ -346,7 +350,9 @@ Player.prototype.update = function (deltaTime) {
 				if (this.sprite.currentAnimation == MARIO_JUMP_RIGHT)
 					this.sprite.setAnimation(MARIO_STAND_RIGHT);
 				// Check arrow up key. If pressed, jump.
-				if (keyboard[38] || this.just_pressed) {
+				if (keyboard[38] || keyboard[32] || this.just_pressed) {
+					this.jumpAudio.stop();
+					this.jumpAudio.play();
 					this.bJumping = true;
 					this.jumpAngle = 0;
 					this.startY = this.sprite.y;

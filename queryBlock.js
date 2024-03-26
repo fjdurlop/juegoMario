@@ -9,6 +9,8 @@ function QueryBlock(x, y, map) {
     this.startY = y;
     this.bobbingAngle = 0;
 
+    this.powerupAppearsAudio = AudioFX('sounds/smb_powerup_appears.wav');
+
     this.sprite = new Sprite(x, y, 32, 32, 5, blocks);
     this.coin = new MiniCoin(x + 10, y - 32);
     this.mushroom = new Mushroom(x, y - 32, map);
