@@ -32,6 +32,10 @@ Sprite.prototype.numAnimation = function () {
 	return this.animations.length;
 }
 
+Sprite.prototype.clearAnimation = function (animationId) {
+	this.animations[animationId] = [];
+}
+
 // Add a keyframe to animation animationId. Keyframe must be an array [sx, sy, sWidth, sHieght]
 // that defines the rectangle of the keyframe inside the spritesheet
 // (sx, sy) = Minimum coordinates of the rectangle
