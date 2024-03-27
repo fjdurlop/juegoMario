@@ -16,7 +16,8 @@ function SuperPlayer(x, y, map) {
 	this.lives = 1;
 	this.state = SUPER_MARIO;
 	this.transforming = false;
-
+	this.starTime = 0;
+	this.enableStarTime = false;
 
 	// Prepare Mario sprite & its animations
 	this.sprite = new Sprite(x, y, 32, 64, 10, mario);
@@ -83,6 +84,113 @@ var releaseDecel = 360;
 var maxWalkSpeed = 120;
 var maxRunSpeed = 240;
 
+SuperPlayer.prototype.setStarTime = function (deltaTime) {
+	var deltaSeconds = deltaTime / 1000;
+	if (this.enableStarTime) {
+		this.starTime += deltaSeconds;
+		console.log("delta time: " + deltaSeconds);
+		console.log("star time: " + this.starTime);
+		if (this.starTime >= 3)
+			this.changeStarAnimation(false);
+	}
+}
+
+SuperPlayer.prototype.changeStarAnimation = function (bStar) {
+	if (bStar) {
+		this.enableStarTime = true;
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(SMARIO_STAND_LEFT, [0, 3 * 64, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_STAND_LEFT, [0, 5 * 64, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_STAND_LEFT, [0, 7 * 64, 32, 64]);
+
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(SMARIO_STAND_RIGHT, [0, 64 * 2, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_STAND_RIGHT, [0, 64 * 4, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_STAND_RIGHT, [0, 64 * 6, 32, 64]);
+
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(SMARIO_WALK_LEFT, [32, 3 * 64, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_WALK_LEFT, [32, 5 * 64, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_WALK_LEFT, [32, 7 * 64, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_WALK_LEFT, [32 * 2, 3 * 64, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_WALK_LEFT, [32 * 2, 5 * 64, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_WALK_LEFT, [32 * 2, 7 * 64, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_WALK_LEFT, [32 * 3, 3 * 64, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_WALK_LEFT, [32 * 3, 5 * 64, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_WALK_LEFT, [32 * 3, 7 * 64, 32, 64]);
+
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(SMARIO_WALK_RIGHT, [32, 64 * 2, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_WALK_RIGHT, [32, 64 * 4, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_WALK_RIGHT, [32, 64 * 6, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_WALK_RIGHT, [32 * 2, 64 * 2, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_WALK_RIGHT, [32 * 2, 64 * 4, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_WALK_RIGHT, [32 * 2, 64 * 6, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_WALK_RIGHT, [32 * 3, 64 * 2, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_WALK_RIGHT, [32 * 3, 64 * 4, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_WALK_RIGHT, [32 * 3, 64 * 6, 32, 64]);
+
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(SMARIO_JUMP_LEFT, [32 * 5, 64 * 3, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_JUMP_LEFT, [32 * 5, 64 * 5, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_JUMP_LEFT, [32 * 5, 64 * 7, 32, 64]);
+
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(SMARIO_JUMP_RIGHT, [32 * 5, 64 * 2, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_JUMP_RIGHT, [32 * 5, 64 * 4, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_JUMP_RIGHT, [32 * 5, 64 * 6, 32, 64]);
+
+		//TODO: down key
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(SMARIO_DOWN_LEFT, [32 * 6, 64 * 3, 32, 32 + 16]);
+		this.sprite.addKeyframe(SMARIO_DOWN_LEFT, [32 * 6, 64 * 5, 32, 32 + 16]);
+		this.sprite.addKeyframe(SMARIO_DOWN_LEFT, [32 * 6, 64 * 7, 32, 32 + 16]);
+
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(SMARIO_DOWN_RIGHT, [32 * 6, 64 * 2, 32, 32 + 16]);
+		this.sprite.addKeyframe(SMARIO_DOWN_RIGHT, [32 * 6, 64 * 4, 32, 32 + 16]);
+		this.sprite.addKeyframe(SMARIO_DOWN_RIGHT, [32 * 6, 64 * 6, 32, 32 + 16]);
+
+		//TODO: animacion freno
+		this.sprite.setAnimation(SMARIO_STAND_RIGHT);
+	}
+	else {
+		this.enableStarTime = false;
+		this.starTime = 0;
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(SMARIO_STAND_LEFT, [0, 64, 32, 64]);
+
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(SMARIO_STAND_RIGHT, [0, 0, 32, 64]);
+
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(SMARIO_WALK_LEFT, [32, 64, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_WALK_LEFT, [32 * 2, 64, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_WALK_LEFT, [32 * 3, 64, 32, 64]);
+
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(SMARIO_WALK_RIGHT, [32, 0, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_WALK_RIGHT, [32 * 2, 0, 32, 64]);
+		this.sprite.addKeyframe(SMARIO_WALK_RIGHT, [32 * 3, 0, 32, 64]);
+
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(SMARIO_JUMP_LEFT, [32 * 5, 64, 32, 64]);
+
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(SMARIO_JUMP_RIGHT, [32 * 5, 0, 32, 64]);
+		//TODO: down key
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(SMARIO_DOWN_LEFT, [32 * 6, 64, 32, 32 + 16]);
+
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(SMARIO_DOWN_RIGHT, [32 * 6, 0, 32, 32 + 16]);
+
+		//TODO: animacion freno
+		this.sprite.setAnimation(SMARIO_STAND_RIGHT);
+	}
+}
+
+
 SuperPlayer.prototype.stateUpdate = function () {
 	if (this.transforming) {
 		//this.timeFreeze = true;
@@ -98,6 +206,7 @@ SuperPlayer.prototype.stateUpdate = function () {
 }
 
 SuperPlayer.prototype.update = function (deltaTime) {
+	this.setStarTime(deltaTime);
 
 	if (this.active) {
 		if (this.lives == 0) { // problem: always reinitiate to dying

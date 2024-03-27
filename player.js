@@ -101,6 +101,89 @@ var releaseDecel = 360;
 var maxWalkSpeed = 120;
 var maxRunSpeed = 240;
 
+Player.prototype.changeStarAnimation = function (bStar) {
+	if (bStar) {
+		this.sprite.addAnimation();
+		//this.sprite.addKeyframe(MARIO_STAND_LEFT, [96, 64, 32, 32]);
+		this.sprite.addKeyframe(MARIO_STAND_LEFT, [4 * 32, 5 * 32, 32, 32]);
+		this.sprite.addKeyframe(MARIO_STAND_LEFT, [4 * 32, 7 * 32, 32, 32]);
+		this.sprite.addKeyframe(MARIO_STAND_LEFT, [4 * 32, 9 * 32, 32, 32]);
+
+		this.sprite.addAnimation();
+		//this.sprite.addKeyframe(MARIO_STAND_RIGHT, [0, 0, 32, 32]);
+		this.sprite.addKeyframe(MARIO_STAND_RIGHT, [0, 4 * 32, 32, 32]);
+		this.sprite.addKeyframe(MARIO_STAND_RIGHT, [0, 6 * 32, 32, 32]);
+		this.sprite.addKeyframe(MARIO_STAND_RIGHT, [0, 8 * 32, 32, 32]);
+
+		this.sprite.addAnimation();
+		//this.sprite.addKeyframe(MARIO_WALK_LEFT, [64, 64, 32, 32]);
+		this.sprite.addKeyframe(MARIO_WALK_LEFT, [3 * 32, 5 * 32, 32, 32]);
+		this.sprite.addKeyframe(MARIO_WALK_LEFT, [3 * 32, 7 * 32, 32, 32]);
+		//this.sprite.addKeyframe(MARIO_WALK_LEFT, [32, 64, 32, 32]);
+		this.sprite.addKeyframe(MARIO_WALK_LEFT, [2 * 32, 5 * 32, 32, 32]);
+		this.sprite.addKeyframe(MARIO_WALK_LEFT, [2 * 32, 7 * 32, 32, 32]);
+		// this.sprite.addKeyframe(MARIO_WALK_LEFT, [0, 64, 32, 32]);
+		this.sprite.addKeyframe(MARIO_WALK_LEFT, [1 * 32, 5 * 32, 32, 32]);
+		this.sprite.addKeyframe(MARIO_WALK_LEFT, [1 * 32, 7 * 32, 32, 32]);
+
+		this.sprite.addAnimation();
+		//this.sprite.addKeyframe(MARIO_WALK_RIGHT, [32, 0, 32, 32]);
+		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [1 * 32, 4 * 32, 32, 32]);
+		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [1 * 32, 6 * 32, 32, 32]);
+		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [1 * 32, 8 * 32, 32, 32]);
+		// this.sprite.addKeyframe(MARIO_WALK_RIGHT, [64, 0, 32, 32]);
+		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [2 * 32, 4 * 32, 32, 32]);
+		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [2 * 32, 6 * 32, 32, 32]);
+		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [2 * 32, 8 * 32, 32, 32]);
+		// this.sprite.addKeyframe(MARIO_WALK_RIGHT, [96, 0, 32, 32]);
+		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [3 * 32, 4 * 32, 32, 32]);
+		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [3 * 32, 6 * 32, 32, 32]);
+		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [3 * 32, 8 * 32, 32, 32]);
+
+		this.sprite.addAnimation();
+		//this.sprite.addKeyframe(MARIO_JUMP_RIGHT, [0, 32, 32, 32]);
+		this.sprite.addKeyframe(MARIO_JUMP_RIGHT, [4 * 32, 4 * 32, 32, 32]);
+		this.sprite.addKeyframe(MARIO_JUMP_RIGHT, [4 * 32, 6 * 32, 32, 32]);
+		this.sprite.addKeyframe(MARIO_JUMP_RIGHT, [4 * 32, 8 * 32, 32, 32]);
+
+		this.sprite.addAnimation();
+		//this.sprite.addKeyframe(MARIO_JUMP_LEFT, [96, 96, 32, 32]);
+		this.sprite.addKeyframe(MARIO_JUMP_LEFT, [0, 5 * 32, 32, 32]);
+		this.sprite.addKeyframe(MARIO_JUMP_LEFT, [0, 7 * 32, 32, 32]);
+		this.sprite.addKeyframe(MARIO_JUMP_LEFT, [0, 9 * 32, 32, 32]);
+
+		this.sprite.setAnimation(MARIO_STAND_RIGHT);
+	}
+	else {
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(MARIO_STAND_LEFT, [96, 64, 32, 32]);
+
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(MARIO_STAND_RIGHT, [0, 0, 32, 32]);
+
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(MARIO_WALK_LEFT, [64, 64, 32, 32]);
+		this.sprite.addKeyframe(MARIO_WALK_LEFT, [32, 64, 32, 32]);
+		this.sprite.addKeyframe(MARIO_WALK_LEFT, [0, 64, 32, 32]);
+
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [32, 0, 32, 32]);
+		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [64, 0, 32, 32]);
+		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [96, 0, 32, 32]);
+
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(MARIO_JUMP_RIGHT, [0, 32, 32, 32]);
+
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(MARIO_JUMP_LEFT, [96, 96, 32, 32]);
+
+		this.sprite.addAnimation();
+		this.sprite.addKeyframe(MARIO_DIE, [32, 32, 32, 32]);
+
+		this.sprite.setAnimation(MARIO_STAND_RIGHT);
+	}
+}
+
 Player.prototype.stateUpdate = function () {
 	if (this.transforming) {
 		//this.timeFreeze = true;
