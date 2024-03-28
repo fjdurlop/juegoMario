@@ -12,28 +12,33 @@ function Scene() {
 	this.kickMusic = AudioFX('sounds/kick.wav');
 
 	// Loading texture to use in a TileMap
-	this.world = 1;
+	this.world = 2;
 	// Create tilemap
 	if (this.world == 1) {
 		var tilesheet = new Texture("imgs/world1.png");
 		this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world1);
 		this.music = AudioFX('sounds/main_theme.mp3', { loop: true });
 		this.hurryMusic = AudioFX('sounds/main_theme_hurry.mp3', { loop: true });
+		this.player = new Player(5*32, 150, this.map);
+		//this.player = new Player(105*32, 150, this.map); //test flags
+		this.flag = new Flag(111*32, 7*32);
 	}
 	else if (this.world == 2) {
-		var tilesheet = new Texture("imgs/level2_00.png");//world02
+		var tilesheet = new Texture("imgs/level2_01.png");//world02
 		this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world02);//world02
 		this.music = AudioFX('sounds/second_theme.mp3', { loop: true });
 		this.hurryMusic = AudioFX('sounds/second_theme_hurry.mp3', { loop: true });
+		this.player = new Player(8*32, 150, this.map);
+		this.flag = new Flag(143*32, 8*32);
 	}
 
 	// Create entities
 
-	this.player = new SuperPlayer(150, 400, this.map);
+	//this.player = new SuperPlayer(150, 400, this.map);
 	//this.player = new Player(150, 400, this.map);
 	this.player.active = true;
 	this.statusCoin = new StatusCoin(265, 35);
-	this.blockAnimation = new BlockAnimation(this.map);
+	this.blockAnimation = new BlockAnimation(this.map,this.world);
 
 	this.testSprite = new BPiece(100, 100);
 	this.testSprite.active = false;
@@ -42,7 +47,7 @@ function Scene() {
 	this.goomba_01 = new Goomba(29 * 32, 13 * 32, this.map);
 	this.goomba_01.active = true;
 	this.turtle = new Turtle(33 * 32, 12 * 32, this.map);
-
+	this.turtle.active = true;
 	//this.goombaKilled = false; // Goomba had killed mario
 	this.lose = false;
 	this.timeFreeze = false;
@@ -55,6 +60,10 @@ function Scene() {
 
 	this.scroll = 0;
 	this.d = 0;
+
+	this.points = 0;
+	this.coins = 0;
+	this.got_flag_points = false;
 }
 
 Scene.prototype.update = function (deltaTime) {
@@ -87,6 +96,8 @@ Scene.prototype.update = function (deltaTime) {
 		this.statusCoin.update(deltaTime);
 		this.goomba_01.update(deltaTime);
 		this.blockAnimation.update(deltaTime);
+		this.turtle.update(deltaTime);
+		this.flag.update(deltaTime);
 
 		if (this.player.dying) {
 			this.dyingTime += deltaTime;
@@ -119,8 +130,10 @@ Scene.prototype.update = function (deltaTime) {
 		if (this.player.collisionBox().intersect(this.goomba_01.collisionTop()) && this.goomba_01.killed_mario == false) {
 			if (this.player.sprite.y + this.player.sprite.height <= this.goomba_01.sprite.y + 5) {
 				//console.log("from above")
-				console.log("y: ", this.player.sprite.y, " h: ", this.player.sprite.height, " goomba ", this.goomba_01.sprite.y)
+				//console.log("y: ", this.player.sprite.y, " h: ", this.player.sprite.height, " goomba ", this.goomba_01.sprite.y)
 				this.player.just_pressed = true;
+				if(!this.goomba_01.killed) //add points before goomba_01.killed is true
+					this.points+=100;
 				this.goomba_01.killed = true;
 			}
 		}
@@ -197,7 +210,18 @@ Scene.prototype.update = function (deltaTime) {
 			}
 
 		}
-		this.blockAnimation.checkCollision(this.player);
+		var objects = this.blockAnimation.checkCollision(this.player);//returns coins and blocks collided
+		
+		this.coins = objects[0]
+		//console.log("objects:",objects)
+		var flag_points=0;
+		flag_points = this.flag.checkCollision(this.player);
+		if( flag_points != 0 && !this.got_flag_points){
+			this.got_flag_points = true;
+			//reached flag and return points
+			//console.log("scene: got flag_points:",flag_points);
+			this.points += flag_points;
+		}
 	}
 	else {
 		this.player.update(deltaTime);
@@ -224,7 +248,7 @@ function getDirection(marioX, marioWidth, turtleX, turtleWidth) {
 	}
 }
 
-function drawStatusText(currentTime) {
+Scene.prototype.drawStatusText = function (currentTime) {
 
 	// Load and set the font
 	//const pixelFont = new FontFace('PublicPixel', 'url(font/PublicPixel.ttf) format(ttf)');
@@ -238,11 +262,10 @@ function drawStatusText(currentTime) {
 	context.fillStyle = 'white';
 
 	// Draw status text on the canvas
-	var score = 8888;
 	context.fillText('MARIO', 2 * 32, 30);
-	context.fillText(String(score).padStart(6, '0'), 2 * 32, 50);
+	context.fillText(String(this.points).padStart(6, '0'), 2 * 32, 50);
 
-	context.fillText('X 00', 9 * 32, 50);
+	context.fillText('X '+String(this.coins), 9 * 32, 50);
 
 	context.fillText('WORLD', 15 * 32, 30);
 	context.fillText('1-1', 15 * 32, 50);
@@ -288,10 +311,12 @@ Scene.prototype.draw = function () {
 	if (this.lose == false || this.player.dying == true)
 		this.player.draw();
 	this.turtle.draw();
+	this.flag.draw();
+
 	context.restore();
 
 	//Draw status text
-	drawStatusText(this.gameTime);
+	this.drawStatusText(this.gameTime);
 	this.statusCoin.draw();
 
 }
