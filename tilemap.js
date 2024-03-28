@@ -8,8 +8,7 @@ function Tilemap(tilesheet, tileSize, blockGrid, basePos, map) {
 	this.map = map
 
 	this.tilesheet = tilesheet;
-
-	console.log("map level:",map.level)
+	//console.log("tilemap level:",map.level)
 }
 
 Tilemap.prototype.draw = function () {
@@ -121,11 +120,19 @@ Tilemap.prototype.collisionMoveDown = function (sprite) {
 	for (var x = x0; x <= x1; x++) {
 		if (this.map.layers[0].data[y * this.map.width + x] != 0) {
 			sprite.y = y * this.tileSize[1] - sprite.height + this.basePos[1];
-			return true;
+			//console.log("tilemap.js: y: ",y, " sprite.y: ", y * this.tileSize[1] - sprite.height + this.basePos[1]);
+			if(y == this.map.height){
+				//si cae al final
+				//console.log("tilemap.js: suelo!");
+				return [false,true];
+			}
+			else{
+				return [true,false];
+			}
 		}
 	}
 
-	return false;
+	return [false,false];
 }
 
 // var y: coordenada del TopBorder del collisionBox del sprite. Valor: [0,tileSizeY]

@@ -11,6 +11,8 @@ const MINI_MARIO = 10;
 const SUPER_MARIO = 11;
 const STAR_MARIO = 12;
 
+const MARIO_FLAG = 13;
+
 function Player(x, y, map) {
 	// Loading spritesheets
 	var mario = new Texture("imgs/mario.png");
@@ -64,6 +66,9 @@ function Player(x, y, map) {
 	this.sprite.addAnimation();
 	this.sprite.addKeyframe(MARIO_DIE, [32, 32, 32, 32]);
 
+	this.sprite.addAnimation();
+	this.sprite.addKeyframe(MARIO_FLAG, [32, 64, 32, 32]);
+
 	this.sprite.setAnimation(MARIO_STAND_RIGHT);
 
 	// Set tilemap for collisions
@@ -83,6 +88,8 @@ function Player(x, y, map) {
 	this.accelerating = false;
 	this.speed = 0;
 	this.pressing_timer = 0;
+	this.in_flag = false;
+	this.in_flag_finish = false;
 }
 
 var minWalkSpeed = 60;
@@ -142,6 +149,19 @@ Player.prototype.update = function (deltaTime) {
 		}
 	}
 
+	if (this.in_flag && !this.in_flag_finish) {
+		console.log("mario: IN_FLAG!!");
+		this.allow_keys = false;
+		this.sprite.setAnimation(MARIO_FLAG);
+		var collision_down = this.map.collisionMoveDown(this.sprite)
+		if(!collision_down[0]){
+			this.sprite.y += 2;
+		}else{
+			console.log("in_flag finished")
+			this.in_flag_finish =true;
+		}
+	}
+	
 	if (this.just_pressed) {
 		this.pressing_timer += deltaTime;
 		if (this.pressing_timer >= 500) {
@@ -331,7 +351,10 @@ Player.prototype.update = function (deltaTime) {
 				} else {
 					this.sprite.y = this.startY - 100 * Math.sin(3.14159 * this.jumpAngle / 180);
 					if (this.jumpAngle > 90) {
-						this.bJumping = !this.map.collisionMoveDown(this.sprite);
+						var collision_down = this.map.collisionMoveDown(this.sprite)
+						this.bJumping = !collision_down[0];
+						if (collision_down[1])
+							this.lives -=1;
 					}
 				}
 			}
@@ -339,7 +362,10 @@ Player.prototype.update = function (deltaTime) {
 		else {
 			// Move Mario so that it is affected by gravity
 			this.sprite.y += 4;
-			if (this.map.collisionMoveDown(this.sprite)) {
+			var collision_down = this.map.collisionMoveDown(this.sprite)
+			if (collision_down[1])
+				this.lives -=1;
+			if (collision_down[0]) {
 				//this.sprite.y -= 2;
 				if (this.sprite.currentAnimation == MARIO_JUMP_LEFT)
 					this.sprite.setAnimation(MARIO_STAND_LEFT);

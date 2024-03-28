@@ -4,23 +4,27 @@
 
 function Scene() {
 	// Loading texture to use in a TileMap
-	this.world = 2;
+	this.world = 1;
 
 	// Create tilemap
 	if (this.world == 1) {
 		var tilesheet = new Texture("imgs/world1.png");
 		this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world1);
+		this.player = new Player(150, 150, this.map);
+		this.flag = new Flag(143*32, 8*32);
 	}
 	else if (this.world == 2) {
-		var tilesheet = new Texture("imgs/level2_00.png");//world02
+		var tilesheet = new Texture("imgs/level2_01.png");//world02
 		this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world02);//world02
+		this.player = new Player(32*134, 150, this.map);
+		this.flag = new Flag(143*32, 8*32);
 	}
 
 	// Create entities
 	//this.player = new SuperPlayer(150, 400, this.map);
-	this.player = new Player(150, 150, this.map);
+
 	this.statusCoin = new StatusCoin(265, 35);
-	this.blockAnimation = new BlockAnimation(this.map);
+	this.blockAnimation = new BlockAnimation(this.map,this.world);
 
 	this.testSprite = new Mushroom(100, 100);
 	this.testSprite.active = false;
@@ -45,11 +49,12 @@ function Scene() {
 
 	this.points = 0;
 	this.coins = 0;
+	this.got_flag_points = false;
 }
 
 Scene.prototype.update = function (deltaTime) {
 	this.currentTime += deltaTime;
-	console.log("freeze:",this.timeFreeze)
+	//console.log("freeze:",this.timeFreeze)
 	if (!this.timeFreeze) {
 		// Keep track of time
 		this.gameTime += deltaTime;
@@ -72,6 +77,8 @@ Scene.prototype.update = function (deltaTime) {
 
 		this.statusCoin.update(deltaTime);
 		this.goomba_01.update(deltaTime);
+		this.turtle.update(deltaTime);
+		this.flag.update(deltaTime);
 		// update del blockAnimation
 		this.blockAnimation.update(deltaTime);
 
@@ -189,12 +196,21 @@ Scene.prototype.update = function (deltaTime) {
 		}
 		var objects = this.blockAnimation.checkCollision(this.player);
 		this.coins = objects[0]
-		console.log("objects:",objects)
+		//console.log("objects:",objects)
+		var flag_points=0;
+		flag_points = this.flag.checkCollision(this.player);
+		if( flag_points != 0 && !this.got_flag_points){
+			this.got_flag_points = true;
+			//reached flag and return points
+			//console.log("scene: got flag_points:",flag_points);
+			this.points += flag_points;
+		}
+
 	}
 	else {
 		this.player.update(deltaTime);
 	}
-	this.timeFreeze = this.player.timeFreeze;
+	//this.timeFreeze = this.player.timeFreeze;
 }
 
 function getDirection(marioX, marioWidth, turtleX, turtleWidth) {
@@ -276,6 +292,7 @@ Scene.prototype.draw = function () {
 	if (this.lose == false || this.player.dying == true)
 		this.player.draw();
 	this.turtle.draw();
+	this.flag.draw();
 	context.restore();
 
 	//Draw status text
