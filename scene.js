@@ -1,6 +1,9 @@
 
 
 // Scene. Updates and draws a single scene of the game.
+const COINT_POINTS = 100;
+const GOOMBA_POINTS = 200;
+const TURTLE_POINTS = 200;
 
 function Scene() {
 	this.gameoverMusic = AudioFX('sounds/smb_gameover.wav');
@@ -72,6 +75,8 @@ function Scene() {
 	this.nextScene = null;
 }
 
+
+
 Scene.prototype.update = function (deltaTime) {
 	this.currentTime += deltaTime;
 
@@ -139,7 +144,7 @@ Scene.prototype.update = function (deltaTime) {
 				//console.log("y: ", this.player.sprite.y, " h: ", this.player.sprite.height, " goomba ", this.goomba_01.sprite.y)
 				this.player.just_pressed = true;
 				if(!this.goomba_01.killed) //add points before goomba_01.killed is true
-					this.points+=200;
+					this.points+=GOOMBA_POINTS;
 				this.goomba_01.killed = true;
 			}
 		}
@@ -185,7 +190,7 @@ Scene.prototype.update = function (deltaTime) {
 					console.log("turtle:to pressed_static");
 					this.turtle.sprite.y -= 5;
 					if(!this.turtle.active) //add points before goomba_01.killed is true
-						this.points+=200;
+						this.points+=TURTLE_POINTS;
 					this.turtle.active = false;
 					
 				}
@@ -229,7 +234,10 @@ Scene.prototype.update = function (deltaTime) {
 		}
 		var objects = this.blockAnimation.checkCollision(this.player);//returns coins and blocks collided
 		
-		this.coins = objects[0]
+		var last_coins = this.coins;
+		this.coins = objects[0];
+		if(last_coins < this.coins)
+			this.points += (this.coins-last_coins)*COINT_POINTS;
 		//console.log("objects:",objects)
 		var flag_points=0;
 		flag_points = this.flag.checkCollision(this.player);
