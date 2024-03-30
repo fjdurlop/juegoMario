@@ -5,7 +5,7 @@ const COINT_POINTS = 100;
 const GOOMBA_POINTS = 200;
 const TURTLE_POINTS = 200;
 
-function Scene() {
+function Scene(level) {
 	this.gameoverMusic = AudioFX('sounds/smb_gameover.wav');
 	this.stageClearMusic = AudioFX('sounds/smb_stage_clear.wav');
 	this.flagPoleMusic = AudioFX('sounds/smb_flagpole.wav');
@@ -15,7 +15,7 @@ function Scene() {
 	this.kickMusic = AudioFX('sounds/kick.wav');
 
 	// Loading texture to use in a TileMap
-	this.world = 1;
+	this.world = level;
 	// Create tilemap
 	if (this.world == 1) {
 		var tilesheet = new Texture("imgs/world1.png");
@@ -256,6 +256,18 @@ Scene.prototype.update = function (deltaTime) {
 
 	// if(this.player.lives ==0 && this.player.dying)
 	// 	this.player.dying = true;
+	if (keyboard[49]){
+		console.log("Moving to level1()");
+		this.nextScene = 'level1';
+		this.music.stop();
+	}
+	// numbers 0-9 are 48-57
+	else if(keyboard[50]){
+		console.log("Moving to level2()");
+		this.nextScene = 'level2';
+		this.music.stop();
+	}
+
 	if(this.player.finish_dying){
 		this.nextScene = this.checkNextScene();
 	}
@@ -306,8 +318,10 @@ Scene.prototype.drawStatusText = function (currentTime) {
 
 	var restantTime = (400 - Math.floor(currentTime / 1000));
 	if (restantTime < 0) {
+		//gameover if time is over
 		restantTime = 0;
-		//TODO: when times up, do something
+		this.nextScene = this.checkNextScene();
+		this.player.lives = 0;
 	}
 	else if (restantTime == 100) {
 		//this.music.stop();
@@ -358,6 +372,7 @@ Scene.prototype.draw = function () {
 }
 
 Scene.prototype.checkNextScene = function () {
+	this.music.stop();
 	if(this.got_flag_points)
 		return 'finishLevel'
 	else if(this.player.lives == 0 && !this.player.dying){

@@ -48,20 +48,18 @@ Turtle.prototype.update = function update(deltaTime) {
                 // State: presed_moving
                 if (this.direction == 0) // LEFT
                 {
-                
-                    this.sprite.x -= 2;
+                    this.sprite.x -= 4;
                     if (this.map.collisionMoveLeft(this.sprite)) {
                         //this.counter += 1;
-                        this.sprite.x += 2;
+                        this.sprite.x += 4;
                         this.changeDirection();
                     }
                 }
                 else if (this.direction == 1) // RIGHT
                 {
-                    
-                    this.sprite.x += 2;
+                    this.sprite.x += 4;
                     if (this.map.collisionMoveRight(this.sprite)) {
-                        this.sprite.x -= 2;
+                        this.sprite.x -= 4;
                         this.direction = 0;
                     }
                 }

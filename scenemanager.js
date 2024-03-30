@@ -1,7 +1,9 @@
 // Scene Manager
 function SceneManager() {
     this.scenes = {
-        game: new Scene(),
+        game: new Scene(1),
+        level1: new Scene(1),
+        level2: new Scene(2),
         menu: new MenuScene(0),
         credits: new CreditsScene(),
         gameOver: new GameOverScene(last_points),
@@ -25,7 +27,15 @@ SceneManager.prototype.switchScene = function(sceneName) {
     //if (scene) {
     if(sceneName == 'game'){
         console.log("SceneManager to Scene()");
-        this.currentScene = new Scene()
+        this.currentScene = new Scene(1)
+    }
+    else if(sceneName == 'level1'){
+        console.log("SceneManager to Scene()");
+        this.currentScene = new Scene(1)
+    }
+    else if(sceneName == 'level2'){
+        console.log("SceneManager to Scene()");
+        this.currentScene = new Scene(2)
     }
     else if(sceneName == 'menu'){
         console.log("SceneManager to menu()");

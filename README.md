@@ -14,16 +14,16 @@ nivel 2.0:
 + ~~Poder destruir bloques en modo Super Mario *XINLEI*~~
 + ~~Monedas o power-ups en los bloques interrogante~~
 - Power-up: super seta(Super Mario) y estrella invencible(Star Mario, tiempo limitado) *XINLEI*
-- Recuento de puntuacion por las monedas, enemigos, etc  *PACO*
-- Superar el nivel en tiempo limitado. Alcanzar el flag al final del mapa. La altura alcanzada del flag determina el bonus en la puntuacion. *PACO*
-- Caer al vacio o al agua, muere Mario *PACO*
+- ~~Recuento de puntuacion por las monedas, enemigos, etc  *PACO*~~
+- ~~Superar el nivel en tiempo limitado. Alcanzar el flag al final del mapa. La altura alcanzada del flag determina el bonus en la puntuacion. *PACO*~~
+- ~~Caer al vacio o al agua, muere Mario *PACO*~~
 
 **Hacks:**
 - M para transformar en Super Mario y G para Star Mario  *XINLEI*
-- Teclas 1 y 2 para saltar a pantallas concretas. *PACO*
+- ~~Teclas 1 y 2 para saltar a pantallas concretas. *PACO*~~
 
 ### 4 PUNTOS DEL PROYECTO
-- 4 pantallas basicas: menú principal, jugar, instrucciones, creditos. *PACO* 
+- ~~4 pantallas basicas: menú principal, jugar, instrucciones, creditos. *PACO* ~~
 El menú ha de presentar als fantasmes, així com mostrar les puntuacions com es fa al Pacman original.
 - Sonido: música de fondo i efectos especiales.  *XINLEI*
 + ~~GUI: mostrant el nivell, vides, puntuació, i high-score(pantalla de transicion).~~
@@ -40,7 +40,7 @@ El menú ha de presentar als fantasmes, així com mostrar les puntuacions com es
 - Efecto para la transformación de Mario entre sus cuatro estados (Mario, Super Mario y Star Mario).
 - El movimiento de Mario se acelera. Entonces dirás que Mario no va siempre a la misma velocidad. Gana velocitat de forma progresiva
 cuando empiece a moverse y la pierda cuando el jugador quiera parar.
-- Animación en llegar a la bandera para finalizar el nivel.
+- ~~Animación en llegar a la bandera para finalizar el nivel.~~
 - Bonificación a la puntuación por tiempo restante al final del nivel.
 
 -----------------------------------
