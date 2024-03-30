@@ -22,26 +22,27 @@ function Scene(level) {
 		this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world1);
 		this.music = AudioFX('sounds/main_theme.mp3', { loop: true });
 		this.hurryMusic = AudioFX('sounds/main_theme_hurry.mp3', { loop: true });
-		this.player = new Player(10*32, 150, this.map);
+		this.player = new Player(10 * 32, 150, this.map);
 		//this.player = new Player(105*32, 150, this.map); //test flags
-		this.flag = new Flag(111*32, 7*32);
+		this.flag = new Flag(111 * 32, 7 * 32);
+		this.turtle = new Turtle(33 * 32, 12 * 32, this.map);
 	}
 	else if (this.world == 2) {
-		var tilesheet = new Texture("imgs/level2_01.png");//world02
-		this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world02);//world02
+		var tilesheet = new Texture("imgs/level2_01.png");
+		this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world02);
 		this.music = AudioFX('sounds/second_theme.mp3', { loop: true });
 		this.hurryMusic = AudioFX('sounds/second_theme_hurry.mp3', { loop: true });
-		this.player = new Player(5*32, 150, this.map);
-		this.flag = new Flag(143*32, 8*32);
+		this.player = new Player(5 * 32, 150, this.map);
+		this.flag = new Flag(143 * 32, 8 * 32);
+		this.turtle = new Turtle(93 * 32, 12 * 32, this.map);
 	}
 
 	// Create entities
 
 	//this.player = new SuperPlayer(150, 400, this.map);
-	//this.player = new Player(150, 400, this.map);
 	this.player.active = true;
 	this.statusCoin = new StatusCoin(265, 35);
-	this.blockAnimation = new BlockAnimation(this.map,this.world);
+	this.blockAnimation = new BlockAnimation(this.map, this.world);
 
 	this.testSprite = new BPiece(100, 100);
 	this.testSprite.active = false;
@@ -49,10 +50,6 @@ function Scene(level) {
 
 	this.goomba_01 = new Goomba(29 * 32, 13 * 32, this.map);
 	this.goomba_01.active = true;
-	if(this.world == 2)
-		this.turtle = new Turtle(93 * 32, 12 * 32, this.map);
-	else
-		this.turtle = new Turtle(33 * 32, 12 * 32, this.map);
 	this.turtle.active = true;
 	//this.goombaKilled = false; // Goomba had killed mario
 	this.lose = false;
@@ -143,8 +140,8 @@ Scene.prototype.update = function (deltaTime) {
 				//console.log("from above")
 				//console.log("y: ", this.player.sprite.y, " h: ", this.player.sprite.height, " goomba ", this.goomba_01.sprite.y)
 				this.player.just_pressed = true;
-				if(!this.goomba_01.killed) //add points before goomba_01.killed is true
-					this.points+=GOOMBA_POINTS;
+				if (!this.goomba_01.killed) //add points before goomba_01.killed is true
+					this.points += GOOMBA_POINTS;
 				this.goomba_01.killed = true;
 			}
 		}
@@ -189,10 +186,10 @@ Scene.prototype.update = function (deltaTime) {
 					this.turtle.pressed_static = true;
 					console.log("turtle:to pressed_static");
 					this.turtle.sprite.y -= 5;
-					if(!this.turtle.active) //add points before goomba_01.killed is true
-						this.points+=TURTLE_POINTS;
+					if (!this.turtle.active) //add points before goomba_01.killed is true
+						this.points += TURTLE_POINTS;
 					this.turtle.active = false;
-					
+
 				}
 				else {
 					this.player.sprite.y -= 2;
@@ -233,20 +230,19 @@ Scene.prototype.update = function (deltaTime) {
 
 		}
 		var objects = this.blockAnimation.checkCollision(this.player);//returns coins and blocks collided
-		
+
 		var last_coins = this.coins;
 		this.coins = objects[0];
-		if(last_coins < this.coins)
-			this.points += (this.coins-last_coins)*COINT_POINTS;
+		if (last_coins < this.coins)
+			this.points += (this.coins - last_coins) * COINT_POINTS;
 		//console.log("objects:",objects)
-		var flag_points=0;
+		var flag_points = 0;
 		flag_points = this.flag.checkCollision(this.player);
-		if( flag_points != 0 && !this.got_flag_points ){
+		if (flag_points != 0 && !this.got_flag_points) {
 			this.points += flag_points;
 			this.got_flag_points = true;
 			//reached flag and return points
 			//console.log("scene: got flag_points:",flag_points);
-
 		}
 	}
 	else {
@@ -256,22 +252,22 @@ Scene.prototype.update = function (deltaTime) {
 
 	// if(this.player.lives ==0 && this.player.dying)
 	// 	this.player.dying = true;
-	if (keyboard[49]){
+	if (keyboard[49]) {
 		console.log("Moving to level1()");
 		this.nextScene = 'level1';
 		this.music.stop();
 	}
 	// numbers 0-9 are 48-57
-	else if(keyboard[50]){
+	else if (keyboard[50]) {
 		console.log("Moving to level2()");
 		this.nextScene = 'level2';
 		this.music.stop();
 	}
 
-	if(this.player.finish_dying){
+	if (this.player.finish_dying) {
 		this.nextScene = this.checkNextScene();
 	}
-	else if(this.player.in_flag_finish)
+	else if (this.player.in_flag_finish)
 		this.nextScene = this.checkNextScene();
 }
 
@@ -311,7 +307,7 @@ Scene.prototype.drawStatusText = function (currentTime) {
 	context.fillText('MARIO', 2 * 32, 30);
 	context.fillText(String(this.points).padStart(6, '0'), 2 * 32, 50);
 
-	context.fillText('X '+String(this.coins), 9 * 32, 50);
+	context.fillText('X ' + String(this.coins), 9 * 32, 50);
 
 	context.fillText('WORLD', 15 * 32, 30);
 	context.fillText('1-1', 15 * 32, 50);
@@ -359,7 +355,7 @@ Scene.prototype.draw = function () {
 		this.goomba_01.draw();
 	if (this.lose == false || this.player.dying == true)
 		this.player.draw();
-	if(this.turtle.active)
+	if (this.turtle.active)
 		this.turtle.draw();
 	this.flag.draw();
 
@@ -373,9 +369,9 @@ Scene.prototype.draw = function () {
 
 Scene.prototype.checkNextScene = function () {
 	this.music.stop();
-	if(this.got_flag_points)
+	if (this.got_flag_points)
 		return 'finishLevel'
-	else if(this.player.lives == 0 && !this.player.dying){
+	else if (this.player.lives == 0 && !this.player.dying) {
 		return 'gameOver';
 	}
 }
