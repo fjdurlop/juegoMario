@@ -4,7 +4,8 @@
 const FRAME_RATE = 60;
 const TIME_PER_FRAME = 1000 / FRAME_RATE;
 
-var scene = new Scene();
+//var scene = new Scene();
+var sceneManager = new SceneManager();
 var previousTimestamp;
 var keyboard = [];
 var interacted;
@@ -46,12 +47,16 @@ function frameUpdate(timestamp) {
 
 	while (deltaTime > TIME_PER_FRAME) {
 		bUpdated = true;
-		scene.update(TIME_PER_FRAME);
+		//scene.update(TIME_PER_FRAME);
+		sceneManager.update(TIME_PER_FRAME);
+
 		previousTimestamp += TIME_PER_FRAME;
 		deltaTime = timestamp - previousTimestamp;
 	}
-	if (bUpdated)
-		scene.draw();
+	if (bUpdated){
+		//scene.draw();
+		sceneManager.draw();
+	}
 	window.requestAnimationFrame(frameUpdate)
 }
 
