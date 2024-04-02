@@ -125,8 +125,8 @@ BlockAnimation.prototype.checkCollision = function (player) {
 			//grow to Star Mario
 			player.state = STAR_MARIO;
 			player.transforming = true;
+			player.changeStarAnimation(true);
 		}
-
 	});
 
 	this.bricks.forEach(brick => {
