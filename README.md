@@ -81,4 +81,5 @@ XINLEI:
 - sonido
 - goomba
 - nivel 2 bricks
+- salta muchas veces cuando mata
   
