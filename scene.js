@@ -21,8 +21,9 @@ function Scene(level) {
 		var tilesheet = new Texture("imgs/world1.png");
 		this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world1);
 		this.music = AudioFX('sounds/main_theme.mp3', { loop: true });
-		this.hurryMusic = AudioFX('sounds/main_theme_hurry.mp3', { loop: true });
-		this.player = new Player(10 * 32, 150, this.map);
+		this.hurryMusic = AudioFX('sounds/main_theme_hurry.mp3');
+		//this.player = new Player(10 * 32, 150, this.map);
+		this.player = new SuperPlayer(150, 400, this.map);
 		//this.player = new Player(105*32, 150, this.map); //test flags
 		this.flag = new Flag(111 * 32, 7 * 32);
 		this.turtle = new Turtle(33 * 32, 12 * 32, this.map);
@@ -31,7 +32,7 @@ function Scene(level) {
 		var tilesheet = new Texture("imgs/level2_01.png");
 		this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world02);
 		this.music = AudioFX('sounds/second_theme.mp3', { loop: true });
-		this.hurryMusic = AudioFX('sounds/second_theme_hurry.mp3', { loop: true });
+		this.hurryMusic = AudioFX('sounds/second_theme_hurry.mp3');
 		this.player = new Player(5 * 32, 150, this.map);
 		this.flag = new Flag(143 * 32, 8 * 32);
 		this.turtle = new Turtle(93 * 32, 12 * 32, this.map);
@@ -71,8 +72,6 @@ function Scene(level) {
 	this.active = false;
 	this.nextScene = null;
 }
-
-
 
 Scene.prototype.update = function (deltaTime) {
 	this.currentTime += deltaTime;
@@ -310,7 +309,10 @@ Scene.prototype.drawStatusText = function (currentTime) {
 	context.fillText('X ' + String(this.coins), 9 * 32, 50);
 
 	context.fillText('WORLD', 15 * 32, 30);
-	context.fillText('1-1', 15 * 32, 50);
+	if (this.world == 1)
+		context.fillText('1-1', 15 * 32, 50);
+	else
+		context.fillText('2-1', 15 * 32, 50);
 
 	var restantTime = (400 - Math.floor(currentTime / 1000));
 	if (restantTime < 0) {
@@ -319,8 +321,8 @@ Scene.prototype.drawStatusText = function (currentTime) {
 		this.nextScene = this.checkNextScene();
 		this.player.lives = 0;
 	}
-	else if (restantTime == 100) {
-		//this.music.stop();
+	else if (restantTime == 395) {
+		this.music.stop();
 		this.hurryMusic.play();
 	}
 	context.fillText('TIME', 21 * 32, 30);

@@ -17,7 +17,6 @@ function SuperPlayer(x, y, map) {
 	this.state = SUPER_MARIO;
 	this.transforming = false;
 
-
 	// Prepare Mario sprite & its animations
 	this.sprite = new Sprite(x, y, 32, 64, 10, mario);
 
@@ -135,7 +134,7 @@ SuperPlayer.prototype.update = function (deltaTime) {
 			this.pressing_timer += deltaTime;
 			if (this.pressing_timer >= 500) {
 				//console.log("-----------------");
-				console.log("finish pressing");
+				//console.log("finish pressing");
 				this.just_pressed = false;
 				this.pressing_timer = 0;
 
@@ -144,7 +143,7 @@ SuperPlayer.prototype.update = function (deltaTime) {
 
 		//animation when mario dies
 		if (this.just_pressed) {
-			console.log("pressing!!");
+			//console.log("pressing!!");
 			// this.allow_keys = false;
 			// this.sprite.setAnimation(MARIO_DIE);
 			if (this.start_pressing == false) {
@@ -166,7 +165,7 @@ SuperPlayer.prototype.update = function (deltaTime) {
 				else {
 					//console.log("33")
 					this.sprite.y += 2;
-					console.log("finish pressing");
+					//console.log("finish pressing");
 					//this.just_pressed = false;
 				}
 			}

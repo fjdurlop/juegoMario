@@ -93,7 +93,7 @@ function Player(x, y, map) {
 	this.timeFreeze = false;
 
 	this.start_dying = false;
-	this.finish_dying =false;
+	this.finish_dying = false;
 	this.start_pressing = false;
 	this.accelerating = false;
 	this.speed = 0;
@@ -134,7 +134,7 @@ Player.prototype.update = function (deltaTime) {
 	if (this.active) {
 		if (this.lives == 0) { // problem: always reinitiate to dying
 			this.dying = true;
-			console.log("player: dying: ",this.dying);
+			//console.log("player: dying: ", this.dying);
 		}
 
 		//animation when mario dies
@@ -161,9 +161,9 @@ Player.prototype.update = function (deltaTime) {
 				}
 				else if (this.die_up == false) {
 					this.sprite.y += 2;
-					console.log("y: ",this.sprite.y);
-					if(this.sprite.y > 32*15){
-						console.log("finish_dying");
+					console.log("y: ", this.sprite.y);
+					if (this.sprite.y > 32 * 15) {
+						//console.log("finish_dying");
 						this.finish_dying = true;
 					}
 				}
@@ -176,11 +176,11 @@ Player.prototype.update = function (deltaTime) {
 			this.allow_keys = false;
 			this.sprite.setAnimation(MARIO_FLAG);
 			var collision_down = this.map.collisionMoveDown(this.sprite)
-			if(!collision_down[0]){
+			if (!collision_down[0]) {
 				this.sprite.y += 2;
-			}else{
-				console.log("in_flag finished")
-				this.in_flag_finish =true;
+			} else {
+				//console.log("in_flag finished")
+				this.in_flag_finish = true;
 			}
 		}
 
@@ -188,7 +188,7 @@ Player.prototype.update = function (deltaTime) {
 			this.pressing_timer += deltaTime;
 			if (this.pressing_timer >= 500) {
 				//console.log("-----------------");
-				console.log("finish pressing");
+				//console.log("finish pressing");
 				this.just_pressed = false;
 				this.pressing_timer = 0;
 
@@ -197,7 +197,7 @@ Player.prototype.update = function (deltaTime) {
 
 		//animation when mario dies
 		if (this.just_pressed) {
-			console.log("pressing!!");
+			//console.log("pressing!!");
 			// this.allow_keys = false;
 			// this.sprite.setAnimation(MARIO_DIE);
 			if (this.start_pressing == false) {
@@ -219,7 +219,7 @@ Player.prototype.update = function (deltaTime) {
 				else {
 					//console.log("33")
 					this.sprite.y += 2;
-					console.log("finish pressing");
+					//console.log("finish pressing");
 					//this.just_pressed = false;
 				}
 			}
@@ -376,7 +376,7 @@ Player.prototype.update = function (deltaTime) {
 							var collision_down = this.map.collisionMoveDown(this.sprite)
 							this.bJumping = !collision_down[0];
 							if (collision_down[1])
-								this.lives -=1;
+								this.lives -= 1;
 							//this.bJumping = !this.map.collisionMoveDown(this.sprite);
 						}
 					}
@@ -387,9 +387,9 @@ Player.prototype.update = function (deltaTime) {
 				this.sprite.y += 4;
 				var collision_down = this.map.collisionMoveDown(this.sprite)
 				if (collision_down[1])
-					this.lives -=1;
+					this.lives -= 1;
 				if (collision_down[0]) {
-				//if (this.map.collisionMoveDown(this.sprite)) {
+					//if (this.map.collisionMoveDown(this.sprite)) {
 					//this.sprite.y -= 2;
 					if (this.sprite.currentAnimation == MARIO_JUMP_LEFT)
 						this.sprite.setAnimation(MARIO_STAND_LEFT);
