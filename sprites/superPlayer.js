@@ -12,7 +12,8 @@ function SuperPlayer(x, y, map) {
 	// Loading spritesheets
 	var mario = new Texture("imgs/supermario.png");
 
-	this.active = false;
+	this.jumpAudio = AudioFX('sounds/smb_jump-super.wav');
+	this.active = true;
 	this.lives = 1;
 	this.state = SUPER_MARIO;
 	this.transforming = false;
@@ -24,8 +25,6 @@ function SuperPlayer(x, y, map) {
 
 	//TODO: super mario to minimario 
 	//	this.sprite.addAnimation();
-
-	//TODO:star mario animation
 
 	this.sprite.addAnimation();
 	this.sprite.addKeyframe(SMARIO_STAND_LEFT, [0, 64, 32, 64]);
@@ -44,16 +43,16 @@ function SuperPlayer(x, y, map) {
 	this.sprite.addKeyframe(SMARIO_WALK_RIGHT, [32 * 3, 0, 32, 64]);
 
 	this.sprite.addAnimation();
+	this.sprite.addKeyframe(SMARIO_JUMP_RIGHT, [32 * 5, 0, 32, 64]);
+
+	this.sprite.addAnimation();
 	this.sprite.addKeyframe(SMARIO_JUMP_LEFT, [32 * 5, 64, 32, 64]);
 
 	this.sprite.addAnimation();
-	this.sprite.addKeyframe(SMARIO_JUMP_RIGHT, [32 * 5, 0, 32, 64]);
-	//TODO: down key
-	this.sprite.addAnimation();
-	this.sprite.addKeyframe(SMARIO_DOWN_LEFT, [32 * 6, 64, 32, 32 + 16]);
+	this.sprite.addKeyframe(SMARIO_DOWN_RIGHT, [32 * 6, 0, 32, 32 + 16]);
 
 	this.sprite.addAnimation();
-	this.sprite.addKeyframe(SMARIO_DOWN_RIGHT, [32 * 6, 0, 32, 32 + 16]);
+	this.sprite.addKeyframe(SMARIO_DOWN_LEFT, [32 * 6, 64, 32, 32 + 16]);
 
 	//TODO: animacion freno
 	this.sprite.setAnimation(SMARIO_STAND_RIGHT);
@@ -88,9 +87,8 @@ SuperPlayer.prototype.setStarTime = function (deltaTime) {
 	var deltaSeconds = deltaTime / 1000;
 	if (this.enableStarTime) {
 		this.starTime += deltaSeconds;
-		console.log("delta time: " + deltaSeconds);
 		console.log("star time: " + this.starTime);
-		if (this.starTime >= 3)
+		if (this.starTime >= 15)
 			this.changeStarAnimation(false);
 	}
 }
@@ -140,7 +138,6 @@ SuperPlayer.prototype.changeStarAnimation = function (bStar) {
 		this.sprite.addKeyframe(SMARIO_JUMP_RIGHT, [32 * 5, 64 * 4, 32, 64]);
 		this.sprite.addKeyframe(SMARIO_JUMP_RIGHT, [32 * 5, 64 * 6, 32, 64]);
 
-		//TODO: down key
 		this.sprite.clearAnimation(SMARIO_DOWN_LEFT);
 		this.sprite.addKeyframe(SMARIO_DOWN_LEFT, [32 * 6, 64 * 3, 32, 32 + 16]);
 		this.sprite.addKeyframe(SMARIO_DOWN_LEFT, [32 * 6, 64 * 5, 32, 32 + 16]);
@@ -178,7 +175,7 @@ SuperPlayer.prototype.changeStarAnimation = function (bStar) {
 
 		this.sprite.clearAnimation(SMARIO_JUMP_RIGHT);
 		this.sprite.addKeyframe(SMARIO_JUMP_RIGHT, [32 * 5, 0, 32, 64]);
-		//TODO: down key
+
 		this.sprite.clearAnimation(SMARIO_DOWN_LEFT);
 		this.sprite.addKeyframe(SMARIO_DOWN_LEFT, [32 * 6, 64, 32, 32 + 16]);
 
@@ -191,14 +188,11 @@ SuperPlayer.prototype.changeStarAnimation = function (bStar) {
 }
 
 
-SuperPlayer.prototype.stateUpdate = function () {
+SuperPlayer.prototype.changeState = function () {//xinlei: can be deleted
 	if (this.transforming) {
 		//this.timeFreeze = true;
 		if (this.state == MINI_MARIO) {
 			//this.sprite.setAnimation(SUPER_MARIO);
-		}
-		else if (this.state == STAR_MARIO) {
-
 		}
 	}
 	//this.transforming = false;
@@ -365,9 +359,9 @@ SuperPlayer.prototype.update = function (deltaTime) {
 				}
 			}
 			else if (keyboard[40]) {
-				if (this.speed > 0)
+				if ((this.speed >= 0 && this.sprite.currentAnimation == SMARIO_WALK_RIGHT) || this.sprite.currentAnimation == SMARIO_STAND_RIGHT)
 					this.sprite.setAnimation(SMARIO_DOWN_RIGHT);
-				else
+				else if ((this.speed <= 0 && this.sprite.currentAnimation == SMARIO_WALK_LEFT) || this.sprite.currentAnimation == SMARIO_STAND_LEFT)
 					this.sprite.setAnimation(SMARIO_DOWN_LEFT);
 			}
 			else { //stand
@@ -432,7 +426,7 @@ SuperPlayer.prototype.update = function (deltaTime) {
 					} else {
 						this.sprite.y = this.startY - (32 * 4 + 2) * Math.sin(3.14159 * this.jumpAngle / 180);
 						if (this.jumpAngle > 90) {
-							this.bJumping = !this.map.collisionMoveDown(this.sprite);
+							this.bJumping = !this.map.collisionMoveDown(this.sprite)[0];
 						}
 					}
 				}
@@ -440,7 +434,7 @@ SuperPlayer.prototype.update = function (deltaTime) {
 			else {
 				// Move Mario so that it is affected by gravity
 				this.sprite.y += 4;
-				if (this.map.collisionMoveDown(this.sprite)) {
+				if (this.map.collisionMoveDown(this.sprite)[0]) {
 					//this.sprite.y -= 2;
 					if (this.sprite.currentAnimation == SMARIO_JUMP_LEFT)
 						this.sprite.setAnimation(SMARIO_STAND_LEFT);
@@ -448,6 +442,8 @@ SuperPlayer.prototype.update = function (deltaTime) {
 						this.sprite.setAnimation(SMARIO_STAND_RIGHT);
 					// Check arrow up key. If pressed, jump.
 					if (keyboard[38] || keyboard[32] || this.just_pressed) {
+						this.jumpAudio.stop();
+						this.jumpAudio.play();
 						this.bJumping = true;
 						this.jumpAngle = 0;
 						this.startY = this.sprite.y;
@@ -465,7 +461,7 @@ SuperPlayer.prototype.draw = function () {
 }
 
 SuperPlayer.prototype.collisionBox = function () {
-	var box = new Box(this.sprite.x + 2, this.sprite.y, this.sprite.x + this.sprite.width - 4, this.sprite.y + this.sprite.height);
+	var box = new Box(this.sprite.x, this.sprite.y, this.sprite.x + this.sprite.width, this.sprite.y + this.sprite.height);
 	return box;
 }
 

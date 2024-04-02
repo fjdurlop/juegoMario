@@ -22,8 +22,8 @@ function Scene(level) {
 		this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world1);
 		this.music = AudioFX('sounds/main_theme.mp3', { loop: true });
 		this.hurryMusic = AudioFX('sounds/main_theme_hurry.mp3');
-		//this.player = new Player(10 * 32, 150, this.map);
-		this.player = new SuperPlayer(150, 400, this.map);
+		this.player = new Player(10 * 32, 400, this.map);
+		//this.player = new SuperPlayer(150, 400, this.map);
 		//this.player = new Player(105*32, 150, this.map); //test flags
 		this.flag = new Flag(111 * 32, 7 * 32);
 		this.turtle = new Turtle(33 * 32, 12 * 32, this.map);
@@ -33,7 +33,7 @@ function Scene(level) {
 		this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world02);
 		this.music = AudioFX('sounds/second_theme.mp3', { loop: true });
 		this.hurryMusic = AudioFX('sounds/second_theme_hurry.mp3');
-		this.player = new Player(5 * 32, 150, this.map);
+		this.player = new Player(5 * 32, 400, this.map);
 		this.flag = new Flag(143 * 32, 8 * 32);
 		this.turtle = new Turtle(93 * 32, 12 * 32, this.map);
 	}
@@ -84,8 +84,9 @@ Scene.prototype.update = function (deltaTime) {
 			this.music.play();
 
 		// Update entities
-		this.player.update(deltaTime);
+		this.player.active && this.player.update(deltaTime);
 		this.testSprite.update(deltaTime);
+
 
 		if (this.player.sprite.x <= this.d + 400 && this.player.sprite.x > this.d) {
 			this.scroll = this.d;
@@ -226,7 +227,6 @@ Scene.prototype.update = function (deltaTime) {
 				this.turtle.pressed_moving = true;
 				console.log("turtle2: to moving");
 			}
-
 		}
 		var objects = this.blockAnimation.checkCollision(this.player);//returns coins and blocks collided
 
@@ -243,9 +243,22 @@ Scene.prototype.update = function (deltaTime) {
 			//reached flag and return points
 			//console.log("scene: got flag_points:",flag_points);
 		}
+
+		if (this.player.transforming) {
+			if (this.player.state == MINI_MARIO) {
+				this.player.active = false;
+				this.player = new Player(this.player.sprite.x, this.player.sprite.y + 32, this.map);
+			}
+			else if (this.player.state == SUPER_MARIO) {
+				this.player.active = false;
+				this.player = new SuperPlayer(this.player.sprite.x, this.player.sprite.y - 32, this.map);
+			}
+		}
+
 	}
 	else {
 		this.player.update(deltaTime);
+
 	}
 	this.timeFreeze = this.player.timeFreeze;
 
@@ -321,13 +334,13 @@ Scene.prototype.drawStatusText = function (currentTime) {
 		this.nextScene = this.checkNextScene();
 		this.player.lives = 0;
 	}
-	else if (restantTime == 395) {
+	else if (restantTime < 100) {
 		this.music.stop();
 		this.hurryMusic.play();
 	}
+
 	context.fillText('TIME', 21 * 32, 30);
 	context.fillText(restantTime + ' ', 21 * 32, 50);
-
 }
 
 Scene.prototype.draw = function () {

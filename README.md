@@ -47,32 +47,20 @@ cuando empiece a moverse y la pierda cuando el jugador quiera parar.
 XINLEI:
 
 *Layer[2]: query block(2), ladrillo(3), coins(36)... static sprites*
-- Sonido
 
-- Monedas o power-ups en los bloques interrogante
-  + sprite del moneda y power-ups
-  + bobbing del bloque
-  - powerups moving up from queryblock
-  + destruccion brick
-  + salto de moneda del queryBlock
-  + star bounding
-  + mushroom Super Mario
-  + Colision entre ello
+- powerups moving up from queryblock
+- supermario does not die, remove animation of dying
 
-  starmario => from minimario or super mario
-  supermario => only from minimario
+starmario => from minimario or super mario
+supermario => only from minimario
 
-  minimario => mushroom or star
-  supermario => star
+minimario => mushroom or star
+supermario => star
 
-- completar mapa 1.0, no tener tantos bloques animativos, castillo con el flag
-
-* supermario left jump problem
-* 
 - ??:
-  where mario dies? to set mariodie music. same with stomp
-  how to stop "loop=true" music?
-  -animation of star mario ???
+not downkey on supermario when downkey is released
+- collision top to blocks should be more narrow, mario cant pass through jumping to a 1 space block(design bug)
+when star mode mario kills all enemys by touch
 
 
   Paco

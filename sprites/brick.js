@@ -1,5 +1,3 @@
-
-
 function Brick(x, y, map) {
     var brick = new Texture("imgs/blocks.png");
 

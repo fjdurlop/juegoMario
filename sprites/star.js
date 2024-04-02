@@ -40,20 +40,20 @@ Star.prototype.update = function (deltaTime) {
                 } else {
                     this.sprite.y = this.startY - 100 * Math.sin(3.14159 * this.jumpAngle / 180);
                     if (this.jumpAngle > 90)
-                        this.jumping = !this.map.collisionMoveDown(this.sprite);
+                        this.jumping = !this.map.collisionMoveDown(this.sprite)[0];
                 }
             }
         }
         else {
             this.sprite.y += 4;
-            if (this.map.collisionMoveDown(this.sprite)) {
+            if (this.map.collisionMoveDown(this.sprite)[0]) {
                 this.jumping = true;
                 this.jumpAngle = 0;
                 this.startY = this.sprite.y;
             }
         }
         this.sprite.y += 2;
-        if (!this.map.collisionMoveUp(this.sprite) && !this.map.collisionMoveDown(this.sprite)) {
+        if (!this.map.collisionMoveUp(this.sprite) && !this.map.collisionMoveDown(this.sprite)[0]) {
             if (this.right) {
                 this.sprite.x += 2;
                 if (this.map.collisionMoveRight(this.sprite)) {

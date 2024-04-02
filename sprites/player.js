@@ -9,7 +9,6 @@ const MARIO_DIE = 6;
 
 const MINI_MARIO = 10;
 const SUPER_MARIO = 11;
-const STAR_MARIO = 12;
 
 const MARIO_FLAG = 13;
 
@@ -24,14 +23,10 @@ function Player(x, y, map) {
 	this.lives = 1;
 	this.state = MINI_MARIO;
 	this.transforming = false;
-	this.supermario = new SuperPlayer(x, y + 32, map);
+	// this.supermario = new SuperPlayer(x, y + 32, map);
 
 	// Prepare Mario sprite & its animations
 	this.sprite = new Sprite(x, y, 32, 32, 5, mario);
-
-	//TODO:star mario animation
-	// this.sprite.addAnimation();
-	// this.sprite.addKeyframe(STAR_MARIO, []);
 
 	//miniMario to superMario
 	//this.sprite.addAnimation();
@@ -76,7 +71,7 @@ function Player(x, y, map) {
 	this.sprite.addKeyframe(MARIO_DIE, [32, 32, 32, 32]);
 
 	this.sprite.addAnimation();
-	this.sprite.addKeyframe(MARIO_FLAG, [32, 64, 32, 32]);
+	this.sprite.addKeyframe(MARIO_FLAG, [32, 64, 32, 32]);//xinlei: si no funciona, puede ser pq array_animations[MARIOF_FLAG] no existe
 
 	this.sprite.setAnimation(MARIO_STAND_RIGHT);
 
@@ -111,51 +106,41 @@ var maxRunSpeed = 240;
 
 Player.prototype.changeStarAnimation = function (bStar) {
 	if (bStar) {
-		this.sprite.addAnimation();
-		//this.sprite.addKeyframe(MARIO_STAND_LEFT, [96, 64, 32, 32]);
+		this.sprite.clearAnimation(MARIO_STAND_LEFT);
 		this.sprite.addKeyframe(MARIO_STAND_LEFT, [4 * 32, 5 * 32, 32, 32]);
 		this.sprite.addKeyframe(MARIO_STAND_LEFT, [4 * 32, 7 * 32, 32, 32]);
 		this.sprite.addKeyframe(MARIO_STAND_LEFT, [4 * 32, 9 * 32, 32, 32]);
 
-		this.sprite.addAnimation();
-		//this.sprite.addKeyframe(MARIO_STAND_RIGHT, [0, 0, 32, 32]);
+		this.sprite.clearAnimation(MARIO_STAND_RIGHT);
 		this.sprite.addKeyframe(MARIO_STAND_RIGHT, [0, 4 * 32, 32, 32]);
 		this.sprite.addKeyframe(MARIO_STAND_RIGHT, [0, 6 * 32, 32, 32]);
 		this.sprite.addKeyframe(MARIO_STAND_RIGHT, [0, 8 * 32, 32, 32]);
 
-		this.sprite.addAnimation();
-		//this.sprite.addKeyframe(MARIO_WALK_LEFT, [64, 64, 32, 32]);
+		this.sprite.clearAnimation(MARIO_WALK_LEFT);
 		this.sprite.addKeyframe(MARIO_WALK_LEFT, [3 * 32, 5 * 32, 32, 32]);
 		this.sprite.addKeyframe(MARIO_WALK_LEFT, [3 * 32, 7 * 32, 32, 32]);
-		//this.sprite.addKeyframe(MARIO_WALK_LEFT, [32, 64, 32, 32]);
 		this.sprite.addKeyframe(MARIO_WALK_LEFT, [2 * 32, 5 * 32, 32, 32]);
 		this.sprite.addKeyframe(MARIO_WALK_LEFT, [2 * 32, 7 * 32, 32, 32]);
-		// this.sprite.addKeyframe(MARIO_WALK_LEFT, [0, 64, 32, 32]);
 		this.sprite.addKeyframe(MARIO_WALK_LEFT, [1 * 32, 5 * 32, 32, 32]);
 		this.sprite.addKeyframe(MARIO_WALK_LEFT, [1 * 32, 7 * 32, 32, 32]);
 
-		this.sprite.addAnimation();
-		//this.sprite.addKeyframe(MARIO_WALK_RIGHT, [32, 0, 32, 32]);
+		this.sprite.clearAnimation(MARIO_WALK_RIGHT);
 		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [1 * 32, 4 * 32, 32, 32]);
 		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [1 * 32, 6 * 32, 32, 32]);
 		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [1 * 32, 8 * 32, 32, 32]);
-		// this.sprite.addKeyframe(MARIO_WALK_RIGHT, [64, 0, 32, 32]);
 		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [2 * 32, 4 * 32, 32, 32]);
 		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [2 * 32, 6 * 32, 32, 32]);
 		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [2 * 32, 8 * 32, 32, 32]);
-		// this.sprite.addKeyframe(MARIO_WALK_RIGHT, [96, 0, 32, 32]);
 		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [3 * 32, 4 * 32, 32, 32]);
 		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [3 * 32, 6 * 32, 32, 32]);
 		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [3 * 32, 8 * 32, 32, 32]);
 
-		this.sprite.addAnimation();
-		//this.sprite.addKeyframe(MARIO_JUMP_RIGHT, [0, 32, 32, 32]);
+		this.sprite.clearAnimation(MARIO_JUMP_RIGHT);
 		this.sprite.addKeyframe(MARIO_JUMP_RIGHT, [4 * 32, 4 * 32, 32, 32]);
 		this.sprite.addKeyframe(MARIO_JUMP_RIGHT, [4 * 32, 6 * 32, 32, 32]);
 		this.sprite.addKeyframe(MARIO_JUMP_RIGHT, [4 * 32, 8 * 32, 32, 32]);
 
-		this.sprite.addAnimation();
-		//this.sprite.addKeyframe(MARIO_JUMP_LEFT, [96, 96, 32, 32]);
+		this.sprite.clearAnimation(MARIO_JUMP_LEFT);
 		this.sprite.addKeyframe(MARIO_JUMP_LEFT, [0, 5 * 32, 32, 32]);
 		this.sprite.addKeyframe(MARIO_JUMP_LEFT, [0, 7 * 32, 32, 32]);
 		this.sprite.addKeyframe(MARIO_JUMP_LEFT, [0, 9 * 32, 32, 32]);
@@ -163,56 +148,51 @@ Player.prototype.changeStarAnimation = function (bStar) {
 		this.sprite.setAnimation(MARIO_STAND_RIGHT);
 	}
 	else {
-		this.sprite.addAnimation();
+		this.sprite.clearAnimation(MARIO_STAND_LEFT);
 		this.sprite.addKeyframe(MARIO_STAND_LEFT, [96, 64, 32, 32]);
 
-		this.sprite.addAnimation();
+		this.sprite.clearAnimation(MARIO_STAND_RIGHT);
 		this.sprite.addKeyframe(MARIO_STAND_RIGHT, [0, 0, 32, 32]);
 
-		this.sprite.addAnimation();
+		this.sprite.clearAnimation(MARIO_WALK_LEFT);
 		this.sprite.addKeyframe(MARIO_WALK_LEFT, [64, 64, 32, 32]);
 		this.sprite.addKeyframe(MARIO_WALK_LEFT, [32, 64, 32, 32]);
 		this.sprite.addKeyframe(MARIO_WALK_LEFT, [0, 64, 32, 32]);
 
-		this.sprite.addAnimation();
+		this.sprite.clearAnimation(MARIO_WALK_RIGHT);
 		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [32, 0, 32, 32]);
 		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [64, 0, 32, 32]);
 		this.sprite.addKeyframe(MARIO_WALK_RIGHT, [96, 0, 32, 32]);
 
-		this.sprite.addAnimation();
+		this.sprite.clearAnimation(MARIO_JUMP_RIGHT);
 		this.sprite.addKeyframe(MARIO_JUMP_RIGHT, [0, 32, 32, 32]);
 
-		this.sprite.addAnimation();
+		this.sprite.clearAnimation(MARIO_JUMP_LEFT);
 		this.sprite.addKeyframe(MARIO_JUMP_LEFT, [96, 96, 32, 32]);
-
-		this.sprite.addAnimation();
-		this.sprite.addKeyframe(MARIO_DIE, [32, 32, 32, 32]);
 
 		this.sprite.setAnimation(MARIO_STAND_RIGHT);
 	}
 }
 
-Player.prototype.stateUpdate = function () {
+Player.prototype.changeState = function () {//xinlei: can be deleted
 	if (this.transforming) {
 		//this.timeFreeze = true;
 		if (this.state == SUPER_MARIO) {
 			//this.sprite.setAnimation(SUPER_MARIO);
-			this.active = false;
-			this.supermario.active = true;
-			this.supermario.sprite.x = this.sprite.x;
-			this.supermario.sprite.y = this.sprite.y - 32;
-			this.supermario.bJumping = false;
+			//this.active = false;
+			// this.supermario.active = true;
+			// this.supermario.sprite.x = this.sprite.x;
+			// this.supermario.sprite.y = this.sprite.y - 32;
+			// this.supermario.bJumping = false;
 		}
-		else if (this.state == STAR_MARIO) {
 
-		}
 	}
-	this.transforming = false;
+	//this.transforming = false;
 	//this.timeFreeze = false;
 }
 
 Player.prototype.update = function (deltaTime) {
-	this.supermario.update();
+	// this.supermario.update();
 
 	if (this.active) {
 		if (this.lives == 0) { // problem: always reinitiate to dying
@@ -458,7 +438,7 @@ Player.prototype.update = function (deltaTime) {
 						if (this.jumpAngle > 90) {
 							var collision_down = this.map.collisionMoveDown(this.sprite)
 							this.bJumping = !collision_down[0];
-							if (collision_down[1])
+							if (collision_down[1])//xinlei: no hace falta, para jumpAngle >90  no es posible caer al vacio
 								this.lives -= 1;
 							//this.bJumping = !this.map.collisionMoveDown(this.sprite);
 						}
@@ -495,7 +475,7 @@ Player.prototype.update = function (deltaTime) {
 }
 
 Player.prototype.draw = function () {
-	this.supermario.draw();
+	// this.supermario.draw();
 	this.active && this.sprite.draw();
 }
 

@@ -36,14 +36,14 @@ BlockAnimation.prototype.update = function (deltaTime) {
 //OPosX, OPosY: origen de coordenadas del mapa
 //tileX, tileY: el ancho y alto del tile en pixels
 //layer: json de la capa 3
-BlockAnimation.prototype.createCoinAnimation = function (OPosX, OPosY, tileX, tileY, layer){
+BlockAnimation.prototype.createCoinAnimation = function (OPosX, OPosY, tileX, tileY, layer) {
 	var coins = [];
 	for (var j = 0, pos = 0; j < layer.height; j++)
 		for (var i = 0; i < layer.width; i++, pos++) {
 			var tiledId = layer.data[pos];
-			if (tiledId == 36 && this.level ==1) //11 in world2
+			if (tiledId == 36 && this.level == 1) //11 in world2
 				coins.push(new Coin(OPosX + i * tileX, OPosY + j * tileY));
-			if (tiledId == 11 && this.level ==2) //11 in world2
+			if (tiledId == 11 && this.level == 2) //11 in world2
 				coins.push(new Coin(OPosX + i * tileX, OPosY + j * tileY));
 		}
 	return coins;
@@ -54,9 +54,9 @@ BlockAnimation.prototype.createQueryBlockAnimation = function (OPosX, OPosY, til
 	for (var j = 0, pos = 0; j < layer.height; j++)
 		for (var i = 0; i < layer.width; i++, pos++) {
 			var tiledId = layer.data[pos];
-			if (tiledId == 2 && this.level ==1)
+			if (tiledId == 2 && this.level == 1)
 				queryblock.push(new QueryBlock(OPosX + i * tileX, OPosY + j * tileY, this.map));
-			if (tiledId == 5 && this.level ==2)
+			if (tiledId == 5 && this.level == 2)
 				queryblock.push(new QueryBlock(OPosX + i * tileX, OPosY + j * tileY, this.map));
 		}
 	return queryblock;
@@ -67,9 +67,9 @@ BlockAnimation.prototype.createBrickAnimation = function (OPosX, OPosY, tileX, t
 	for (var j = 0, pos = 0; j < layer.height; j++)
 		for (var i = 0; i < layer.width; i++, pos++) {
 			var tiledId = layer.data[pos];
-			if (tiledId == 3 && this.level ==1)
+			if (tiledId == 3 && this.level == 1)
 				bricks.push(new Brick(OPosX + i * tileX, OPosY + j * tileY, this.map));
-			if (tiledId == 8 && this.level ==2)
+			if (tiledId == 8 && this.level == 2)
 				bricks.push(new Brick(OPosX + i * tileX, OPosY + j * tileY, this.map));
 		}
 	return bricks;
@@ -90,7 +90,7 @@ BlockAnimation.prototype.checkCollision = function (player) {
 	var playerColisionTop = player.collisionTop();
 
 	this.coins.forEach(coin => {
-		if (playerColisionBox.intersect(coin.collisionBox()) && coin.active){
+		if (playerColisionBox.intersect(coin.collisionBox()) && coin.active) {
 			coin.active = false;
 			if (!coin.once) {
 				this.coinColisionAudio.stop();
@@ -117,14 +117,11 @@ BlockAnimation.prototype.checkCollision = function (player) {
 			//grow to Super Mario
 			player.state = SUPER_MARIO;
 			player.transforming = true;
-			player.stateUpdate();
 		}
 		if (queryblock.star.active && playerColisionBox.intersect(queryblock.star.collisionBox())) {
 			queryblock.star.active = false;
 			queryblock.star.play = false;
 			//grow to Star Mario
-			player.state = STAR_MARIO;
-			player.transforming = true;
 			player.changeStarAnimation(true);
 		}
 	});
@@ -136,6 +133,7 @@ BlockAnimation.prototype.checkCollision = function (player) {
 			if (player.state == SUPER_MARIO) {
 				brick.break = true;
 				if (brick.active == true) {
+					this.num_broken_blocks += 1;
 					this.breakBlockAudio.stop();
 					this.breakBlockAudio.play();
 
