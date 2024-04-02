@@ -73,4 +73,12 @@ XINLEI:
   where mario dies? to set mariodie music. same with stomp
   how to stop "loop=true" music?
   -animation of star mario ???
+
+
+  Paco
+- Tiempo
+- numero instrucciones
+- sonido
+- goomba
+- nivel 2 bricks
   
