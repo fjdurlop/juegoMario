@@ -28,7 +28,7 @@ El menú ha de presentar als fantasmes, així com mostrar les puntuacions com es
 - Sonido: música de fondo i efectos especiales.  *XINLEI*
 + ~~GUI: mostrant el nivell, vides, puntuació, i high-score(pantalla de transicion).~~
 - Memòria(GDD)
-
+https://docs.google.com/document/d/10eiicPImLPJPbREJAjmn4xrVsIjQAVRsjFW8wDxG-f4/edit?usp=drive_link
 
 ## POLISH SUPER MARIO BROS NES
 - Pausa antes de empezar.
@@ -37,7 +37,7 @@ El menú ha de presentar als fantasmes, així com mostrar les puntuacions com es
 - Animaciones de Mario: llorar, saltar, morir.
 - Animaciones de los enemigos, tanto para matar como para morir.
 - Sprites que aparecen sobre Mario indicando la puntuación conseguida.
-- Efecto para la transformación de Mario entre sus cuatro estados (Mario, Super Mario y Star Mario). *XINLEI*
+- ~~Efecto para la transformación de Mario entre sus cuatro estados (Mario, Super Mario y Star Mario).~~ *XINLEI*
 - El movimiento de Mario se acelera. Entonces dirás que Mario no va siempre a la misma velocidad. Gana velocitat de forma progresiva
 cuando empiece a moverse y la pierda cuando el jugador quiera parar.
 - ~~Animación en llegar a la bandera para finalizar el nivel.~~

@@ -14,7 +14,7 @@ const SUPER_MARIO = 11;
 const MARIO_FLAG = 13;
 
 const STAR_TIME = 10; //seconds
-const TRANSFORM_TIME = 2 //seconds
+const TRANSFORM_TIME = 1 //seconds
 
 function Player(x, y, map) {
 	// Loading spritesheets
