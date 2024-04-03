@@ -11,8 +11,6 @@ function BlockAnimation(map, level) {
 	this.coinColisionAudio = AudioFX('sounds/smb_coin.wav');
 	this.breakBlockAudio = AudioFX('sounds/smb_breakblock.wav');
 	this.powerupAudio = AudioFX('sounds/smb_powerup.wav');
-	//TODO: star time audio
-
 }
 
 BlockAnimation.prototype.update = function (deltaTime) {
@@ -59,7 +57,7 @@ BlockAnimation.prototype.createQueryBlockAnimation = function (OPosX, OPosY, til
 			if (tiledId == 2 && this.level == 1) {
 				block = new QueryBlock(OPosX + i * tileX, OPosY + j * tileY, this.map);
 				queryblock.push(block);
-				if ((i == 22 && j == 9) || (i == 24 && j == 5)) {
+				if ((i == 22 && j == 9) || (i == 24 && j == 5) || (i == 58 && j == 9)) {
 					block.powerups = 1;
 				}
 			}
@@ -111,10 +109,10 @@ BlockAnimation.prototype.checkCollision = function (player) {
 
 	this.queryblock.forEach(queryblock => {
 		if (player.state == SUPER_MARIO && queryblock.powerups == 1) {
-			queryblock.powerups = 2;//star
+			queryblock.powerups = 2;	//star
 		}
 		else if (player.state == MINI_MARIO && queryblock.powerups == 2) {
-			queryblock.powerups = 1;//mushroom
+			queryblock.powerups = 1;	//mushroom
 		}
 
 		if (playerColisionTop.intersect(queryblock.collisionDown())) {

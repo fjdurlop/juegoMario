@@ -49,15 +49,7 @@ XINLEI:
 *Layer[2]: query block(2), ladrillo(3), coins(36)... static sprites*
 
 - powerups moving up from queryblock
-- supermario does not die, remove animation of dying
-
-starmario => from minimario or super mario
-supermario => only from minimario
-
-minimario => mushroom or star
-supermario => star
-
-SEARCH "TODO"
+- probar supermario to minimario
 
 - ??:
 - collision top to blocks should be more narrow, mario cant pass through jumping to a 1 space block(design bug)
@@ -65,7 +57,8 @@ SEARCH "TODO"
 - when star mode mario kills all enemys by touch
 - supermario's game over
 - when game over, turn off the main theme and turn on gameover sound
-
+- take flag feature for supermario
+- supermario does not die, he transforms to minimario -> remove animation of dying
 
   Paco
 - Tiempo

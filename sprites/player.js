@@ -6,17 +6,20 @@ const MARIO_WALK_RIGHT = 3;
 const MARIO_JUMP_RIGHT = 4;
 const MARIO_JUMP_LEFT = 5;
 const MARIO_DIE = 6;
+const MARIO_TRANSFORM = 0;
 
 const MINI_MARIO = 10;
 const SUPER_MARIO = 11;
 
 const MARIO_FLAG = 13;
 
-const STAR_TIME = 10;
+const STAR_TIME = 10; //seconds
+const TRANSFORM_TIME = 2 //seconds
 
 function Player(x, y, map) {
 	// Loading spritesheets
 	var mario = new Texture("imgs/mario.png");
+	var supermario = new Texture("imgs/supermario.png");
 	this.jumpAudio = AudioFX('sounds/smb_jump-super.wav');
 	this.diedMusic = AudioFX('sounds/smb_mariodie.wav');
 	this.stompMusic = AudioFX('sounds/smb_stomp.wav');
@@ -28,28 +31,13 @@ function Player(x, y, map) {
 	this.lives = 1;
 	this.state = MINI_MARIO;
 	this.transforming = false;
+	this.Btransform = false;
+	this.transformTime = 0;
 	this.starTime = 0;
 	this.enableStarTime = false;
 
 	// Prepare Mario sprite & its animations
 	this.sprite = new Sprite(x, y, 32, 32, 5, mario);
-
-	//miniMario to superMario
-	//this.sprite.addAnimation();
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 6 * 32, 32, 32]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 7 * 32, 32, 48]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 6 * 32, 32, 32]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 7 * 32, 32, 48]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 6 * 32, 32, 32]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 7 * 32, 32, 48]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 4 * 32, 32, 32 * 2]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 7 * 32, 32, 48]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 4 * 32, 32, 32 * 2]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 7 * 32, 32, 48]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 6 * 32, 32, 32]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 7 * 32, 32, 48]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 4 * 32, 32, 32 * 2]);
-	// this.sprite.addKeyframe(SUPER_MARIO, [0, 4 * 32, 32, 32 * 2]);
 
 	this.sprite.addAnimation();
 	this.sprite.addKeyframe(MARIO_STAND_LEFT, [96, 64, 32, 32]);
@@ -79,6 +67,25 @@ function Player(x, y, map) {
 	this.sprite.addAnimation();
 	this.sprite.addKeyframe(MARIO_FLAG, [32, 64, 32, 32]);//xinlei: si no funciona, puede ser pq array_animations[MARIOF_FLAG] no existe, OVERFLOW
 
+	this.transformSprite = new Sprite(x, y - 32, 32, 64, 7, supermario);
+	this.transformSpriteActive = false;
+	//miniMario to superMario
+	this.transformSprite.addAnimation();//add slot number 0
+	this.transformSprite.addKeyframe(MARIO_TRANSFORM, [32, 64 * 8, 32, 64]);//s
+	this.transformSprite.addKeyframe(MARIO_TRANSFORM, [0, 64 * 8, 32, 64]);//m
+	this.transformSprite.addKeyframe(MARIO_TRANSFORM, [32, 64 * 8, 32, 64]);//s
+	this.transformSprite.addKeyframe(MARIO_TRANSFORM, [0, 64 * 8, 32, 64]);//m
+	this.transformSprite.addKeyframe(MARIO_TRANSFORM, [32, 64 * 8, 32, 32]);//s
+	this.transformSprite.addKeyframe(MARIO_TRANSFORM, [0, 64 * 8, 32, 64]);//m
+	this.transformSprite.addKeyframe(MARIO_TRANSFORM, [0, 0, 32, 64]);//b
+	// this.sprite.addKeyframe(MARIO_TRANSFORM, [0, 7 * 32, 32, 48]);//m
+	// this.sprite.addKeyframe(MARIO_TRANSFORM, [0, 4 * 32, 32, 32 * 2]);//b
+	// this.sprite.addKeyframe(MARIO_TRANSFORM, [0, 7 * 32, 32, 48]);//m
+	// this.sprite.addKeyframe(MARIO_TRANSFORM, [0, 6 * 32, 32, 32]);//s
+	// this.sprite.addKeyframe(MARIO_TRANSFORM, [0, 7 * 32, 32, 48]);//m
+	// this.sprite.addKeyframe(MARIO_TRANSFORM, [0, 4 * 32, 32, 32 * 2]);//b
+	// this.sprite.addKeyframe(MARIO_TRANSFORM, [0, 4 * 32, 32, 32 * 2]);//b
+	this.transformSprite.setAnimation(MARIO_TRANSFORM);
 	this.sprite.setAnimation(MARIO_STAND_RIGHT);
 
 	// Set tilemap for collisions
@@ -110,6 +117,16 @@ var releaseDecel = 360;
 var maxWalkSpeed = 120;
 var maxRunSpeed = 240;
 
+
+Player.prototype.transformAnimation = function () {
+	this.timeFreeze = true;
+	this.transformSpriteActive = true;
+	this.active = false;
+	this.transformSprite.x = this.sprite.x;
+	this.transformSprite.y = this.sprite.y - 32;
+	this.transforming = false;
+}
+
 Player.prototype.setStarTime = function (deltaTime) {
 	var deltaSeconds = deltaTime / 1000;
 	if (this.enableStarTime) {
@@ -117,6 +134,17 @@ Player.prototype.setStarTime = function (deltaTime) {
 		console.log("star time: " + this.starTime);
 		if (this.starTime >= STAR_TIME)
 			this.changeStarAnimation(false);
+	}
+}
+
+Player.prototype.setFreezeTime = function (deltaTime) {
+	var deltaSeconds = deltaTime / 1000;
+	this.transformTime += deltaSeconds;
+	console.log("transform time: " + this.transformTime);
+	if (this.transformTime >= TRANSFORM_TIME) {	//transform time
+		this.timeFreeze = false;
+		this.Btransform = true;
+		this.transformSpriteActive = false;
 	}
 }
 
@@ -195,8 +223,13 @@ Player.prototype.changeStarAnimation = function (bStar) {
 	}
 }
 
-
 Player.prototype.update = function (deltaTime) {
+	this.setStarTime(deltaTime);
+
+	if (this.timeFreeze) {
+		this.setFreezeTime(deltaTime);
+	}
+	this.transformSpriteActive && this.transformSprite.update(deltaTime);
 
 	if (this.active) {
 		if (this.lives == 0) { // problem: always reinitiate to dying
@@ -479,8 +512,8 @@ Player.prototype.update = function (deltaTime) {
 }
 
 Player.prototype.draw = function () {
-	// this.supermario.draw();
 	this.active && this.sprite.draw();
+	this.transformSpriteActive && this.transformSprite.draw();
 }
 
 Player.prototype.collisionBox = function () {

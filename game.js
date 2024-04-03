@@ -53,7 +53,7 @@ function frameUpdate(timestamp) {
 		previousTimestamp += TIME_PER_FRAME;
 		deltaTime = timestamp - previousTimestamp;
 	}
-	if (bUpdated){
+	if (bUpdated) {
 		//scene.draw();
 		sceneManager.draw();
 	}

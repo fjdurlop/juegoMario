@@ -250,7 +250,10 @@ Scene.prototype.update = function (deltaTime) {
 			//console.log("scene: got flag_points:",flag_points);
 		}
 
-		if (this.player.transforming) {
+		if (this.player.transforming)
+			this.player.transformAnimation();
+
+		if (this.player.Btransform) {
 			if (this.player.state == MINI_MARIO) {
 				this.player.active = false;
 				this.player = new Player(this.player.sprite.x, this.player.sprite.y + 32, this.map);
@@ -259,13 +262,10 @@ Scene.prototype.update = function (deltaTime) {
 				this.player.active = false;
 				this.player = new SuperPlayer(this.player.sprite.x, this.player.sprite.y - 32, this.map);
 			}
-
 		}
-
 	}
 	else {
 		this.player.update(deltaTime);
-
 	}
 	this.timeFreeze = this.player.timeFreeze;
 
@@ -386,7 +386,6 @@ Scene.prototype.draw = function () {
 	//Draw status text
 	this.drawStatusText(this.gameTime);
 	this.statusCoin.draw();
-
 }
 
 Scene.prototype.checkNextScene = function () {
