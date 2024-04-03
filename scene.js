@@ -86,6 +86,12 @@ Scene.prototype.update = function (deltaTime) {
 		// Update entities
 		this.player.active && this.player.update(deltaTime);
 		this.testSprite.update(deltaTime);
+		if (this.player.enableStarTime) {
+			this.music.stop();
+		}
+		else {
+			this.music.play();
+		}
 
 
 		if (this.player.sprite.x <= this.d + 400 && this.player.sprite.x > this.d) {

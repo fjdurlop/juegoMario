@@ -21,6 +21,9 @@ function Player(x, y, map) {
 	this.diedMusic = AudioFX('sounds/smb_mariodie.wav');
 	this.stompMusic = AudioFX('sounds/smb_stomp.wav');
 
+	this.starTheme = AudioFX('sounds/starTheme.mp3');
+
+
 	this.active = true;
 	this.lives = 1;
 	this.state = MINI_MARIO;
@@ -119,6 +122,7 @@ Player.prototype.setStarTime = function (deltaTime) {
 
 Player.prototype.changeStarAnimation = function (bStar) {
 	if (bStar) {
+		this.starTheme.play();
 		this.enableStarTime = true;
 		this.sprite.clearAnimation(MARIO_STAND_LEFT);
 		this.sprite.addKeyframe(MARIO_STAND_LEFT, [4 * 32, 5 * 32, 32, 32]);
@@ -162,6 +166,7 @@ Player.prototype.changeStarAnimation = function (bStar) {
 		this.sprite.setAnimation(MARIO_STAND_RIGHT);
 	}
 	else {
+		this.starTheme.stop();
 		this.enableStarTime = false;
 		this.starTime = 0;
 		this.sprite.clearAnimation(MARIO_STAND_LEFT);

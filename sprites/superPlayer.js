@@ -13,6 +13,8 @@ function SuperPlayer(x, y, map) {
 	var mario = new Texture("imgs/supermario.png");
 
 	this.jumpAudio = AudioFX('sounds/smb_jump-super.wav');
+	this.starTheme = AudioFX('sounds/starTheme.mp3');
+
 	this.active = true;
 	this.lives = 1;
 	this.state = SUPER_MARIO;
@@ -95,6 +97,7 @@ SuperPlayer.prototype.setStarTime = function (deltaTime) {
 
 SuperPlayer.prototype.changeStarAnimation = function (bStar) {
 	if (bStar) {
+		this.starTheme.play();
 		this.enableStarTime = true;
 		this.sprite.clearAnimation(SMARIO_STAND_LEFT);
 		this.sprite.addKeyframe(SMARIO_STAND_LEFT, [0, 3 * 64, 32, 64]);
@@ -152,6 +155,7 @@ SuperPlayer.prototype.changeStarAnimation = function (bStar) {
 		this.sprite.setAnimation(SMARIO_STAND_RIGHT);
 	}
 	else {
+		this.starTheme.stop();
 		this.enableStarTime = false;
 		this.starTime = 0;
 		this.sprite.clearAnimation(SMARIO_STAND_LEFT);
@@ -185,18 +189,6 @@ SuperPlayer.prototype.changeStarAnimation = function (bStar) {
 		//TODO: animacion freno
 		this.sprite.setAnimation(SMARIO_STAND_RIGHT);
 	}
-}
-
-
-SuperPlayer.prototype.changeState = function () {//xinlei: can be deleted
-	if (this.transforming) {
-		//this.timeFreeze = true;
-		if (this.state == MINI_MARIO) {
-			//this.sprite.setAnimation(SUPER_MARIO);
-		}
-	}
-	//this.transforming = false;
-	//this.timeFreeze = false;
 }
 
 SuperPlayer.prototype.update = function (deltaTime) {
