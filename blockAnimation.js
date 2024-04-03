@@ -11,6 +11,7 @@ function BlockAnimation(map, level) {
 	this.coinColisionAudio = AudioFX('sounds/smb_coin.wav');
 	this.breakBlockAudio = AudioFX('sounds/smb_breakblock.wav');
 	this.powerupAudio = AudioFX('sounds/smb_powerup.wav');
+	//TODO: star time audio
 
 }
 
@@ -51,11 +52,17 @@ BlockAnimation.prototype.createCoinAnimation = function (OPosX, OPosY, tileX, ti
 
 BlockAnimation.prototype.createQueryBlockAnimation = function (OPosX, OPosY, tileX, tileY, layer) {
 	var queryblock = [];
+	var block;
 	for (var j = 0, pos = 0; j < layer.height; j++)
 		for (var i = 0; i < layer.width; i++, pos++) {
 			var tiledId = layer.data[pos];
-			if (tiledId == 2 && this.level == 1)
-				queryblock.push(new QueryBlock(OPosX + i * tileX, OPosY + j * tileY, this.map));
+			if (tiledId == 2 && this.level == 1) {
+				block = new QueryBlock(OPosX + i * tileX, OPosY + j * tileY, this.map);
+				queryblock.push(block);
+				if ((i == 22 && j == 9) || (i == 24 && j == 5)) {
+					block.powerups = 1;
+				}
+			}
 			if (tiledId == 5 && this.level == 2)
 				queryblock.push(new QueryBlock(OPosX + i * tileX, OPosY + j * tileY, this.map));
 		}
@@ -70,7 +77,7 @@ BlockAnimation.prototype.createBrickAnimation = function (OPosX, OPosY, tileX, t
 			if (tiledId == 3 && this.level == 1)
 				bricks.push(new Brick(OPosX + i * tileX, OPosY + j * tileY, this.map));
 			if (tiledId == 8 && this.level == 2)
-				bricks.push(new Brick(OPosX + i * tileX, OPosY + j * tileY, this.map));
+				bricks.push(new Brick(OPosX + i * tileX, OPosY + j * tileY, this.map));//xinlei: dentro de esta clase uso la imagen del brick overworld
 		}
 	return bricks;
 }
@@ -103,22 +110,30 @@ BlockAnimation.prototype.checkCollision = function (player) {
 	});
 
 	this.queryblock.forEach(queryblock => {
+		if (player.state == SUPER_MARIO && queryblock.powerups == 1) {
+			queryblock.powerups = 2;//star
+		}
+		else if (player.state == MINI_MARIO && queryblock.powerups == 2) {
+			queryblock.powerups = 1;//mushroom
+		}
+
 		if (playerColisionTop.intersect(queryblock.collisionDown())) {
-			if (queryblock.sprite.currentAnimation == 0) {
+			if (queryblock.sprite.currentAnimation == 0 && queryblock.powerups == 0) {
 				this.coinColisionAudio.stop();
 				this.coinColisionAudio.play();
 			}
 			queryblock.hit = true;
 		}
 		//TODO: this.mushroom object exists ?
-		if (queryblock.mushroom.active && playerColisionBox.intersect(queryblock.mushroom.collisionBox())) {
+		if ((queryblock.mushroom.active && playerColisionBox.intersect(queryblock.mushroom.collisionBox()) || keyboard[77]) && player.state != SUPER_MARIO) {//M key
 			queryblock.mushroom.active = false;
 			queryblock.mushroom.play = false;
 			//grow to Super Mario
+			this.powerupAudio.play();
 			player.state = SUPER_MARIO;
 			player.transforming = true;
 		}
-		if (queryblock.star.active && playerColisionBox.intersect(queryblock.star.collisionBox())) {
+		if (queryblock.star.active && playerColisionBox.intersect(queryblock.star.collisionBox()) || keyboard[71]) {//G key
 			queryblock.star.active = false;
 			queryblock.star.play = false;
 			//grow to Star Mario

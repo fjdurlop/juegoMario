@@ -12,6 +12,7 @@ function QueryBlock(x, y, map) {
     this.powerupAppearsAudio = AudioFX('sounds/smb_powerup_appears.wav');
 
     this.sprite = new Sprite(x, y, 32, 32, 5, blocks);
+    this.powerups = 0;//if 0 minicoin, 1 only mushroom, 2 only star
     this.coin = new MiniCoin(x + 10, y - 32);
     this.mushroom = new Mushroom(x, y - 32, map);
     this.star = new Star(x, y - 32, map);
@@ -36,10 +37,20 @@ QueryBlock.prototype.update = function (deltaTime) {
 
     if (this.hit == true) {
         this.sprite.setAnimation(1);
-        //reproducir UNA animacion de coin o mushroom o star
-        this.coin.play = true;
-        this.mushroom.play = true;
-        this.star.play = true;
+        switch (this.powerups) {
+            case 1:
+                this.mushroom.play = true;
+                this.powerupAppearsAudio.play();
+                break;
+            case 2:
+                this.star.play = true;
+                this.powerupAppearsAudio.play();
+                break;
+            default:
+                this.coin.play = true;
+                break;
+        }
+        //reproducir animacion de coin o mushroom o star
         this.sprite.y = this.startY - 10 * Math.sin(3.14159 * this.bobbingAngle / 180);
         this.bobbingAngle += 10;
         if (this.bobbingAngle > 180) {

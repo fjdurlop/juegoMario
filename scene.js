@@ -253,6 +253,7 @@ Scene.prototype.update = function (deltaTime) {
 				this.player.active = false;
 				this.player = new SuperPlayer(this.player.sprite.x, this.player.sprite.y - 32, this.map);
 			}
+
 		}
 
 	}
@@ -334,7 +335,7 @@ Scene.prototype.drawStatusText = function (currentTime) {
 		this.nextScene = this.checkNextScene();
 		this.player.lives = 0;
 	}
-	else if (restantTime < 100) {
+	else if (restantTime < 100 && interacted) {
 		this.music.stop();
 		this.hurryMusic.play();
 	}

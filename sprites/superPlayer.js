@@ -88,7 +88,7 @@ SuperPlayer.prototype.setStarTime = function (deltaTime) {
 	if (this.enableStarTime) {
 		this.starTime += deltaSeconds;
 		console.log("star time: " + this.starTime);
-		if (this.starTime >= 15)
+		if (this.starTime >= STAR_TIME)
 			this.changeStarAnimation(false);
 	}
 }
@@ -434,7 +434,10 @@ SuperPlayer.prototype.update = function (deltaTime) {
 			else {
 				// Move Mario so that it is affected by gravity
 				this.sprite.y += 4;
-				if (this.map.collisionMoveDown(this.sprite)[0]) {
+				var collision_down = this.map.collisionMoveDown(this.sprite)
+				if (collision_down[1])
+					this.lives -= 1;
+				if (collision_down[0]) {
 					//this.sprite.y -= 2;
 					if (this.sprite.currentAnimation == SMARIO_JUMP_LEFT)
 						this.sprite.setAnimation(SMARIO_STAND_LEFT);

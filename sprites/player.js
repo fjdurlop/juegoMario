@@ -12,6 +12,8 @@ const SUPER_MARIO = 11;
 
 const MARIO_FLAG = 13;
 
+const STAR_TIME = 10;
+
 function Player(x, y, map) {
 	// Loading spritesheets
 	var mario = new Texture("imgs/mario.png");
@@ -23,7 +25,8 @@ function Player(x, y, map) {
 	this.lives = 1;
 	this.state = MINI_MARIO;
 	this.transforming = false;
-	// this.supermario = new SuperPlayer(x, y + 32, map);
+	this.starTime = 0;
+	this.enableStarTime = false;
 
 	// Prepare Mario sprite & its animations
 	this.sprite = new Sprite(x, y, 32, 32, 5, mario);
@@ -71,7 +74,7 @@ function Player(x, y, map) {
 	this.sprite.addKeyframe(MARIO_DIE, [32, 32, 32, 32]);
 
 	this.sprite.addAnimation();
-	this.sprite.addKeyframe(MARIO_FLAG, [32, 64, 32, 32]);//xinlei: si no funciona, puede ser pq array_animations[MARIOF_FLAG] no existe
+	this.sprite.addKeyframe(MARIO_FLAG, [32, 64, 32, 32]);//xinlei: si no funciona, puede ser pq array_animations[MARIOF_FLAG] no existe, OVERFLOW
 
 	this.sprite.setAnimation(MARIO_STAND_RIGHT);
 
@@ -104,8 +107,19 @@ var releaseDecel = 360;
 var maxWalkSpeed = 120;
 var maxRunSpeed = 240;
 
+Player.prototype.setStarTime = function (deltaTime) {
+	var deltaSeconds = deltaTime / 1000;
+	if (this.enableStarTime) {
+		this.starTime += deltaSeconds;
+		console.log("star time: " + this.starTime);
+		if (this.starTime >= STAR_TIME)
+			this.changeStarAnimation(false);
+	}
+}
+
 Player.prototype.changeStarAnimation = function (bStar) {
 	if (bStar) {
+		this.enableStarTime = true;
 		this.sprite.clearAnimation(MARIO_STAND_LEFT);
 		this.sprite.addKeyframe(MARIO_STAND_LEFT, [4 * 32, 5 * 32, 32, 32]);
 		this.sprite.addKeyframe(MARIO_STAND_LEFT, [4 * 32, 7 * 32, 32, 32]);
@@ -148,6 +162,8 @@ Player.prototype.changeStarAnimation = function (bStar) {
 		this.sprite.setAnimation(MARIO_STAND_RIGHT);
 	}
 	else {
+		this.enableStarTime = false;
+		this.starTime = 0;
 		this.sprite.clearAnimation(MARIO_STAND_LEFT);
 		this.sprite.addKeyframe(MARIO_STAND_LEFT, [96, 64, 32, 32]);
 
@@ -174,25 +190,8 @@ Player.prototype.changeStarAnimation = function (bStar) {
 	}
 }
 
-Player.prototype.changeState = function () {//xinlei: can be deleted
-	if (this.transforming) {
-		//this.timeFreeze = true;
-		if (this.state == SUPER_MARIO) {
-			//this.sprite.setAnimation(SUPER_MARIO);
-			//this.active = false;
-			// this.supermario.active = true;
-			// this.supermario.sprite.x = this.sprite.x;
-			// this.supermario.sprite.y = this.sprite.y - 32;
-			// this.supermario.bJumping = false;
-		}
-
-	}
-	//this.transforming = false;
-	//this.timeFreeze = false;
-}
 
 Player.prototype.update = function (deltaTime) {
-	// this.supermario.update();
 
 	if (this.active) {
 		if (this.lives == 0) { // problem: always reinitiate to dying
