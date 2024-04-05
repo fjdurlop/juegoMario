@@ -4,6 +4,7 @@
 const COINT_POINTS = 100;
 const GOOMBA_POINTS = 200;
 const TURTLE_POINTS = 200;
+var world;
 
 function Scene(level) {
 	this.gameoverMusic = AudioFX('sounds/smb_gameover.wav');
@@ -13,9 +14,12 @@ function Scene(level) {
 	this.pipeMusic = AudioFX('sounds/smb_pipe.wav');
 	//when kicks the turtles shell
 	this.kickMusic = AudioFX('sounds/kick.wav');
+	this.lostlife = AudioFX('sounds/lostalife.mp3');
+
 
 	// Loading texture to use in a TileMap
 	this.world = level;
+	world = level;
 	// Create tilemap
 	if (this.world == 1) {
 		var tilesheet = new Texture("imgs/world1.png");
@@ -142,7 +146,7 @@ Scene.prototype.update = function (deltaTime) {
 
 		// Check for collision between entities
 		if (this.player.collisionBox().intersect(this.goomba_01.collisionTop()) && this.goomba_01.killed_mario == false) {
-			if (this.player.sprite.y + this.player.sprite.height <= this.goomba_01.sprite.y + 5) {
+			if ((this.player.sprite.y + this.player.sprite.height <= this.goomba_01.sprite.y + 5) || this.player.enableStarTime == true) {
 				//console.log("from above")
 				//console.log("y: ", this.player.sprite.y, " h: ", this.player.sprite.height, " goomba ", this.goomba_01.sprite.y)
 				this.player.just_pressed = true;
@@ -151,7 +155,7 @@ Scene.prototype.update = function (deltaTime) {
 				this.goomba_01.killed = true;
 			}
 		}
-		if (this.player.collisionBox().intersect(this.goomba_01.collisionBox()) && this.goomba_01.killed == false && this.goomba_01.killed_mario == false) {
+		if (this.player.collisionBox().intersect(this.goomba_01.collisionBox()) && this.goomba_01.killed == false && this.goomba_01.killed_mario == false && this.player.enableStarTime == false) {
 			//this.lose = true;
 			this.player.lives -= 1;
 			console.log("Reduced lives");
@@ -167,7 +171,7 @@ Scene.prototype.update = function (deltaTime) {
 			&& this.turtle.killed == false && this.turtle.killed_mario == false && this.player.just_pressed == false) {
 			console.log("Enter")
 			console.log("y: ", this.player.sprite.y, " h: ", this.player.sprite.height, " goomba ", this.turtle.sprite.y - 16)
-			if (this.player.sprite.y - this.player.sprite.height <= this.turtle.sprite.y - 16 - 2) {
+			if ((this.player.sprite.y - this.player.sprite.height <= this.turtle.sprite.y - 16 - 2) || this.player.enableStarTime == true) {
 				console.log("turtle: from above")
 				console.log("2y: ", this.player.sprite.y, " h: ", this.player.sprite.height, " goomba ", this.turtle.sprite.y - 16)
 				console.log(this.turtle.sprite.y - 16)
@@ -215,7 +219,7 @@ Scene.prototype.update = function (deltaTime) {
 			console.log("pressed_static", this.turtle.pressed_static)
 			console.log("just_pressed", this.player.just_pressed)
 
-			if (this.turtle.pressed_static == false && this.player.just_pressed == false) {
+			if (this.turtle.pressed_static == false && this.player.just_pressed == false && this.player.enableStarTime == false) {
 				this.lose = true;
 				this.player.lives -= 1;
 				console.log("turtle:Reduced lives");
@@ -234,6 +238,12 @@ Scene.prototype.update = function (deltaTime) {
 				console.log("turtle2: to moving");
 			}
 		}
+		if (this.lose) {
+			this.music.stop();
+			this.hurryMusic.stop();
+			this.lostlife.play();
+		}
+
 		var objects = this.blockAnimation.checkCollision(this.player);//returns coins and blocks collided
 
 		var last_coins = this.coins;
@@ -337,6 +347,7 @@ Scene.prototype.drawStatusText = function (currentTime) {
 	var restantTime = (400 - Math.floor(currentTime / 1000));
 	if (restantTime < 0) {
 		//gameover if time is over
+		this.hurryMusic.stop();
 		restantTime = 0;
 		this.nextScene = this.checkNextScene();
 		this.player.lives = 0;

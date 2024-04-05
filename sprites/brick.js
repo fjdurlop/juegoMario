@@ -1,5 +1,8 @@
 function Brick(x, y, map) {
     var brick = new Texture("imgs/blocks.png");
+    if (world == 2) {
+        brick = new Texture("imgs/level2_00.png");
+    }
 
     this.x = x;
     this.y = y;
@@ -18,7 +21,12 @@ function Brick(x, y, map) {
     this.sprite = new Sprite(x, y, 32, 32, 5, brick);
 
     this.sprite.addAnimation();
-    this.sprite.addKeyframe(0, [0, 64, 32, 32]);
+    if (world == 2) {
+        this.sprite.addKeyframe(0, [0, 32, 32, 32]);
+    }
+    else {
+        this.sprite.addKeyframe(0, [0, 64, 32, 32]);
+    }
 
     this.sprite.setAnimation(0);
 }

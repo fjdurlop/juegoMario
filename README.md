@@ -43,7 +43,7 @@ cuando empiece a moverse y la pierda cuando el jugador quiera parar.
 - ~~Animación en llegar a la bandera para finalizar el nivel.~~
 - Bonificación a la puntuación por tiempo restante al final del nivel.
 
------------------------------------
+--------------------------------------------------
 XINLEI:
 
 *Layer[2]: query block(2), ladrillo(3), coins(36)... static sprites*
@@ -55,10 +55,9 @@ XINLEI:
 - collision top to blocks should be more narrow, mario cant pass through jumping to a 1 space block(design bug)
 - not downkey on supermario when downkey is released
 - when star mode mario kills all enemys by touch
-- supermario's game over
 - when game over, turn off the main theme and turn on gameover sound
-- take flag feature for supermario
 - supermario does not die, he transforms to minimario -> remove animation of dying
+- earn points for the queryBlock coins, mushrooms and star
 
   Paco
 - Tiempo
@@ -67,4 +66,8 @@ XINLEI:
 - goomba
 - nivel 2 bricks
 - salta muchas veces cuando mata
+- take flag feature for supermario
+- supermario's game over
+
+
   
