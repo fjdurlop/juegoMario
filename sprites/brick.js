@@ -1,7 +1,7 @@
 function Brick(x, y, map) {
     var brick = new Texture("imgs/blocks.png");
     if (world == 2) {
-        brick = new Texture("imgs/level2_00.png");
+        brick = new Texture("imgs/level2_01.png");
     }
 
     this.x = x;
