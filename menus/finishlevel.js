@@ -1,7 +1,7 @@
 
 
 // Scene. Updates and draws a single scene of the game.
-function FinishLevelScene(last_points) {
+function FinishLevelScene(last_points, last_level) {
 
 
 	// New code to load a menu background image
@@ -10,12 +10,16 @@ function FinishLevelScene(last_points) {
 	this.active = false;
 	this.nextScene = null;
 	this.last_points = last_points;
+	this.last_level = last_level;
 }
 
 FinishLevelScene.prototype.update = function (deltaTime) {
 	//ESC
 	if (keyboard[27]){
 		this.nextScene = 'menu';
+	}
+	if (keyboard[13]) {
+		this.nextScene = 'level2';
 	}
 }
 
@@ -31,10 +35,13 @@ FinishLevelScene.prototype.drawStatusText = function () {
 	context.fillStyle = 'blue';
 	context.fillText('CONGRATULATIONS!', 6 * 32, 6*32);
 	context.fillStyle = 'white';
-	context.fillText('LEVEL FINISHED!', 8 * 32, 8*32);
+	context.fillText('LEVEL FINISHED!', 7 * 32, 8*32);
 	context.font = "900 30px Verdana";
 	context.fillStyle = 'white';
 	context.fillText("Your points: "+String(this.last_points).padStart(6, '0'), 7 * 32, 11*32);
+
+	context.font = "900 20px Verdana";
+	context.fillText("Press [ENTER] for Level 2 :)", 8 * 32, 13*32);
 
 	context.font = "900 20px Verdana";
 	context.fillStyle = 'white';
@@ -42,12 +49,12 @@ FinishLevelScene.prototype.drawStatusText = function () {
 	// Draw status text on the canvas
 	
 	context.fillText('MARI2O22', 2 * 32, 30);
-	context.fillText(String(score).padStart(6, '0'), 2 * 32, 50);
+	context.fillText(String(this.last_points).padStart(6, '0'), 2 * 32, 50);
 
 	context.fillText('X 00', 9 * 32, 50);
 
 	context.fillText('WORLD', 15 * 32, 30);
-	context.fillText('1-1', 15 * 32, 50);
+	context.fillText(String(this.last_level)+'-1', 15 * 32, 50);
 
 	context.font = "900 12px Verdana";
 	context.fillStyle = 'white';
