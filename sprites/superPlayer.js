@@ -7,7 +7,7 @@ const SMARIO_JUMP_RIGHT = 4;
 const SMARIO_JUMP_LEFT = 5;
 const SMARIO_DOWN_RIGHT = 6;
 const SMARIO_DOWN_LEFT = 7;
-
+const SMARIO_FLAG = 8;
 
 function SuperPlayer(x, y, map) {
 	// Loading spritesheets
@@ -57,6 +57,10 @@ function SuperPlayer(x, y, map) {
 	this.sprite.addKeyframe(SMARIO_DOWN_LEFT, [32 * 6, 64, 32, 32 + 16]);
 	//TODO: animacion freno
 
+	this.sprite.addAnimation();
+	this.sprite.addKeyframe(SMARIO_FLAG, [32 * 5, 0, 32, 64]);
+	//xinlei: si no funciona, puede ser pq array_animations[MARIOF_FLAG] no existe, OVERFLOW
+
 	this.transformSprite = new Sprite(x, y - 32, 32, 64, 7, mario);
 	this.transformSpriteActive = false;
 
@@ -90,6 +94,8 @@ function SuperPlayer(x, y, map) {
 	this.accelerating = false;
 	this.speed = 0;
 	this.pressing_timer = 0;
+	this.in_flag = false;
+	this.in_flag_finish = false;
 }
 
 var minWalkSpeed = 60;
@@ -262,6 +268,20 @@ SuperPlayer.prototype.update = function (deltaTime) {
 				else if (this.die_up == false) {
 					this.sprite.y += 2;
 				}
+			}
+		}
+
+		//flag
+		if (this.in_flag && !this.in_flag_finish) {
+			console.log("smario: IN_FLAG!!");
+			this.allow_keys = false;
+			this.sprite.setAnimation(SMARIO_FLAG);
+			var collision_down = this.map.collisionMoveDown(this.sprite)
+			if (!collision_down[0]) {
+				this.sprite.y += 2;
+			} else {
+				//console.log("in_flag finished")
+				this.in_flag_finish = true;
 			}
 		}
 

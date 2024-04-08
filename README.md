@@ -60,14 +60,14 @@ XINLEI:
 - earn points for the queryBlock coins, mushrooms and star
 
   Paco
-- Tiempo
-- numero instrucciones
-- sonido -> scene, blockanimation, player(superplayer tambien)
-- goomba
-- nivel 2 bricks
+- ~~Tiempo~~
+- ~~numero instrucciones~~
+- ~~sonido -> scene, blockanimation, player(superplayer tambien)~~
+- ~~goomba~~
+- ~~nivel 2 bricks~~
 - salta muchas veces cuando mata
-- take flag feature for supermario
-- supermario's game over
+- ~~take flag feature for supermario~~
+- ~~supermario's game over~~
 
 
   

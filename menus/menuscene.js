@@ -22,7 +22,7 @@ MenuScene.prototype.update = function () {
 		this.nextScene = 'level1';
 	}
 	// numbers 0-9 are 48-57
-	else if (keyboard[49]) {
+	else if (keyboard[56]) {
 		this.nextScene = 'instructions';
 	}
 	else if (keyboard[57]) {
@@ -37,7 +37,7 @@ MenuScene.prototype.drawStatusText = function () {
 	var context = canvas.getContext("2d");
 	context.font = "900 14px Verdana";
 	context.fillStyle = 'white';
-	context.fillText('[1] INSTRUCTIONS [9] CREDITS', 9 * 32, 10 * 32);
+	context.fillText('[8] INSTRUCTIONS [9] CREDITS', 9 * 32, 10 * 32);
 	context.fillStyle = 'rgb(16, 148, 0)';
 	context.fillText('PRESS [ENTER] TO START NEW GAME!', 9 * 32, 11.5 * 32);
 	context.fillStyle = 'white';

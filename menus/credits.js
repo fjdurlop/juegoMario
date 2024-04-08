@@ -50,10 +50,10 @@ CreditsScene.prototype.drawStatusText = function () {
 	context.font = "900 20px Verdana";
 	context.fillStyle = 'white';
 	context.fillText('Professor:', 9 * 32, 7*32);
-	context.fillText('Antonio Chica', 9 * 32, 8*32);
+	context.fillText('- Antonio Chica', 9 * 32, 8*32);
 	context.fillText('Team:', 9 * 32, 11*32);
-	context.fillText('Francisco Duran', 9 * 32, 12*32);
-	context.fillText('Xinlei', 9 * 32, 13*32);
+	context.fillText('- Francisco Duran', 9 * 32, 12*32);
+	context.fillText('- Xinlei Lin', 9 * 32, 13*32);
 
 	context.font = "900 12px Verdana";
 	context.fillStyle = 'white';

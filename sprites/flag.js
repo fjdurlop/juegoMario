@@ -3,6 +3,8 @@
 function Flag(x, y) {
     var flag = new Texture("imgs/flag.png");
 
+    this.flagPoleMusic = AudioFX('sounds/smb_flagpole.wav');
+
     this.x = x;
     this.y = y;
     this.height = 7;
@@ -98,9 +100,11 @@ Flag.prototype.checkCollision = function (player) {
         console.log("flag:here!");
         this.sprite.setAnimation(1);
         points = this.reachedY * 100;
+        //this.flagPoleMusic.stop();
     }else{
         if (playerColisionBox.intersect(this.collisionBox()) && !this.hit && !player.in_flag_finish){
             this.hit = true;
+            this.flagPoleMusic.play();
             if(!this.first_hit)
                 this.first_hit = true;
             console.log("flag: hit ", );

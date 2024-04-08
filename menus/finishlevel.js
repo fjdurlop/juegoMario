@@ -35,13 +35,13 @@ FinishLevelScene.prototype.drawStatusText = function () {
 	context.fillStyle = 'blue';
 	context.fillText('CONGRATULATIONS!', 6 * 32, 6*32);
 	context.fillStyle = 'white';
-	context.fillText('LEVEL FINISHED!', 7 * 32, 8*32);
+	context.fillText('LEVEL '+String(this.last_level)+' FINISHED!', 7 * 32, 8*32);
 	context.font = "900 30px Verdana";
 	context.fillStyle = 'white';
 	context.fillText("Your points: "+String(this.last_points).padStart(6, '0'), 7 * 32, 11*32);
 
 	context.font = "900 20px Verdana";
-	context.fillText("Press [ENTER] for Level 2 :)", 8 * 32, 13*32);
+	context.fillText("Press [ENTER] for next Level :)", 8 * 32, 13*32);
 
 	context.font = "900 20px Verdana";
 	context.fillStyle = 'white';

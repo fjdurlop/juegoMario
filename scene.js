@@ -27,7 +27,7 @@ function Scene(level) {
 		this.music = AudioFX('sounds/main_theme.mp3', { loop: true });
 		this.hurryMusic = AudioFX('sounds/main_theme_hurry.mp3');
 		this.player = new Player(10 * 32, 400, this.map);
-		//this.player = new SuperPlayer(150, 400, this.map);
+		//this.player = new SuperPlayer(105*32, 130, this.map);
 		//this.player = new Player(105*32, 150, this.map); //test flags
 		this.flag = new Flag(111 * 32, 7 * 32);
 		this.turtle = new Turtle(33 * 32, 12 * 32, this.map);
@@ -37,7 +37,8 @@ function Scene(level) {
 		this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world02);
 		this.music = AudioFX('sounds/second_theme.mp3', { loop: true });
 		this.hurryMusic = AudioFX('sounds/second_theme_hurry.mp3');
-		this.player = new Player(5 * 32, 400, this.map);
+		//this.player = new Player(5 * 32, 400, this.map);
+		//this.player = new SuperPlayer(105*32, 130, this.map);
 		this.flag = new Flag(143 * 32, 8 * 32);
 		this.turtle = new Turtle(93 * 32, 12 * 32, this.map);
 	}
@@ -65,6 +66,8 @@ function Scene(level) {
 	this.gameTime = 0;
 	this.goombaTime = 0;
 	this.dyingTime = 0;
+
+	this.kickTime = 0;
 
 	this.scroll = 0;
 	this.d = 0;
@@ -129,6 +132,7 @@ Scene.prototype.update = function (deltaTime) {
 		}
 
 		if (this.goomba_01.active && this.goomba_01.killed) {
+			this.kickMusic.play();
 			this.goomba_01.dyingTime += deltaTime;
 			if (this.goomba_01.dyingTime >= 500) {
 				//console.log("-----------------");
@@ -177,7 +181,8 @@ Scene.prototype.update = function (deltaTime) {
 				console.log("turtle: from above")
 				console.log("2y: ", this.player.sprite.y, " h: ", this.player.sprite.height, " goomba ", this.turtle.sprite.y - 16)
 				console.log(this.turtle.sprite.y - 16)
-
+				
+				this.kickMusic.play();
 
 				if (this.turtle.pressed_static == true) {
 					this.player.sprite.y -= 2;
@@ -289,6 +294,9 @@ Scene.prototype.update = function (deltaTime) {
 	}
 	this.timeFreeze = this.player.timeFreeze;
 
+	if(this.player.lives == 0){ //for music
+		this.lose=true;
+	}
 	// if(this.player.lives ==0 && this.player.dying)
 	// 	this.player.dying = true;
 	if (keyboard[49]) {
@@ -361,6 +369,7 @@ Scene.prototype.drawStatusText = function (currentTime) {
 		restantTime = 0;
 		this.nextScene = this.checkNextScene();
 		this.player.lives = 0;
+		this.lose = true;
 	}
 	else if (restantTime < 100 && interacted) {
 		this.music.stop();
@@ -411,6 +420,7 @@ Scene.prototype.draw = function () {
 
 Scene.prototype.checkNextScene = function () {
 	this.music.stop();
+	this.hurryMusic.stop();
 	if (this.got_flag_points)
 		return 'finishLevel'
 	else if (this.player.lives == 0 && !this.player.dying) {

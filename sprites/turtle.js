@@ -98,16 +98,6 @@ Turtle.prototype.update = function update(deltaTime) {
 
     }
 
-
-
-    if (keyboard[32]) // KEY_LEFT
-    {
-        if (this.sprite.currentAnimation == TURTLE_LEFT)
-            this.sprite.setAnimation(TURTLE_PRESSED);
-        else if (this.sprite.currentAnimation == TURTLE_PRESSED)
-            this.sprite.setAnimation(TURTLE_LEFT);
-    }
-
     this.sprite.update(deltaTime);
 }
 

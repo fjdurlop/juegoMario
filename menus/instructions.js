@@ -39,11 +39,14 @@ InstructionsScene.prototype.drawStatusText = function () {
 	// Draw status text on the canvas
 
 	// Displaying game instructions
-    context.font = "16px Verdana";
-    context.fillText("- Use arrow keys to move Mario", 50, 140);
-    context.fillText("- Space or up key to jump", 50, 170);
-    context.fillText("- Collect coins and avoid Goombas and Turtles", 50, 200);
-	context.fillText("- If you fall into a hole or water, you die :(", 50, 230);
+    context.font = "15px Verdana";
+	
+    
+    context.fillText("- Move: Use the left and right arrow keys to move Mario through the level.", 50, 140);
+    context.fillText("- Jump: Press the spacebar to make Mario jump over obstacles and enemies.", 50, 170);
+    context.fillText("- Enemies: Avoid or defeat enemies by jumping on them or using powers.", 50, 200);
+	context.fillText("- Pitfalls: If you fall into a hole or water, you die :(", 50, 230);
+	context.fillText("- Goal: Reach the end of the level and jump on the flagpole to complete it.", 50, 260);
 
 	context.font = "900 12px Verdana";
 	context.fillStyle = 'white';

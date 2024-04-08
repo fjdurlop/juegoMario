@@ -11,7 +11,7 @@ const MARIO_TRANSFORM = 0;
 const MINI_MARIO = 10;
 const SUPER_MARIO = 11;
 
-const MARIO_FLAG = 13;
+const MARIO_FLAG = 7;
 
 const STAR_TIME = 10; //seconds
 const TRANSFORM_TIME = 1 //seconds

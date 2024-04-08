@@ -69,16 +69,6 @@ Goomba.prototype.update = function update(deltaTime) {
 
     }
 
-
-
-    if (keyboard[32]) // KEY_LEFT
-    {
-        if (this.sprite.currentAnimation == GOOMBA_NORMAL)
-            this.sprite.setAnimation(GOOMBA_PRESSED);
-        else if (this.sprite.currentAnimation == GOOMBA_PRESSED)
-            this.sprite.setAnimation(GOOMBA_NORMAL);
-    }
-
     this.sprite.update(deltaTime);
 }
 
