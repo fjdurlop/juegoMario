@@ -18,6 +18,7 @@ function SceneManager() {
 }
 var points_record = 0;
 var last_points = 0;
+var last_level = 1;
 
 SceneManager.prototype.switchScene = function(sceneName) {
     this.currentScene.active = false;
@@ -27,15 +28,17 @@ SceneManager.prototype.switchScene = function(sceneName) {
     //if (scene) {
     if(sceneName == 'game'){
         console.log("SceneManager to Scene()");
-        this.currentScene = new Scene(1)
+        this.currentScene = new Scene(1);
     }
     else if(sceneName == 'level1'){
         console.log("SceneManager to Scene()");
-        this.currentScene = new Scene(1)
+        this.currentScene = new Scene(1);
+        last_level = 1;
     }
     else if(sceneName == 'level2'){
         console.log("SceneManager to Scene()");
-        this.currentScene = new Scene(2)
+        this.currentScene = new Scene(2);
+        last_level = 2;
     }
     else if(sceneName == 'menu'){
         console.log("SceneManager to menu()");
@@ -46,13 +49,13 @@ SceneManager.prototype.switchScene = function(sceneName) {
     else if(sceneName == 'gameOver'){
         console.log("SceneManager to gameover()");
         console.log("je", last_points);
-        this.currentScene = new GameOverScene(last_points);
+        this.currentScene = new GameOverScene(last_points, last_level);
         this.currentScene.nextScene = null;
     }
     else if(sceneName == 'finishLevel'){
         console.log("SceneManager to finishLevel()");
         console.log("je", last_points);
-        this.currentScene = new FinishLevelScene(last_points);
+        this.currentScene = new FinishLevelScene(last_points, last_level);
         this.currentScene.nextScene = null;
     }
     else{
@@ -64,6 +67,8 @@ SceneManager.prototype.switchScene = function(sceneName) {
     //     console.error('Scene not found:', sceneName);
     // }
     this.currentScene.active = true;
+
+    console.log("last level: ", last_level);
 };
 
 SceneManager.prototype.update = function(deltaTime) {
@@ -80,6 +85,9 @@ SceneManager.prototype.update = function(deltaTime) {
             }
             this.switchScene(this.currentScene.nextScene);
         }
+        // if(this.currentScene.world != this.last_level){
+        //     this.last_level = this.currentScene.world;
+        // }
     }
 };
 
