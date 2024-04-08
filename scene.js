@@ -37,7 +37,7 @@ function Scene(level) {
 		this.map = new Tilemap(tilesheet, [32, 32], [6, 6], [0, 32], world02);
 		this.music = AudioFX('sounds/second_theme.mp3', { loop: true });
 		this.hurryMusic = AudioFX('sounds/second_theme_hurry.mp3');
-		//this.player = new Player(5 * 32, 400, this.map);
+		this.player = new Player(5 * 32, 400, this.map);
 		//this.player = new SuperPlayer(105*32, 130, this.map);
 		this.flag = new Flag(143 * 32, 8 * 32);
 		this.turtle = new Turtle(93 * 32, 12 * 32, this.map);
