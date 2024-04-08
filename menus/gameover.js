@@ -1,7 +1,7 @@
 
 
 // Scene. Updates and draws a single scene of the game.
-function GameOverScene(last_points) {
+function GameOverScene(last_points, last_level) {
 
 
 	// New code to load a menu background image
@@ -10,6 +10,7 @@ function GameOverScene(last_points) {
 	this.active = false;
 	this.nextScene = null;
 	this.last_points = last_points;
+	this.last_level = last_level;
 }
 
 GameOverScene.prototype.update = function (deltaTime) {
@@ -40,12 +41,12 @@ GameOverScene.prototype.drawStatusText = function () {
 	// Draw status text on the canvas
 	
 	context.fillText('MARI2O22', 2 * 32, 30);
-	context.fillText(String(score).padStart(6, '0'), 2 * 32, 50);
+	context.fillText(String(this.last_points).padStart(6, '0'), 2 * 32, 50);
 
 	context.fillText('X 00', 9 * 32, 50);
 
 	context.fillText('WORLD', 15 * 32, 30);
-	context.fillText('1-1', 15 * 32, 50);
+	context.fillText(String(this.last_level)+'-1', 15 * 32, 50);
 
 	context.font = "900 12px Verdana";
 	context.fillStyle = 'white';

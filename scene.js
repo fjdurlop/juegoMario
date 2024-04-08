@@ -69,6 +69,8 @@ function Scene(level) {
 	this.coins = 0;
 	this.got_flag_points = false;
 
+	this.got_time_points = false;
+
 	this.active = false;
 	this.nextScene = null;
 }
@@ -247,7 +249,15 @@ Scene.prototype.update = function (deltaTime) {
 			this.points += flag_points;
 			this.got_flag_points = true;
 			//reached flag and return points
-			//console.log("scene: got flag_points:",flag_points);
+			console.log("scene: got flag_points:",flag_points);
+			if(!this.got_time_points){
+				var restantTime = (400 - Math.floor(this.currentTime / 1000));
+				this.points += restantTime;
+				console.log("time points: ",restantTime);
+				this.got_time_points = true;
+			}
+			
+			
 		}
 
 		if (this.player.transforming)

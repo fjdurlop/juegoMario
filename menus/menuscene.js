@@ -19,7 +19,7 @@ function MenuScene(points_record) {
 MenuScene.prototype.update = function () {
 	//enter
 	if (keyboard[13]){
-		this.nextScene = 'game';
+		this.nextScene = 'level1';
 	}
 	// numbers 0-9 are 48-57
 	else if(keyboard[49]){
