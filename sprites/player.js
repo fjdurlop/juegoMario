@@ -291,11 +291,9 @@ Player.prototype.update = function (deltaTime) {
 				//console.log("finish pressing");
 				this.just_pressed = false;
 				this.pressing_timer = 0;
-
 			}
 		}
 
-		//animation when mario dies
 		if (this.just_pressed) {
 			//console.log("pressing!!");
 			// this.allow_keys = false;
@@ -314,7 +312,6 @@ Player.prototype.update = function (deltaTime) {
 					if (this.initial_pressing - 2 > this.sprite.y) {
 						this.press_up = false;
 					}
-
 				}
 				else {
 					//console.log("33")
@@ -471,7 +468,14 @@ Player.prototype.update = function (deltaTime) {
 					if (this.map.collisionMoveUp(this.sprite)) {
 						this.bJumping = false;
 					} else {
-						this.sprite.y = this.startY - (32 * 4 + 2) * Math.sin(3.14159 * this.jumpAngle / 180);
+						var height = 4;
+						var n = 1;
+						// if (this.just_pressed) {
+						// 	height = 3;
+						// 	n = 1;
+						// }
+
+						this.sprite.y = this.startY - (32 * height + 4) * Math.sin(n * 3.14159 * this.jumpAngle / 180);
 						if (this.jumpAngle > 90) {
 							var collision_down = this.map.collisionMoveDown(this.sprite)
 							this.bJumping = !collision_down[0];

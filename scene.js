@@ -151,7 +151,7 @@ Scene.prototype.update = function (deltaTime) {
 		// }
 
 		// Check for collision between entities
-		if (this.player.collisionBox().intersect(this.goomba_01.collisionTop()) && this.goomba_01.killed_mario == false) {
+		if (this.player.collisionBox().intersect(this.goomba_01.collisionTop()) && this.goomba_01.killed_mario == false && this.goomba_01.killed == false) {
 			if ((this.player.sprite.y + this.player.sprite.height <= this.goomba_01.sprite.y + 5) || this.player.enableStarTime == true) {
 				//console.log("from above")
 				//console.log("y: ", this.player.sprite.y, " h: ", this.player.sprite.height, " goomba ", this.goomba_01.sprite.y)
@@ -174,14 +174,14 @@ Scene.prototype.update = function (deltaTime) {
 
 		//collisions with turtle
 		if (this.player.collisionBox().intersect(this.turtle.collisionTop())
-			&& this.turtle.killed == false && this.turtle.killed_mario == false && this.player.just_pressed == false) {
+			&& this.turtle.active == true && this.turtle.killed_mario == false && this.player.just_pressed == false) {
 			console.log("Enter")
 			console.log("y: ", this.player.sprite.y, " h: ", this.player.sprite.height, " goomba ", this.turtle.sprite.y - 16)
 			if ((this.player.sprite.y - this.player.sprite.height <= this.turtle.sprite.y - 16 - 2) || this.player.enableStarTime == true) {
 				console.log("turtle: from above")
 				console.log("2y: ", this.player.sprite.y, " h: ", this.player.sprite.height, " goomba ", this.turtle.sprite.y - 16)
 				console.log(this.turtle.sprite.y - 16)
-				
+
 				this.kickMusic.play();
 
 				if (this.turtle.pressed_static == true) {
@@ -221,7 +221,7 @@ Scene.prototype.update = function (deltaTime) {
 			//console.log("Goomba dies!!")
 		}
 		//turtle kills mario
-		if (this.player.collisionBox().intersect(this.turtle.collisionBox()) && this.turtle.killed == false
+		if (this.player.collisionBox().intersect(this.turtle.collisionBox()) && this.turtle.active == true
 			&& this.turtle.killed_mario == false && this.player.just_pressed == false && this.turtle.active) {
 			console.log("pressed_static", this.turtle.pressed_static)
 			console.log("just_pressed", this.player.just_pressed)
@@ -264,15 +264,13 @@ Scene.prototype.update = function (deltaTime) {
 			this.points += flag_points;
 			this.got_flag_points = true;
 			//reached flag and return points
-			console.log("scene: got flag_points:",flag_points);
-			if(!this.got_time_points){
+			console.log("scene: got flag_points:", flag_points);
+			if (!this.got_time_points) {
 				var restantTime = (400 - Math.floor(this.currentTime / 1000));
 				this.points += restantTime;
-				console.log("time points: ",restantTime);
+				console.log("time points: ", restantTime);
 				this.got_time_points = true;
 			}
-			
-			
 		}
 
 		if (this.player.transforming)
@@ -294,8 +292,8 @@ Scene.prototype.update = function (deltaTime) {
 	}
 	this.timeFreeze = this.player.timeFreeze;
 
-	if(this.player.lives == 0){ //for music
-		this.lose=true;
+	if (this.player.lives == 0) { //for music
+		this.lose = true;
 	}
 	// if(this.player.lives ==0 && this.player.dying)
 	// 	this.player.dying = true;
