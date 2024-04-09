@@ -54,7 +54,6 @@ XINLEI:
 - ??:
 - collision top to blocks should be more narrow, mario cant pass through jumping to a 1 space block(design bug)
 - not downkey on supermario when downkey is released
-- when star mode mario kills all enemys by touch
 - when game over, turn off the main theme and turn on gameover sound
 - supermario does not die, he transforms to minimario -> remove animation of dying
 - earn points for the queryBlock coins, mushrooms and star

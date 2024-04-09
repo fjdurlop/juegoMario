@@ -61,8 +61,14 @@ BlockAnimation.prototype.createQueryBlockAnimation = function (OPosX, OPosY, til
 					block.powerups = 1;
 				}
 			}
-			if (tiledId == 5 && this.level == 2)
-				queryblock.push(new QueryBlock(OPosX + i * tileX, OPosY + j * tileY, this.map));
+			if (tiledId == 5 && this.level == 2) {
+				block = new QueryBlock(OPosX + i * tileX, OPosY + j * tileY, this.map)
+				queryblock.push(block);
+				if ((i == 28 && j == 9) || (i == 88 && j == 9)) {
+					block.powerups = 1;
+				}
+			}
+
 		}
 	return queryblock;
 }
