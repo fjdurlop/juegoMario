@@ -90,6 +90,7 @@ function SuperPlayer(x, y, map) {
 	this.timeFreeze = false;
 
 	this.start_dying = false;
+	this.finish_dying = false;
 	this.start_pressing = false;
 	this.accelerating = false;
 	this.speed = 0;
@@ -267,6 +268,11 @@ SuperPlayer.prototype.update = function (deltaTime) {
 				}
 				else if (this.die_up == false) {
 					this.sprite.y += 2;
+					//console.log("y: ", this.sprite.y);
+					if (this.sprite.y > 32 * 15) {
+						//console.log("finish_dying");
+						this.finish_dying = true;
+					}
 				}
 			}
 		}

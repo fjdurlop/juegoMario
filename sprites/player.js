@@ -261,7 +261,7 @@ Player.prototype.update = function (deltaTime) {
 				}
 				else if (this.die_up == false) {
 					this.sprite.y += 2;
-					console.log("y: ", this.sprite.y);
+					//console.log("y: ", this.sprite.y);
 					if (this.sprite.y > 32 * 15) {
 						//console.log("finish_dying");
 						this.finish_dying = true;
